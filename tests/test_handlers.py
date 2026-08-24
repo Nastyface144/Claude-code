@@ -10,7 +10,7 @@ from aiogram.enums import ParseMode
 from aiogram.methods import EditMessageText, SendMessage, TelegramMethod
 from aiogram.types import Chat, Message, Update, User
 
-from freelance_bot.bot import router
+from freelance_bot.bot import build_router
 from freelance_bot.config import Settings
 from freelance_bot.models import Order
 from freelance_bot.service import Radar
@@ -18,9 +18,8 @@ from freelance_bot.storage import Storage
 
 CHAT_ID = 555
 
-# Router можно подключить лишь к одному Dispatcher, поэтому он общий на модуль:
 DISPATCHER = Dispatcher()
-DISPATCHER.include_router(router)
+DISPATCHER.include_router(build_router())
 
 
 class MockSession(BaseSession):

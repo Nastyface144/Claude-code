@@ -50,6 +50,11 @@ CREATE TABLE IF NOT EXISTS user_rules (
     PRIMARY KEY (chat_id, kind, word)
 );
 
+CREATE TABLE IF NOT EXISTS meta (
+    key   TEXT PRIMARY KEY,
+    value TEXT
+);
+
 CREATE TABLE IF NOT EXISTS sources (
     name       TEXT PRIMARY KEY,
     url        TEXT NOT NULL,
@@ -92,6 +97,27 @@ class Storage:
         if self._db is None:
             raise RuntimeError("Storage не подключён: вызовите await storage.connect()")
         return self._db
+
+    # --- служебные значения ---
+    async def get_meta(self, key: str, default: str | None = None) -> str | None:
+        async with self.db.execute("SELECT value FROM meta WHERE key = ?", (key,)) as cursor:
+            row = await cursor.fetchone()
+        return row["value"] if row else default
+
+    async def get_meta_int(self, key: str, default: int = 0) -> int:
+        raw = await self.get_meta(key)
+        try:
+            return int(raw) if raw is not None else default
+        except ValueError:
+            return default
+
+    async def set_meta(self, key: str, value: str | int) -> None:
+        await self.db.execute(
+            "INSERT INTO meta (key, value) VALUES (?, ?) "
+            "ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+            (key, str(value)),
+        )
+        await self.db.commit()
 
     # --- подписчики -----------------------------------------------------
     async def add_subscriber(self, chat_id: int) -> None:
@@ -170,6 +196,21 @@ class Storage:
         ) as cursor:
             row = await cursor.fetchone()
         return (row[0], row[1]) if row else (0, 0)
+
+    async def compact(self, keep_details_days: int = 2, keep_days: int = 14) -> None:
+        """Ужать базу: у старых заказов нужен только uid для защиты от повторов.
+
+        Важно для запуска по расписанию, когда файл базы возят между запусками.
+        """
+        now = datetime.now(timezone.utc)
+        details_edge = (now - timedelta(days=keep_details_days)).isoformat(timespec="seconds")
+        await self.db.execute(
+            "UPDATE orders SET description = '' WHERE found_at < ? AND description != ''",
+            (details_edge,),
+        )
+        await self.purge_old(days=keep_days)
+        await self.db.commit()
+        await self.db.execute("VACUUM")
 
     async def purge_old(self, days: int = 30) -> int:
         edge = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat(timespec="seconds")

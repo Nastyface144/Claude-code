@@ -1,0 +1,65 @@
+name: Радар заказов
+
+# Бот сам просыпается по расписанию: забирает свежие заказы с бирж,
+# отфильтровывает подходящие и присылает их в Telegram. Сервер не нужен.
+on:
+  schedule:
+    - cron: "*/15 * * * *"   # каждые 15 минут (GitHub может задержать запуск)
+  workflow_dispatch:          # и кнопка «Run workflow» для ручного запуска
+
+concurrency:
+  group: freelance-radar
+  cancel-in-progress: false
+
+permissions:
+  contents: write             # нужно, чтобы сохранять состояние в ветку radar-state
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Установить зависимости
+        run: pip install -r requirements.txt
+
+      - name: Восстановить состояние прошлого запуска
+        run: |
+          mkdir -p data
+          if git fetch --depth=1 origin radar-state 2>/dev/null; then
+            git show FETCH_HEAD:freelance.db > data/freelance.db
+            echo "Состояние восстановлено: $(du -h data/freelance.db | cut -f1)"
+          else
+            echo "Первый запуск: состояния ещё нет"
+          fi
+
+      - name: Опросить биржи и разослать заказы
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          TARGET_CHAT_IDS: ${{ secrets.TARGET_CHAT_IDS }}
+          DB_PATH: data/freelance.db
+          MIN_SCORE: "5"
+          MAX_PER_CYCLE: "10"
+        run: python -m freelance_bot once
+
+      - name: Сохранить состояние
+        if: always()
+        run: |
+          test -f data/freelance.db || exit 0
+          state=$(mktemp -d)
+          cp data/freelance.db "$state/freelance.db"
+          cd "$state"
+          git init -q -b radar-state
+          git -c user.name="freelance-radar" -c user.email="actions@github.com" \
+              add freelance.db
+          git -c user.name="freelance-radar" -c user.email="actions@github.com" \
+              commit -q -m "Состояние радара: $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push -q --force \
+              "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" \
+              radar-state

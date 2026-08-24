@@ -65,6 +65,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("-v", "--verbose", action="store_true", help="подробные логи")
     sub = parser.add_subparsers(dest="command")
     sub.add_parser("run", help="запустить Telegram-бота (по умолчанию)")
+    sub.add_parser("once", help="один цикл для cron/GitHub Actions: опросить и разослать")
     sub.add_parser("dryrun", help="опросить биржи и вывести находки в консоль")
     filter_cmd = sub.add_parser("filter", help="проверить оценку произвольного текста")
     filter_cmd.add_argument("text", nargs="+", help="текст заказа")
@@ -75,6 +76,11 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == "filter":
             check_filter(" ".join(args.text))
+        elif args.command == "once":
+            from .app import run_once
+
+            report = asyncio.run(run_once())
+            print(report.as_text())
         elif args.command == "dryrun":
             asyncio.run(dry_run())
         else:

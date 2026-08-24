@@ -14,10 +14,8 @@ from .keywords import INCLUDE_RULES, PENALTY_RULES, STOP_RULES
 from .service import Radar
 
 log = logging.getLogger(__name__)
-router = Router(name="freelance")
 
 
-@router.message(CommandStart())
 async def cmd_start(message: Message, radar: Radar) -> None:
     storage = radar.storage
     await storage.add_subscriber(message.chat.id)
@@ -29,18 +27,15 @@ async def cmd_start(message: Message, radar: Radar) -> None:
     )
 
 
-@router.message(Command("help"))
 async def cmd_help(message: Message, radar: Radar) -> None:
     await message.answer(HELP_TEXT)
 
 
-@router.message(Command("stop"))
 async def cmd_stop(message: Message, radar: Radar) -> None:
     await radar.storage.set_active(message.chat.id, False)
     await message.answer("⏸ Рассылка выключена. Включить обратно — /start")
 
 
-@router.message(Command("check"))
 async def cmd_check(message: Message, radar: Radar) -> None:
     await radar.storage.add_subscriber(message.chat.id)
     note = await message.answer("🔄 Опрашиваю биржи…")
@@ -50,7 +45,6 @@ async def cmd_check(message: Message, radar: Radar) -> None:
         await message.answer("Новых подходящих заказов нет. Последние находки — /last")
 
 
-@router.message(Command("last"))
 async def cmd_last(message: Message, command: CommandObject, radar: Radar) -> None:
     limit = 5
     if command.args and command.args.strip().isdigit():
@@ -65,7 +59,6 @@ async def cmd_last(message: Message, command: CommandObject, radar: Radar) -> No
     await message.answer("\n\n".join(blocks), disable_web_page_preview=True)
 
 
-@router.message(Command("search"))
 async def cmd_search(message: Message, command: CommandObject, radar: Radar) -> None:
     query = (command.args or "").strip()
     if not query:
@@ -79,7 +72,6 @@ async def cmd_search(message: Message, command: CommandObject, radar: Radar) -> 
     await message.answer("\n\n".join(blocks), disable_web_page_preview=True)
 
 
-@router.message(Command("status"))
 async def cmd_status(message: Message, radar: Radar) -> None:
     storage = radar.storage
     subscriber = await storage.get_subscriber(message.chat.id)
@@ -105,7 +97,6 @@ async def cmd_status(message: Message, radar: Radar) -> None:
     await message.answer("\n".join(lines))
 
 
-@router.message(Command("score"))
 async def cmd_score(message: Message, command: CommandObject, radar: Radar) -> None:
     raw = (command.args or "").strip()
     if not raw.lstrip("-").isdigit():
@@ -121,7 +112,6 @@ async def cmd_score(message: Message, command: CommandObject, radar: Radar) -> N
     await message.answer(f"✅ Порог релевантности: {value}")
 
 
-@router.message(Command("keywords"))
 async def cmd_keywords(message: Message, radar: Radar) -> None:
     include, exclude = await radar.storage.list_rules(message.chat.id)
 
@@ -145,7 +135,6 @@ async def cmd_keywords(message: Message, radar: Radar) -> None:
     await message.answer("\n".join(lines))
 
 
-@router.message(Command("add"))
 async def cmd_add(message: Message, command: CommandObject, radar: Radar) -> None:
     raw = (command.args or "").strip()
     if not raw:
@@ -166,7 +155,6 @@ async def cmd_add(message: Message, command: CommandObject, radar: Radar) -> Non
     await message.answer(f"✅ Слово «{escape(word)}» добавлено с весом {weight:+d}")
 
 
-@router.message(Command("ban"))
 async def cmd_ban(message: Message, command: CommandObject, radar: Radar) -> None:
     word = (command.args or "").strip()
     if not word:
@@ -178,7 +166,6 @@ async def cmd_ban(message: Message, command: CommandObject, radar: Radar) -> Non
     await message.answer(f"🚫 Заказы со словом «{escape(word)}» приходить не будут")
 
 
-@router.message(Command("del"))
 async def cmd_del(message: Message, command: CommandObject, radar: Radar) -> None:
     word = (command.args or "").strip()
     if not word:
@@ -190,7 +177,6 @@ async def cmd_del(message: Message, command: CommandObject, radar: Radar) -> Non
     )
 
 
-@router.message(Command("sources"))
 async def cmd_sources(message: Message, radar: Radar) -> None:
     rows = await radar.storage.list_sources()
     if not rows:
@@ -216,7 +202,6 @@ async def cmd_sources(message: Message, radar: Radar) -> None:
     await message.answer("\n".join(lines), disable_web_page_preview=True)
 
 
-@router.message(Command("addsource"))
 async def cmd_addsource(message: Message, command: CommandObject, radar: Radar) -> None:
     parts = (command.args or "").split()
     if len(parts) < 2 or not parts[1].startswith(("http://", "https://")):
@@ -231,7 +216,6 @@ async def cmd_addsource(message: Message, command: CommandObject, radar: Radar) 
     await message.answer(f"✅ Источник «{escape(name)}» добавлен. Проверить: /check")
 
 
-@router.message(Command("delsource"))
 async def cmd_delsource(message: Message, command: CommandObject, radar: Radar) -> None:
     name = (command.args or "").strip()
     if not name:
@@ -241,7 +225,6 @@ async def cmd_delsource(message: Message, command: CommandObject, radar: Radar) 
     await message.answer(f"🗑 Источник «{escape(name)}» удалён" if removed else "Такого источника нет")
 
 
-@router.message(Command("togglesource"))
 async def cmd_togglesource(message: Message, command: CommandObject, radar: Radar) -> None:
     name = (command.args or "").strip().lower()
     if not name:
@@ -258,7 +241,6 @@ async def cmd_togglesource(message: Message, command: CommandObject, radar: Rada
     await message.answer(f"{'▶️ Включён' if new_state else '⏸ Выключен'}: {escape(name)}")
 
 
-@router.message()
 async def fallback(message: Message, radar: Radar) -> None:
     """Любой текст без команды воспринимаем как быстрый поиск."""
     text = (message.text or "").strip()
@@ -272,3 +254,27 @@ async def fallback(message: Message, radar: Radar) -> None:
     await message.answer(
         f"Нашёл по «{escape(text)}»:\n\n" + "\n\n".join(blocks), disable_web_page_preview=True
     )
+
+
+def build_router() -> Router:
+    """Свежий Router с командами. Router привязывается лишь к одному Dispatcher,
+    поэтому создаём его функцией, а не на уровне модуля."""
+    router = Router(name="freelance")
+    router.message.register(cmd_start, CommandStart())
+    router.message.register(cmd_help, Command("help"))
+    router.message.register(cmd_stop, Command("stop"))
+    router.message.register(cmd_check, Command("check"))
+    router.message.register(cmd_last, Command("last"))
+    router.message.register(cmd_search, Command("search"))
+    router.message.register(cmd_status, Command("status"))
+    router.message.register(cmd_score, Command("score"))
+    router.message.register(cmd_keywords, Command("keywords"))
+    router.message.register(cmd_add, Command("add"))
+    router.message.register(cmd_ban, Command("ban"))
+    router.message.register(cmd_del, Command("del"))
+    router.message.register(cmd_sources, Command("sources"))
+    router.message.register(cmd_addsource, Command("addsource"))
+    router.message.register(cmd_delsource, Command("delsource"))
+    router.message.register(cmd_togglesource, Command("togglesource"))
+    router.message.register(fallback)
+    return router

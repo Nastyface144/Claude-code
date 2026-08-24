@@ -28,6 +28,7 @@ class Settings:
     min_score: int = 5
     max_per_cycle: int = 10
     admin_ids: tuple[int, ...] = ()
+    target_chat_ids: tuple[int, ...] = ()
 
     @classmethod
     def from_env(
@@ -44,14 +45,17 @@ class Settings:
                 "Не задан BOT_TOKEN. Скопируйте .env.example в .env и впишите токен от @BotFather."
             )
 
-        admins: list[int] = []
-        for chunk in os.getenv("ADMIN_IDS", "").split(","):
-            chunk = chunk.strip()
-            if chunk:
+        def _ids(name: str) -> tuple[int, ...]:
+            values: list[int] = []
+            for chunk in os.getenv(name, "").replace(";", ",").split(","):
+                chunk = chunk.strip()
+                if not chunk:
+                    continue
                 try:
-                    admins.append(int(chunk))
+                    values.append(int(chunk))
                 except ValueError:
                     continue
+            return tuple(values)
 
         return cls(
             bot_token=token,
@@ -60,5 +64,6 @@ class Settings:
             request_timeout=max(5, _int("REQUEST_TIMEOUT", 20)),
             min_score=_int("MIN_SCORE", 5),
             max_per_cycle=max(1, _int("MAX_PER_CYCLE", 10)),
-            admin_ids=tuple(admins),
+            admin_ids=_ids("ADMIN_IDS"),
+            target_chat_ids=_ids("TARGET_CHAT_IDS"),
         )
