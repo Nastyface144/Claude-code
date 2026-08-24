@@ -83,3 +83,39 @@ def test_base_matcher_not_mutated_by_user_rules(matcher):
     before = len(matcher.include)
     matcher.with_user_rules(include=[("что-то", 5)], exclude=["и-ещё"])
     assert len(matcher.include) == before
+
+
+# Заголовки из живой ленты FL.ru — на них калибровались веса правил.
+REAL_RELEVANT = [
+    "Необходимо создать лендинг под услуги пошива",
+    "Лендинг на Тильде под запуск курса",
+    "Сверстать одностраничник по макету Figma",
+    "Доработать бота на aiogram",
+]
+
+REAL_IRRELEVANT = [
+    "Разработка простого MVP приложения / web-app с AI для проверки бизнес-гипотезы",
+    "Настроить ии - автоматизацию для сео продвижения сайта",
+    'увеличивать "живую" (не боты) посещаемость сайта с поисковых систем',
+    "Нужна разработка сайта на тильде на несколько страниц, примерно на 15 товаров",
+    "Продолжить и завершить работы по сайту на базе Тильда",
+    "Редизайн UI/UX внутренней CRM",
+]
+
+
+@pytest.mark.parametrize("title", REAL_RELEVANT)
+def test_real_board_titles_pass(matcher, title):
+    result = matcher.match_text(title)
+    assert result.is_relevant(MIN_SCORE), result.explain()
+
+
+@pytest.mark.parametrize("title", REAL_IRRELEVANT)
+def test_real_board_titles_filtered_out(matcher, title):
+    result = matcher.match_text(title)
+    assert not result.is_relevant(MIN_SCORE), f"{result.score}: {result.explain()}"
+
+
+def test_weak_signals_alone_never_reach_threshold(matcher):
+    """«сайт» + «вёрстка» + «стек» не должны в сумме выдавать релевантность."""
+    result = matcher.match_text("Нужен сайт, вёрстка на react, есть макет")
+    assert not result.is_relevant(MIN_SCORE), result.explain()

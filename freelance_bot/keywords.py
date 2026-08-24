@@ -19,15 +19,15 @@ INCLUDE_RULES: list[tuple[str, int, str]] = [
     ("telegram-бот", 6, rf"\b{BOT}{GAP}{TELEGRAM}"),
     ("стек ботов", 5, r"\b(?:aiogram|pyrogram|telethon|telebot|pytelegrambotapi|telegraf|grammy|botfather|tgbot|bot\s?api)\b"),
     # --- Мини-приложения / TWA ----------------------------------------
-    ("mini app", 6, r"\b(?:mini\s?app\w*|мини\s?апп\w*|мини\s?приложени\w*|telegram\s+web\s+app|web\s?app\w*|tma|twa)\b"),
+    ("mini app", 6, r"\b(?:mini\s?app\w*|мини\s?апп\w*|мини\s?приложени\w*|telegram\s+web\s+app|tg\s+web\s+app|tma|twa)\b"),
     ("telegram stars / оплата в боте", 3, r"\b(?:telegram\s+stars|тг\s?старс|оплат\w*\s+в\s+бот\w*|подписк\w*\s+в\s+бот\w*)\b"),
     # --- Лендинги -------------------------------------------------------
     ("лендинг", 6, r"\b(?:лендинг\w*|ленд\b|landing\s*page|landing\b|одностраничн\w*|сайт\s+визитк\w*|визитк\w*\s+сайт\w*|квиз\s?ленд\w*|promo\s*page)\b"),
-    ("вёрстка/фронт", 3, r"\b(?:верстк\w*|сверста\w*|адаптивн\w*\s+верстк\w*|figma\w*\s+в\s+(?:html|код)|html\s+css|tailwind|tilda|тильд\w*)\b"),
+    ("вёрстка/фронт", 2, r"\b(?:верстк\w*|сверста\w*|адаптивн\w*\s+верстк\w*|figma\w*\s+в\s+(?:html|код)|html\s+css|tailwind|tilda|тильд\w*)\b"),
     # --- Общие сигналы (слабые, сами по себе порог не пробивают) --------
-    ("бот", 3, rf"\b{BOT}\b"),
-    ("telegram", 3, rf"\b{TELEGRAM}\b"),
-    ("сайт", 2, r"\b(?:сайт\w*|website|веб\s?сайт\w*)\b"),
+    ("бот", 2, rf"\b{BOT}\b"),
+    ("telegram", 2, rf"\b{TELEGRAM}\b"),
+    ("сайт", 1, r"\b(?:сайт\w*|website|веб\s?сайт\w*)\b"),
     ("автоматизация/интеграции", 1, r"\b(?:интеграц\w*|webhook\w*|вебхук\w*|api|crm|amocrm|битрикс24|google\s+sheets|парсер\w*|рассылк\w*|автоматизац\w*)\b"),
     ("стек", 1, r"\b(?:python|питон|fastapi|aiohttp|django|flask|node\s?js|next\s?js|react|vue|sqlite|postgres\w*)\b"),
     ("оплата/подписки", 1, r"\b(?:юкасс\w*|yookassa|robokassa|cloudpayments|stripe|крипто\s?оплат\w*|подписк\w*)\b"),
@@ -38,7 +38,8 @@ PENALTY_RULES: list[tuple[str, int, str]] = [
     ("другой мессенджер", -5, r"\b(?:discord|дискорд\w*|whatsapp|вотсап\w*|ватсап\w*|viber|вайбер\w*|slack|макс\s+мессенджер)\b"),
     ("не наш стек", -4, r"\b(?:1с|1c\s?битрикс|bitrix\s?24\s+разработ\w*|wordpress|вордпресс|opencart|joomla|magento|drupal)\b"),
     ("мобильная разработка", -3, r"\b(?:android\s+приложени\w*|ios\s+приложени\w*|swift|kotlin|flutter|react\s+native)\b"),
-    ("не разработка", -4, r"\b(?:seo\s+продвижен\w*|таргетолог\w*|копирайт\w*|дизайнер\s+интерьер\w*|наполнени\w*\s+сайт\w*|модератор\w*\s+чат\w*|менеджер\s+по\s+продаж\w*)\b"),
+    ("трафик/сео", -3, r"\b(?:сео\b|seo\b|посещаемост\w*|поисков\w+\s+продвижен\w*|трафик\w*\s+на\s+сайт|позици\w+\s+в\s+(?:яндекс|google))\b"),
+    ("не разработка", -4, r"\b(?:seo\s+продвижен\w*|таргетолог\w*|копирайт\w*|дизайнер\s+интерьер\w*|наполнени\w*\s+сайт\w*|модератор\w*\s+чат\w*|менеджер\s+по\s+продаж\w*|редизайн\s+ui|ui\s*/?\s*ux\s+дизайн\w*)\b"),
     ("вакансия в штат", -2, r"\b(?:в\s+штат\b|полн\w*\s+занятост\w*|офис\s+москв\w*|график\s+5\s*2)\b"),
 ]
 

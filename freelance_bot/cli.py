@@ -30,6 +30,30 @@ def check_filter(text: str) -> None:
     print(f"Почему: {result.explain()}")
 
 
+async def probe(urls: list[str]) -> None:
+    """Проверить ленты-кандидаты: отвечает ли адрес и сколько в нём заказов."""
+    import aiohttp
+
+    from .sources.rss import USER_AGENT, parse_feed
+
+    timeout = aiohttp.ClientTimeout(total=25)
+    headers = {"User-Agent": USER_AGENT, "Accept": "application/rss+xml, application/xml, */*"}
+    async with aiohttp.ClientSession(timeout=timeout, headers=headers) as session:
+        for url in urls:
+            try:
+                async with session.get(url) as response:
+                    status = response.status
+                    raw = await response.read()
+            except Exception as exc:  # noqa: BLE001
+                print(f"❌ {url}\n      {type(exc).__name__}: {exc}")
+                continue
+            orders = parse_feed(raw, "probe") if status == 200 else []
+            mark = "✅" if orders else ("⚠️ " if status == 200 else "❌")
+            print(f"{mark} {status} · заказов: {len(orders):<4} {url}")
+            if orders:
+                print(f"      пример: {orders[0].title[:80]}")
+
+
 async def dry_run(limit: int = 15) -> None:
     """Опросить биржи и напечатать находки в консоль (Telegram не нужен)."""
     settings = Settings.from_env(require_token=False)
@@ -54,6 +78,20 @@ async def dry_run(limit: int = 15) -> None:
         print(f"      {titles.get(order.source, order.source)} · {order.url}")
         print(f"      {match.explain()}\n")
 
+    border = sorted(
+        (
+            (match, order)
+            for match, order in scored
+            if not match.blocked and 0 < match.score < settings.min_score
+        ),
+        key=lambda pair: pair[0].score,
+        reverse=True,
+    )
+    print(f"— Пограничные (балл 1..{settings.min_score - 1}): {len(border)}, показываю 10 —")
+    for match, order in border[:10]:
+        print(f"[{match.score:>3}] {order.title[:90]}")
+        print(f"      {match.explain()[:100]}")
+
     await storage.close()
 
 
@@ -69,12 +107,16 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("dryrun", help="опросить биржи и вывести находки в консоль")
     filter_cmd = sub.add_parser("filter", help="проверить оценку произвольного текста")
     filter_cmd.add_argument("text", nargs="+", help="текст заказа")
+    probe_cmd = sub.add_parser("probe", help="проверить ленты-кандидаты по адресам")
+    probe_cmd.add_argument("urls", nargs="+", help="адреса RSS-лент")
 
     args = parser.parse_args(argv)
     _setup_logging(args.verbose)
 
     try:
-        if args.command == "filter":
+        if args.command == "probe":
+            asyncio.run(probe(args.urls))
+        elif args.command == "filter":
             check_filter(" ".join(args.text))
         elif args.command == "once":
             from .app import run_once

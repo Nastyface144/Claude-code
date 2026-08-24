@@ -11,7 +11,11 @@ on:
         description: "once — опросить и разослать; dryrun — только проверить ленты бирж"
         type: choice
         default: once
-        options: [once, dryrun]
+        options: [once, dryrun, probe]
+      urls:
+        description: "для режима probe: адреса лент через пробел"
+        type: string
+        default: ""
 
 concurrency:
   group: freelance-radar
@@ -62,8 +66,14 @@ jobs:
           DB_PATH: data/freelance.db
         run: python -m freelance_bot dryrun
 
+      - name: Проверить ленты-кандидаты
+        if: inputs.mode == 'probe'
+        env:
+          URLS: ${{ inputs.urls }}
+        run: python -m freelance_bot probe $URLS
+
       - name: Сохранить состояние
-        if: always() && inputs.mode != 'dryrun'
+        if: always() && inputs.mode == 'once'
         run: |
           test -f data/freelance.db || exit 0
           state=$(mktemp -d)
