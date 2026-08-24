@@ -1,0 +1,31 @@
+# secrets & config
+.env
+*.env
+!.env.example
+client_secret*.json
+token*.json
+
+# data & media
+data/*.json
+data/*.db
+assets/backgrounds/*
+!assets/backgrounds/.gitkeep
+output/
+work/
+*.mp4
+*.mp3
+*.wav
+*.ass
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+
+# logs
+logs/
+*.log

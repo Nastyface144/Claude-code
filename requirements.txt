@@ -1,0 +1,14 @@
+# --- модуль 1: Reddit Scraper (реализован) ---
+praw>=7.7,<9
+python-dotenv>=1.0
+
+# --- инструменты разработки ---
+pytest>=8.0
+
+# --- следующие модули (раскомментировать по мере реализации) ---
+# anthropic>=0.40          # модуль 2: Text Processor
+# edge-tts>=6.1            # модуль 3: TTS (бесплатная альтернатива)
+# elevenlabs>=1.0          # модуль 3: TTS
+# faster-whisper>=1.0      # модуль 4: Subtitle Generator
+# google-api-python-client>=2.100   # модуль 7: YouTube Uploader
+# google-auth-oauthlib>=1.2
