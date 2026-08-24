@@ -37,6 +37,40 @@ COMMANDS = [
 UPDATE_OFFSET_KEY = "update_offset"
 
 
+async def start_status_server(radar: Radar, port: int):
+    """Хостинги проверяют живость по HTTP-порту — отдаём короткий статус."""
+    from aiohttp import web
+
+    async def status(_request: web.Request) -> web.Response:
+        report = radar.last_report
+        total, scored = await radar.storage.count_orders()
+        return web.json_response(
+            {
+                "статус": "работает",
+                "заказов в базе": total,
+                "с ненулевым баллом": scored,
+                "последний цикл": {
+                    "получено": report.fetched,
+                    "новых": report.new,
+                    "подходящих": report.relevant,
+                    "отправлено": report.sent,
+                    "ошибки": [f"{name}: {err}" for name, err in report.errors],
+                }
+                if report
+                else "ещё не было",
+            }
+        )
+
+    app = web.Application()
+    app.router.add_get("/", status)
+    app.router.add_get("/health", status)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    await web.TCPSite(runner, "0.0.0.0", port).start()
+    log.info("Статус доступен на порту %s", port)
+    return runner
+
+
 async def build(settings: Settings) -> tuple[Storage, Bot, Radar, Dispatcher]:
     storage = await Storage(settings.db_path).connect()
     await storage.seed_sources(DEFAULT_SOURCES)
@@ -58,6 +92,7 @@ async def run(settings: Settings | None = None) -> None:
     storage, bot, radar, dispatcher = await build(settings)
 
     poller = asyncio.create_task(radar.run_forever(), name="radar-poller")
+    status_runner = await start_status_server(radar, settings.port) if settings.port else None
     try:
         await bot.set_my_commands(COMMANDS)
         me = await bot.get_me()
@@ -69,6 +104,8 @@ async def run(settings: Settings | None = None) -> None:
             await poller
         except asyncio.CancelledError:
             pass
+        if status_runner is not None:
+            await status_runner.cleanup()
         await bot.session.close()
         await storage.close()
 

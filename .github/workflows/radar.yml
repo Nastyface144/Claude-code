@@ -5,6 +5,8 @@ name: Радар заказов
 on:
   schedule:
     - cron: "*/5 * * * *"    # каждые 5 минут (GitHub может задержать запуск)
+  repository_dispatch:        # внешний планировщик может дёргать запуск точно по времени
+    types: [radar]
   workflow_dispatch:          # и кнопка «Run workflow» для ручного запуска
     inputs:
       mode:
@@ -62,7 +64,7 @@ jobs:
 
       # По расписанию inputs.mode пуст, поэтому проверяем и событие.
       - name: Опросить биржи и разослать заказы
-        if: github.event_name == 'schedule' || inputs.mode == 'once'
+        if: github.event_name != 'workflow_dispatch' || inputs.mode == 'once'
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           TARGET_CHAT_IDS: ${{ secrets.TARGET_CHAT_IDS }}
@@ -98,7 +100,7 @@ jobs:
         run: python -m freelance_bot sample ${URLS:-https://www.fl.ru/rss/all.xml}
 
       - name: Сохранить состояние
-        if: always() && (github.event_name == 'schedule' || inputs.mode == 'once')
+        if: always() && (github.event_name != 'workflow_dispatch' || inputs.mode == 'once')
         uses: actions/cache/save@v4
         with:
           path: data/freelance.db
