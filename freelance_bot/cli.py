@@ -54,6 +54,26 @@ async def probe(urls: list[str]) -> None:
                 print(f"      пример: {orders[0].title[:80]}")
 
 
+async def sample(url: str, count: int = 3) -> None:
+    """Показать сырые поля ленты — чтобы понять, что биржа отдаёт по каждому заказу."""
+    import aiohttp
+    import feedparser
+
+    from .sources.rss import USER_AGENT
+
+    headers = {"User-Agent": USER_AGENT}
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=25), headers=headers) as session:
+        async with session.get(url) as response:
+            raw = await response.read()
+
+    feed = feedparser.parse(raw)
+    for entry in feed.entries[:count]:
+        print("=" * 70)
+        for key, value in entry.items():
+            text = str(value).replace("\n", " ")
+            print(f"  {key}: {text[:400]}")
+
+
 async def dry_run(limit: int = 15) -> None:
     """Опросить биржи и напечатать находки в консоль (Telegram не нужен)."""
     settings = Settings.from_env(require_token=False)
@@ -109,12 +129,16 @@ def main(argv: list[str] | None = None) -> int:
     filter_cmd.add_argument("text", nargs="+", help="текст заказа")
     probe_cmd = sub.add_parser("probe", help="проверить ленты-кандидаты по адресам")
     probe_cmd.add_argument("urls", nargs="+", help="адреса RSS-лент")
+    sample_cmd = sub.add_parser("sample", help="показать сырые поля первых записей ленты")
+    sample_cmd.add_argument("url", help="адрес RSS-ленты")
 
     args = parser.parse_args(argv)
     _setup_logging(args.verbose)
 
     try:
-        if args.command == "probe":
+        if args.command == "sample":
+            asyncio.run(sample(args.url))
+        elif args.command == "probe":
             asyncio.run(probe(args.urls))
         elif args.command == "filter":
             check_filter(" ".join(args.text))

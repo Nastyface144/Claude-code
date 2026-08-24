@@ -11,7 +11,7 @@ on:
         description: "once — опросить и разослать; dryrun — только проверить ленты бирж"
         type: choice
         default: once
-        options: [once, dryrun, probe]
+        options: [once, dryrun, probe, sample]
       urls:
         description: "для режима probe: адреса лент через пробел"
         type: string
@@ -78,6 +78,12 @@ jobs:
         env:
           URLS: ${{ inputs.urls }}
         run: python -m freelance_bot probe $URLS
+
+      - name: Показать сырые поля ленты
+        if: inputs.mode == 'sample'
+        env:
+          URLS: ${{ inputs.urls }}
+        run: python -m freelance_bot sample ${URLS:-https://www.fl.ru/rss/all.xml}
 
       - name: Сохранить состояние
         if: always() && (github.event_name == 'schedule' || inputs.mode == 'once')
