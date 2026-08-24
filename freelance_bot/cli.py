@@ -49,9 +49,14 @@ async def probe(urls: list[str]) -> None:
                 continue
             orders = parse_feed(raw, "probe") if status == 200 else []
             mark = "✅" if orders else ("⚠️ " if status == 200 else "❌")
-            print(f"{mark} {status} · заказов: {len(orders):<4} {url}")
+            ctype = response.headers.get("Content-Type", "?").split(";")[0]
+            print(f"{mark} {status} · заказов: {len(orders):<4} · {ctype} · {len(raw)} б · {url}")
             if orders:
                 print(f"      пример: {orders[0].title[:80]}")
+            else:
+                # не лента — покажем начало ответа, чтобы понять, что вернул сайт
+                head = " ".join(raw[:1200].decode("utf-8", "replace").split())
+                print(f"      ответ: {head[:300]}")
 
 
 async def sample(url: str, count: int = 3) -> None:
