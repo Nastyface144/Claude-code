@@ -36,6 +36,7 @@ INCLUDE_RULES: list[tuple[str, int, str]] = [
 # Штрафы: тема похожа, но платформа/задача не наша.
 PENALTY_RULES: list[tuple[str, int, str]] = [
     ("другой мессенджер", -5, r"\b(?:discord|дискорд\w*|whatsapp|вотсап\w*|ватсап\w*|viber|вайбер\w*|slack|макс\s+мессенджер)\b"),
+    ("чужая мини-платформа", -6, r"\b(?:вконтакте|vk\s?mini\s?app\w*|вк\s?мини|внутри\s+вк\b|мини\s?приложени\w*\s+(?:вк|вконтакте)|одноклассник\w*|wechat)\b"),
     ("не наш стек", -4, r"\b(?:1с|1c\s?битрикс|bitrix\s?24\s+разработ\w*|wordpress|вордпресс|opencart|joomla|magento|drupal)\b"),
     ("мобильная разработка", -3, r"\b(?:android\s+приложени\w*|ios\s+приложени\w*|swift|kotlin|flutter|react\s+native)\b"),
     ("трафик/сео", -3, r"\b(?:сео\b|seo\b|посещаемост\w*|поисков\w+\s+продвижен\w*|трафик\w*\s+на\s+сайт|позици\w+\s+в\s+(?:яндекс|google))\b"),

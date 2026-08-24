@@ -119,3 +119,27 @@ def test_weak_signals_alone_never_reach_threshold(matcher):
     """«сайт» + «вёрстка» + «стек» не должны в сумме выдавать релевантность."""
     result = matcher.match_text("Нужен сайт, вёрстка на react, есть макет")
     assert not result.is_relevant(MIN_SCORE), result.explain()
+
+
+def test_tag_counts_once_even_if_two_rules_match(matcher):
+    """«Создание телеграмм бота» ловится двумя правилами — балл не должен удваиваться."""
+    result = matcher.match_text("Создание телеграмм бота, нужен бот в телеграм")
+    telegram_bot_hits = [w for tag, w in result.hits if tag == "telegram-бот"]
+    assert len(telegram_bot_hits) == 2
+    assert result.score == 6 + 2 + 2  # тег + «бот» + «telegram», без задвоения
+
+
+@pytest.mark.parametrize(
+    "title",
+    [
+        "Миниприложение онлайн-записи к тренеру внутри ВКонтакте",
+        "VK Mini App для магазина",
+        "Мини приложение вконтакте для записи",
+    ],
+)
+def test_mini_apps_of_other_platforms_are_filtered_out(matcher, title):
+    assert not matcher.match_text(title).is_relevant(MIN_SCORE)
+
+
+def test_telegram_mini_app_still_passes(matcher):
+    assert matcher.match_text("Telegram Mini App для магазина").is_relevant(MIN_SCORE)

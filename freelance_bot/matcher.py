@@ -107,17 +107,20 @@ class Matcher:
                 result.blocked_by = rule.tag
                 return result
 
-        seen_tags: set[str] = set()
+        # Один и тот же тег может сработать несколькими правилами («телеграм бот»
+        # и «бот в телеграм») — в балл он должен войти один раз, самым весомым.
+        per_tag: dict[str, int] = {}
         for rule in (*self.include, *self.penalties):
             if not rule.pattern.search(normalized):
                 continue
-            result.score += rule.weight
             result.hits.append((rule.tag, rule.weight))
-            if rule.weight > 0 and rule.tag not in seen_tags:
-                seen_tags.add(rule.tag)
+            current = per_tag.get(rule.tag)
+            if current is None or abs(rule.weight) > abs(current):
+                per_tag[rule.tag] = rule.weight
+            if rule.weight > 0 and rule.tag not in result.tags:
                 result.tags.append(rule.tag)
 
-        result.score = max(result.score, 0)
+        result.score = max(sum(per_tag.values()), 0)
         return result
 
     def match(self, order: Order) -> MatchResult:
