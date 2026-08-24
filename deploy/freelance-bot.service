@@ -1,0 +1,14 @@
+[Unit]
+Description=Freelance radar telegram bot
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/freelance-bot
+EnvironmentFile=/opt/freelance-bot/.env
+ExecStart=/opt/freelance-bot/.venv/bin/python -m freelance_bot run
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
