@@ -49,8 +49,9 @@ jobs:
             echo "Первый запуск: состояния ещё нет"
           fi
 
+      # По расписанию inputs.mode пуст, поэтому проверяем и событие.
       - name: Опросить биржи и разослать заказы
-        if: inputs.mode != 'dryrun'
+        if: github.event_name == 'schedule' || inputs.mode == 'once'
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           TARGET_CHAT_IDS: ${{ secrets.TARGET_CHAT_IDS }}
@@ -73,7 +74,7 @@ jobs:
         run: python -m freelance_bot probe $URLS
 
       - name: Сохранить состояние
-        if: always() && inputs.mode == 'once'
+        if: always() && (github.event_name == 'schedule' || inputs.mode == 'once')
         run: |
           test -f data/freelance.db || exit 0
           state=$(mktemp -d)
