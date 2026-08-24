@@ -6,6 +6,12 @@ on:
   schedule:
     - cron: "*/15 * * * *"   # каждые 15 минут (GitHub может задержать запуск)
   workflow_dispatch:          # и кнопка «Run workflow» для ручного запуска
+    inputs:
+      mode:
+        description: "once — опросить и разослать; dryrun — только проверить ленты бирж"
+        type: choice
+        default: once
+        options: [once, dryrun]
 
 concurrency:
   group: freelance-radar
@@ -40,6 +46,7 @@ jobs:
           fi
 
       - name: Опросить биржи и разослать заказы
+        if: inputs.mode != 'dryrun'
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           TARGET_CHAT_IDS: ${{ secrets.TARGET_CHAT_IDS }}
@@ -48,8 +55,15 @@ jobs:
           MAX_PER_CYCLE: "10"
         run: python -m freelance_bot once
 
+      # Проверка лент без токена: видно, какие биржи отвечают из сети GitHub.
+      - name: Проверить ленты бирж
+        if: inputs.mode == 'dryrun'
+        env:
+          DB_PATH: data/freelance.db
+        run: python -m freelance_bot dryrun
+
       - name: Сохранить состояние
-        if: always()
+        if: always() && inputs.mode != 'dryrun'
         run: |
           test -f data/freelance.db || exit 0
           state=$(mktemp -d)
