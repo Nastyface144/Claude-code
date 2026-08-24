@@ -63,6 +63,9 @@ GitHub сам поднимает окружение, опрашивает бир
 3. Написать своему боту **/start** — ближайший запуск подхватит чат и начнёт слать заказы.
    Можно не ждать: **Actions → Радар заказов → Run workflow**.
 
+Пока секрет не добавлен, запуски по расписанию не падают — шаг рассылки пропускается
+с предупреждением в логе.
+
 Полезно знать:
 
 - команды (`/score`, `/add`, `/sources`) в этом режиме тоже работают, но ответ придёт
@@ -143,6 +146,7 @@ python -m freelance_bot run                  # запустить бота (то
 python -m freelance_bot once                 # один цикл: опросить, разослать и выйти (для cron)
 python -m freelance_bot dryrun               # опросить биржи и вывести находки в консоль
 python -m freelance_bot filter "текст"       # посмотреть, как оценивается конкретный текст
+python -m freelance_bot probe <url> [url…]   # проверить, отвечают ли ленты бирж
 python -m freelance_bot -v run               # подробные логи
 ```
 
@@ -167,14 +171,33 @@ python -m freelance_bot -v run               # подробные логи
 
 ## Источники
 
-По умолчанию заведены RSS-ленты четырёх бирж:
+Ленты проверены **24.08.2026** реальным запуском из сети GitHub Actions
+(режим `probe`, см. ниже):
 
-| Имя | Биржа | Лента |
+| Биржа | Адрес | Результат |
 |---|---|---|
-| `fl` | FL.ru | `https://www.fl.ru/rss/all.xml` |
-| `habr` | Хабр Фриланс | `https://freelance.habr.com/tasks.rss` |
-| `weblancer` | Weblancer | `https://www.weblancer.net/rss/projects/` |
-| `freelanceru` | Freelance.ru | `https://freelance.ru/rss/projects` |
+| **FL.ru** | `https://www.fl.ru/rss/all.xml` | ✅ работает, ~60 свежих заказов за запрос |
+| Хабр Фриланс | `tasks.rss`, `tasks/rss`, `tasks.atom`, `freelansim.ru` | ❌ 410 Gone — лента закрыта |
+| Freelance.ru | `/rss/projects`, `/rss/all`, `/projects/rss` | ❌ 404 |
+| Weblancer | `/rss/projects/` | ❌ 403 — режет запросы из дата-центров |
+| Kwork | `/rss` | ⚠️ отдаёт услуги продавцов, а не заказы |
+| Freelancehunt / Upwork | `/projects/rss*`, `/ab/feed/jobs/rss` | ❌ 403 |
+| YouDo / Workspace | `/rss`, `/rss/tenders/` | ❌ пусто / 404 |
+
+Поэтому по умолчанию включена одна лента — FL.ru. Она общая по всем категориям,
+фильтр выбирает из неё нужное.
+
+Проверить свои адреса можно, не поднимая бота:
+
+```bash
+python -m freelance_bot probe https://site.ru/rss https://other.ru/feed
+```
+
+или через **Actions → Радар заказов → Run workflow → mode: probe** и список адресов
+в поле `urls`.
+
+С домашнего IP часть закрытых лент (Weblancer, поисковые ленты бирж) может работать —
+тогда добавь их командой `/addsource`.
 
 Биржи иногда меняют адреса лент и закрывают их от «неизвестных» клиентов. Поэтому
 состояние каждой ленты видно в `/sources`: если там ⚠️ с ошибкой (403, 404, timeout) —
@@ -225,6 +248,11 @@ KINDS = {"rss": RssSource, "myboard": MyBoardSource}
 
 ## Как настроить фильтр под себя
 
+Веса правил откалиброваны на живой ленте FL.ru: отсекаются сео-продвижение, накрутка
+трафика, многостраничники на Тильде и «редизайн UI/UX» — а лендинги, боты и mini apps
+проходят. Слабые сигналы («сайт», «вёрстка», «стек») специально не пробивают порог
+в сумме.
+
 Базовый профиль лежит в `freelance_bot/keywords.py` (`INCLUDE_RULES`, `PENALTY_RULES`,
 `STOP_RULES`) — это регулярки по нормализованному тексту, поэтому «Телеграм-бот»,
 «телеграм бот» и «TELEGRAM_BOT» распознаются одинаково.
@@ -245,7 +273,7 @@ KINDS = {"rss": RssSource, "myboard": MyBoardSource}
 
 ```bash
 pip install -r requirements-dev.txt
-python -m pytest -q          # 50 тестов: фильтр, парсер RSS, база, сервис, команды бота
+python -m pytest -q          # 61 тест: фильтр, парсер RSS, база, сервис, команды бота
 ```
 
 Структура:
@@ -253,7 +281,7 @@ python -m pytest -q          # 50 тестов: фильтр, парсер RSS, 
 ```
 freelance_bot/
 ├── app.py          — сборка Bot + Dispatcher: постоянный режим и один цикл
-├── cli.py          — run / once / dryrun / filter
+├── cli.py          — run / once / dryrun / filter / probe
 ├── bot.py          — команды Telegram
 ├── service.py      — цикл опроса, фильтрация, рассылка, дедупликация
 ├── matcher.py      — оценка релевантности

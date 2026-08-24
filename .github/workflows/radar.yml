@@ -58,7 +58,13 @@ jobs:
           DB_PATH: data/freelance.db
           MIN_SCORE: "5"
           MAX_PER_CYCLE: "10"
-        run: python -m freelance_bot once
+        run: |
+          if [ -z "$BOT_TOKEN" ]; then
+            echo "::warning::Секрет BOT_TOKEN не задан — рассылка пропущена."
+            echo "Добавьте его: Settings → Secrets and variables → Actions → New repository secret"
+            exit 0
+          fi
+          python -m freelance_bot once
 
       # Проверка лент без токена: видно, какие биржи отвечают из сети GitHub.
       - name: Проверить ленты бирж

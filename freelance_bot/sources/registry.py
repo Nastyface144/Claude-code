@@ -5,13 +5,16 @@ from __future__ import annotations
 from .base import Source, SourceConfig
 from .rss import RssSource
 
-# Ленты бирж. Если какая-то биржа сменит адрес — правится прямо из бота:
-# /sources — статус, /addsource <имя> <url> — добавить, /delsource <имя> — убрать.
+# Ленты бирж. Список проверен запуском `probe` 24.08.2026 из сети GitHub Actions:
+#   FL.ru               — работает, ~60 свежих заказов за запрос
+#   Хабр Фриланс        — 410 Gone, лента закрыта (tasks.rss, tasks/rss, tasks.atom, freelansim)
+#   Freelance.ru        — 404 по всем известным адресам
+#   Weblancer           — 403, режет запросы из дата-центров (с домашнего IP может работать)
+#   Kwork               — /rss отдаёт услуги продавцов, а не заказы
+#   Freelancehunt       — 403, Upwork — 403, YouDo — пустая лента, Workspace — 404
+# Список правится прямо из бота: /sources — статус, /addsource <имя> <url>, /delsource <имя>.
 DEFAULT_SOURCES: tuple[SourceConfig, ...] = (
     SourceConfig(name="fl", url="https://www.fl.ru/rss/all.xml", title="FL.ru"),
-    SourceConfig(name="habr", url="https://freelance.habr.com/tasks.rss", title="Хабр Фриланс"),
-    SourceConfig(name="weblancer", url="https://www.weblancer.net/rss/projects/", title="Weblancer"),
-    SourceConfig(name="freelanceru", url="https://freelance.ru/rss/projects", title="Freelance.ru"),
 )
 
 KINDS: dict[str, type[Source]] = {"rss": RssSource}
