@@ -287,10 +287,23 @@ class Storage:
             return list(await cursor.fetchall())
 
     async def source_configs(self) -> list[SourceConfig]:
-        return [
-            SourceConfig(name=row["name"], url=row["url"], kind=row["kind"], title=row["title"] or "")
-            for row in await self.list_sources(only_enabled=True)
-        ]
+        return [config for config, _last_ok in await self.source_configs_with_last_ok()]
+
+    async def source_configs_with_last_ok(self) -> list[tuple[SourceConfig, datetime | None]]:
+        """Конфиги включённых источников вместе со временем последнего удачного опроса."""
+        result: list[tuple[SourceConfig, datetime | None]] = []
+        for row in await self.list_sources(only_enabled=True):
+            config = SourceConfig(
+                name=row["name"], url=row["url"], kind=row["kind"], title=row["title"] or ""
+            )
+            last_ok = None
+            if row["last_ok"]:
+                try:
+                    last_ok = datetime.fromisoformat(row["last_ok"])
+                except ValueError:
+                    last_ok = None
+            result.append((config, last_ok))
+        return result
 
     async def add_source(self, name: str, url: str, kind: str = "rss", title: str = "") -> None:
         await self.db.execute(

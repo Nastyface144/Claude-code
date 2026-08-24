@@ -27,6 +27,7 @@ class Settings:
     request_timeout: int = 20
     min_score: int = 5
     max_per_cycle: int = 10
+    min_source_interval: int = 600
     admin_ids: tuple[int, ...] = ()
     target_chat_ids: tuple[int, ...] = ()
 
@@ -64,6 +65,7 @@ class Settings:
             request_timeout=max(5, _int("REQUEST_TIMEOUT", 20)),
             min_score=_int("MIN_SCORE", 5),
             max_per_cycle=max(1, _int("MAX_PER_CYCLE", 10)),
+            min_source_interval=max(0, _int("MIN_SOURCE_INTERVAL", 600)),
             admin_ids=_ids("ADMIN_IDS"),
             target_chat_ids=_ids("TARGET_CHAT_IDS"),
         )

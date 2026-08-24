@@ -4,7 +4,7 @@ name: Радар заказов
 # отфильтровывает подходящие и присылает их в Telegram. Сервер не нужен.
 on:
   schedule:
-    - cron: "*/15 * * * *"   # каждые 15 минут (GitHub может задержать запуск)
+    - cron: "*/5 * * * *"    # каждые 5 минут (GitHub может задержать запуск)
   workflow_dispatch:          # и кнопка «Run workflow» для ручного запуска
     inputs:
       mode:
@@ -39,12 +39,23 @@ jobs:
       - name: Установить зависимости
         run: pip install -r requirements.txt
 
+      # Состояние (что уже отправлено) держим в кэше Actions, а не в ветке:
+      # в базе лежат id чатов, а репозиторий может быть публичным.
       - name: Восстановить состояние прошлого запуска
+        uses: actions/cache/restore@v4
+        with:
+          path: data/freelance.db
+          key: radar-state-${{ github.run_id }}
+          restore-keys: radar-state-
+
+      - name: Забрать состояние из старой ветки, если кэша ещё нет
         run: |
           mkdir -p data
-          if git fetch --depth=1 origin radar-state 2>/dev/null; then
+          if [ -f data/freelance.db ]; then
+            echo "Состояние из кэша: $(du -h data/freelance.db | cut -f1)"
+          elif git fetch --depth=1 origin radar-state 2>/dev/null; then
             git show FETCH_HEAD:freelance.db > data/freelance.db
-            echo "Состояние восстановлено: $(du -h data/freelance.db | cut -f1)"
+            echo "Состояние перенесено из ветки radar-state"
           else
             echo "Первый запуск: состояния ещё нет"
           fi
@@ -58,6 +69,7 @@ jobs:
           DB_PATH: data/freelance.db
           MIN_SCORE: "5"
           MAX_PER_CYCLE: "10"
+          MIN_SOURCE_INTERVAL: "600"   # одну биржу дёргаем не чаще раза в 10 минут
         run: |
           if [ -z "$BOT_TOKEN" ]; then
             echo "::warning::Секрет BOT_TOKEN не задан — рассылка пропущена."
@@ -87,16 +99,7 @@ jobs:
 
       - name: Сохранить состояние
         if: always() && (github.event_name == 'schedule' || inputs.mode == 'once')
-        run: |
-          test -f data/freelance.db || exit 0
-          state=$(mktemp -d)
-          cp data/freelance.db "$state/freelance.db"
-          cd "$state"
-          git init -q -b radar-state
-          git -c user.name="freelance-radar" -c user.email="actions@github.com" \
-              add freelance.db
-          git -c user.name="freelance-radar" -c user.email="actions@github.com" \
-              commit -q -m "Состояние радара: $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git push -q --force \
-              "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" \
-              radar-state
+        uses: actions/cache/save@v4
+        with:
+          path: data/freelance.db
+          key: radar-state-${{ github.run_id }}

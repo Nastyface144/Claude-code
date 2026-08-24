@@ -1,8 +1,11 @@
+from datetime import datetime, timedelta, timezone
+
 import pytest
 
 from freelance_bot.config import Settings
 from freelance_bot.models import Order
 from freelance_bot.service import Radar
+from freelance_bot.sources.base import SourceConfig
 from freelance_bot.storage import Storage
 
 
@@ -17,7 +20,13 @@ class FakeBot:
 
 
 def make_settings(tmp_path) -> Settings:
-    return Settings(bot_token="test", db_path=tmp_path / "db.sqlite", min_score=5, max_per_cycle=2)
+    return Settings(
+        bot_token="test",
+        db_path=tmp_path / "db.sqlite",
+        min_score=5,
+        max_per_cycle=2,
+        min_source_interval=600,
+    )
 
 
 @pytest.fixture()
@@ -133,3 +142,29 @@ async def test_orders_are_sent_best_first(env):
     await radar.poll_once()
 
     assert "Mini App" in bot.sent[0][1]
+
+
+async def test_recently_polled_source_is_skipped(env, tmp_path):
+    """При частых запусках биржу не дёргаем чаще, чем раз в min_source_interval."""
+    radar, storage, _bot = env
+    await storage.seed_sources([SourceConfig(name="test", url="https://x/rss", title="Тест")])
+
+    assert [c.name for c in await storage.source_configs()] == ["test"]
+    await storage.record_source_run("test", 5, None)  # только что опросили
+
+    configs, _errors, titles = await radar.collect()
+    assert configs == [] and titles == {"test": "Тест"}
+
+
+async def test_source_is_polled_again_after_the_pause(env):
+    radar, storage, _bot = env
+    await storage.seed_sources([SourceConfig(name="test", url="https://неведомый.invalid/rss")])
+    await storage.record_source_run("test", 5, None)
+    stale = (datetime.now(timezone.utc) - timedelta(seconds=3600)).isoformat(timespec="seconds")
+    await storage.db.execute("UPDATE sources SET last_ok = ?", (stale,))
+    await storage.db.commit()
+
+    _orders, errors, _titles = await radar.collect()
+
+    # пауза прошла — источник опрашивали снова (адрес заведомо нерабочий → ошибка)
+    assert [name for name, _ in errors] == ["test"]

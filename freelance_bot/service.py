@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 
 import aiohttp
 from aiogram import Bot
@@ -15,6 +16,7 @@ from .formatting import order_message
 from .matcher import Matcher, MatchResult
 from .models import Order
 from .sources import build_sources
+from .sources.base import SourceConfig
 from .storage import Storage
 
 log = logging.getLogger(__name__)
@@ -54,9 +56,24 @@ class Radar:
 
     # --- сбор -----------------------------------------------------------
     async def collect(self) -> tuple[list[Order], list[tuple[str, str]], dict[str, str]]:
-        configs = await self.storage.source_configs()
-        sources = build_sources(configs)
-        titles = {config.name: config.label for config in configs}
+        pairs = await self.storage.source_configs_with_last_ok()
+        titles = {config.name: config.label for config, _ in pairs}
+
+        # Биржи не любят частых гостей: если недавно опрашивали успешно — пропускаем.
+        now = datetime.now(timezone.utc)
+        fresh: list[SourceConfig] = []
+        for config, last_ok in pairs:
+            if last_ok is None or self.settings.min_source_interval <= 0:
+                fresh.append(config)
+                continue
+            if last_ok.tzinfo is None:
+                last_ok = last_ok.replace(tzinfo=timezone.utc)
+            if (now - last_ok).total_seconds() >= self.settings.min_source_interval:
+                fresh.append(config)
+            else:
+                log.debug("%s: опрашивали недавно, пропускаем", config.name)
+
+        sources = build_sources(fresh)
         if not sources:
             return [], [], titles
 
