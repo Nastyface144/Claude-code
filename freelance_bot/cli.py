@@ -83,44 +83,45 @@ async def sample(url: str, count: int = 3) -> None:
             print(f"  {key}: {text[:400]}")
 
 
+def _extract_json_var(text: str, name: str):
+    """Достать значение JS-переменной вида `window.name = {...};` из HTML страницы."""
+    import json
+    import re
+
+    match = re.search(rf"{re.escape(name)}\s*=\s*", text)
+    if not match:
+        return None
+    try:
+        value, _end = json.JSONDecoder().raw_decode(text, match.end())
+    except ValueError:
+        return None
+    return value
+
+
 def _inspect_html(raw: bytes) -> None:
     """Не лента, а страница: ищем встроенный JSON с данными (Vue/Nuxt/React)."""
     import json
-    import re
 
     text = raw.decode("utf-8", "replace")
     print(f"HTML, {len(text)} символов. Ищу встроенные данные…")
 
-    markers = ("window.stateData", "__NUXT__", "__INITIAL_STATE__", "application/ld+json", "wantsListData")
-    for marker in markers:
-        position = text.find(marker)
-        print(f"  {marker}: {'найден на позиции ' + str(position) if position >= 0 else 'нет'}")
-
-    match = re.search(r"window\.stateData\s*=\s*(\{.*?\});?\s*</script>", text, re.DOTALL)
-    if not match:
-        match = re.search(r"window\.stateData\s*=\s*(\{.*?\})\s*;\s*\n", text, re.DOTALL)
-    if not match:
-        print("  stateData не разобран, показываю фрагмент вокруг слова «wants»:")
-        spot = text.find("wants")
-        if spot > 0:
-            print("  " + " ".join(text[spot - 200 : spot + 800].split())[:900])
-        return
-
-    payload = match.group(1)
-    print(f"  stateData: {len(payload)} символов")
-    try:
-        data = json.loads(payload)
-    except json.JSONDecodeError as exc:
-        print(f"  JSON не разобран: {exc}")
-        print("  " + " ".join(payload[:600].split()))
-        return
-
-    print(f"  ключи: {list(data)[:25]}")
-    for key, value in data.items():
-        if isinstance(value, list) and value and isinstance(value[0], dict):
-            print(f"  список «{key}»: {len(value)} элементов, поля: {list(value[0])[:20]}")
-            print("  первый: " + " ".join(json.dumps(value[0], ensure_ascii=False)[:600].split()))
-            break
+    for name in ("window.stateData", "wantsListData", "window.__NUXT__", "window.__INITIAL_STATE__"):
+        value = _extract_json_var(text, name)
+        if value is None:
+            print(f"  {name}: нет")
+            continue
+        if isinstance(value, dict):
+            print(f"  {name}: объект, ключи: {list(value)[:20]}")
+            for key, item in value.items():
+                if isinstance(item, list) and item and isinstance(item[0], dict):
+                    print(f"    список «{key}»: {len(item)} шт., поля: {list(item[0])[:25]}")
+                    print("    пример: " + " ".join(json.dumps(item[0], ensure_ascii=False)[:900].split()))
+                    break
+        elif isinstance(value, list):
+            print(f"  {name}: список из {len(value)}")
+            if value and isinstance(value[0], dict):
+                print(f"    поля: {list(value[0])[:25]}")
+                print("    пример: " + " ".join(json.dumps(value[0], ensure_ascii=False)[:900].split()))
 
 
 async def dry_run(limit: int = 15) -> None:
