@@ -55,7 +55,7 @@ def no_sleep(monkeypatch):
     async def instant(_seconds):
         return None
 
-    monkeypatch.setattr("freelance_bot.sources.rss.asyncio.sleep", instant)
+    monkeypatch.setattr("freelance_bot.sources.base.asyncio.sleep", instant)
 
 
 def make_source(**kwargs) -> RssSource:

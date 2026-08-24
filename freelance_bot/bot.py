@@ -206,13 +206,14 @@ async def cmd_addsource(message: Message, command: CommandObject, radar: Radar) 
     parts = (command.args or "").split()
     if len(parts) < 2 or not parts[1].startswith(("http://", "https://")):
         await message.answer(
-            "Как пользоваться: <code>/addsource kwork https://kwork.ru/rss</code>\n"
-            "Нужна ссылка на RSS/Atom-ленту биржи."
+            "Как пользоваться: <code>/addsource fl https://www.fl.ru/rss/all.xml</code>\n"
+            "Обычно это ссылка на RSS-ленту биржи; страницы заказов Kwork тоже подойдут."
         )
         return
     name, url = parts[0], parts[1]
+    kind = "kwork" if "kwork.ru" in url else "rss"
     title = " ".join(parts[2:])
-    await radar.storage.add_source(name, url, "rss", title)
+    await radar.storage.add_source(name, url, kind, title)
     await message.answer(f"✅ Источник «{escape(name)}» добавлен. Проверить: /check")
 
 

@@ -196,15 +196,18 @@ python -m freelance_bot -v run               # подробные логи
 | Биржа | Адрес | Результат |
 |---|---|---|
 | **FL.ru** | `https://www.fl.ru/rss/all.xml` | ✅ работает, ~60 свежих заказов за запрос |
+| **Kwork** | `https://kwork.ru/projects?c=41` | ✅ биржа заказов, 12 проектов на странице |
 | Хабр Фриланс | `tasks.rss`, `tasks/rss`, `tasks.atom`, `freelansim.ru` | ❌ 410 Gone — лента закрыта |
 | Freelance.ru | `/rss/projects`, `/rss/all`, `/projects/rss` | ❌ 404 |
 | Weblancer | `/rss/projects/` | ❌ 403 — режет запросы из дата-центров |
-| Kwork | `/rss` | ⚠️ отдаёт услуги продавцов, а не заказы |
+| Kwork RSS | `/rss` | ⚠️ отдаёт услуги продавцов, поэтому используется страница заказов |
 | Freelancehunt / Upwork | `/projects/rss*`, `/ab/feed/jobs/rss` | ❌ 403 |
 | YouDo / Workspace | `/rss`, `/rss/tenders/` | ❌ пусто / 404 |
 
-Поэтому по умолчанию включена одна лента — FL.ru. Она общая по всем категориям,
-фильтр выбирает из неё нужное.
+Поэтому по умолчанию включены две: лента FL.ru (общая по всем категориям) и биржа
+заказов Kwork. У Kwork нет RSS для заказов, но страница отдаёт готовый JSON
+(`wantsListData`) — его и разбирает отдельный источник `kind="kwork"`. Заказы Kwork
+приходят с вилкой бюджета, сроком и числом уже поданных предложений.
 
 FL.ru отвечает «через раз»: один и тот же адрес то отдаёт 59 заказов, то 403. Поэтому
 бот делает до трёх попыток с паузами — обычно проходит вторая. Пропусков это не создаёт:
@@ -240,6 +243,8 @@ python -m freelance_bot probe https://site.ru/rss https://other.ru/feed
 
 Если у биржи нет RSS, добавь класс-наследник `Source`:
 
+Так же устроен и Kwork — см. `freelance_bot/sources/kwork.py`.
+
 ```python
 # freelance_bot/sources/my_board.py
 from .base import Source
@@ -264,7 +269,7 @@ class MyBoardSource(Source):
 и зарегистрируй его в `freelance_bot/sources/registry.py`:
 
 ```python
-KINDS = {"rss": RssSource, "myboard": MyBoardSource}
+KINDS = {"rss": RssSource, "kwork": KworkSource, "myboard": MyBoardSource}
 ```
 
 Ошибка одного источника никогда не роняет опрос: она попадает в `/sources` и в отчёт `/check`.
@@ -298,7 +303,7 @@ KINDS = {"rss": RssSource, "myboard": MyBoardSource}
 
 ```bash
 pip install -r requirements-dev.txt
-python -m pytest -q          # 73 теста: фильтр, парсер RSS, база, сервис, команды бота
+python -m pytest -q          # 83 теста: фильтр, парсер RSS, база, сервис, команды бота
 ```
 
 Структура:
@@ -314,7 +319,7 @@ freelance_bot/
 ├── models.py       — Order (единый формат заказа)
 ├── storage.py      — SQLite: подписчики, заказы, доставки, слова, источники
 ├── formatting.py   — тексты сообщений
-└── sources/        — источники: base / rss / registry
+└── sources/        — источники: base / rss / kwork / registry
 tests/              — pytest
 ```
 

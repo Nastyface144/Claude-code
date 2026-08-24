@@ -53,6 +53,10 @@ def order_message(order: Order, match: MatchResult, source_title: str = "") -> s
     else:
         lines.append("")
 
+    if order.extra:
+        details = " · ".join(f"{key}: {value}" for key, value in list(order.extra.items())[:3])
+        lines.append("⏳ " + escape(details))
+
     if match.tags:
         lines.append("🏷 подходит по: " + escape(", ".join(match.tags[:5])))
 
