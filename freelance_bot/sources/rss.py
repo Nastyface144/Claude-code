@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
+import asyncio
+import logging
+import os
 import re
 from datetime import datetime, timezone
 from html import unescape
+from urllib.parse import quote
 
 import aiohttp
 import feedparser
@@ -12,10 +16,31 @@ import feedparser
 from ..models import Order
 from .base import Source
 
+log = logging.getLogger(__name__)
+
 USER_AGENT = (
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/124.0 Safari/537.36 FreelanceRadar/1.0"
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/127.0.0.0 Safari/537.36"
 )
+
+# Биржи закрываются от «не-браузеров», поэтому ходим как обычный браузер.
+BROWSER_HEADERS = {
+    "User-Agent": USER_AGENT,
+    "Accept": "application/rss+xml, application/xml;q=0.9, text/xml;q=0.8, */*;q=0.5",
+    "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache",
+}
+
+# Публичные read-прокси на запасной случай. Проверка 24.08.2026 показала, что для FL.ru
+# они бесполезны (allorigins 408, r.jina.ai 403, codetabs 522), поэтому по умолчанию
+# выключены — включаются переменной RSS_MIRRORS=1.
+MIRROR_TEMPLATES: tuple[str, ...] = (
+    "https://api.allorigins.win/raw?url={quoted}",
+    "https://api.codetabs.com/v1/proxy?quest={quoted}",
+)
+
+BLOCKED_STATUSES = frozenset({401, 403, 429, 451, 500, 502, 503, 520, 521, 522})
 
 
 # FL.ru и другие биржи пишут бюджет прямо в заголовок: «Сделать лендинг (Бюджет: 30 000 ₽)»
@@ -89,9 +114,50 @@ def parse_feed(raw: bytes | str, source_name: str) -> list[Order]:
 
 
 class RssSource(Source):
-    async def fetch(self, session: aiohttp.ClientSession) -> list[Order]:
-        headers = {"User-Agent": USER_AGENT, "Accept": "application/rss+xml, application/xml, text/xml, */*"}
-        async with session.get(self.config.url, headers=headers) as response:
+    """RSS-лента с повторами и обходными путями: биржи часто отвечают 403 через раз."""
+
+    # FL.ru отвечает 403 «через раз», но следующая попытка обычно проходит.
+    attempts = 3
+    retry_pause = 3.0
+    use_mirrors = os.getenv("RSS_MIRRORS", "").strip() in {"1", "true", "yes"}
+
+    def _urls(self) -> list[str]:
+        urls = [self.config.url]
+        if self.use_mirrors:
+            quoted = quote(self.config.url, safe="")
+            urls += [tpl.format(quoted=quoted, url=self.config.url) for tpl in MIRROR_TEMPLATES]
+        return urls
+
+    async def _load(self, session: aiohttp.ClientSession, url: str) -> list[Order]:
+        async with session.get(url, headers=BROWSER_HEADERS) as response:
+            if response.status in BLOCKED_STATUSES:
+                raise aiohttp.ClientResponseError(
+                    response.request_info,
+                    response.history,
+                    status=response.status,
+                    message=response.reason or "",
+                )
             response.raise_for_status()
             raw = await response.read()
         return parse_feed(raw, self.name)
+
+    async def fetch(self, session: aiohttp.ClientSession) -> list[Order]:
+        last_error: Exception | None = None
+        for index, url in enumerate(self._urls()):
+            for attempt in range(self.attempts):
+                try:
+                    orders = await self._load(session, url)
+                except Exception as exc:  # noqa: BLE001 - пробуем следующий адрес
+                    last_error = exc
+                    log.debug("%s: %s (%s)", self.name, exc, url)
+                else:
+                    if orders:
+                        if index:
+                            log.info("%s: лента получена через обходной адрес", self.name)
+                        return orders
+                    last_error = last_error or RuntimeError("лента пустая")
+                if attempt + 1 < self.attempts:
+                    await asyncio.sleep(self.retry_pause * (attempt + 1))
+        if last_error:
+            raise last_error
+        return []
