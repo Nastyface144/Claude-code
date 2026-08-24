@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import re
 from datetime import datetime, timezone
+from html import unescape
 
 import aiohttp
 import feedparser
@@ -14,6 +16,29 @@ USER_AGENT = (
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
     "Chrome/124.0 Safari/537.36 FreelanceRadar/1.0"
 )
+
+
+# FL.ru и другие биржи пишут бюджет прямо в заголовок: «Сделать лендинг (Бюджет: 30 000 ₽)»
+_TITLE_BUDGET_RE = re.compile(r"\s*\(\s*(?:бюджет|budget)\s*:\s*([^)]+?)\s*\)\s*$", re.IGNORECASE)
+
+
+def split_budget(title: str) -> tuple[str, str | None]:
+    """Отделить бюджет от заголовка. Возвращает (заголовок, бюджет|None)."""
+    title = unescape(title or "").strip()
+    match = _TITLE_BUDGET_RE.search(title)
+    if not match:
+        return title, None
+    budget = " ".join(match.group(1).split())
+    return title[: match.start()].strip(" .-—·"), budget or None
+
+
+def _category(entry) -> str | None:
+    """Раздел биржи, например «Веб-программирование / Сайт под ключ»."""
+    for tag in entry.get("tags", []) or []:
+        term = (tag.get("term") or "").strip()
+        if term:
+            return unescape(term)
+    return None
 
 
 def _published(entry) -> datetime | None:
@@ -34,10 +59,6 @@ def _description(entry) -> str:
         value = content.get("value")
         if value:
             parts.append(str(value))
-    for tag in entry.get("tags", []) or []:
-        term = tag.get("term")
-        if term:
-            parts.append(str(term))
     # Не тащим бесконечные полотна: для оценки хватает первых символов.
     return "\n".join(dict.fromkeys(parts))[:5000]
 
@@ -48,16 +69,19 @@ def parse_feed(raw: bytes | str, source_name: str) -> list[Order]:
     orders: list[Order] = []
     for entry in feed.entries:
         link = (entry.get("link") or "").strip()
-        title = (entry.get("title") or "").strip()
-        if not link and not title:
+        raw_title = (entry.get("title") or "").strip()
+        if not link and not raw_title:
             continue
+        title, budget = split_budget(raw_title)
         orders.append(
             Order(
                 source=source_name,
-                external_id=(entry.get("id") or link or title).strip(),
+                external_id=(entry.get("id") or link or raw_title).strip(),
                 title=title or link,
                 url=link,
                 description=_description(entry),
+                budget=budget,
+                category=_category(entry),
                 published_at=_published(entry),
             )
         )

@@ -8,8 +8,8 @@ from html import escape, unescape
 from .matcher import MatchResult
 from .models import Order, strip_html
 
-MAX_TITLE = 120
-MAX_SNIPPET = 320
+MAX_TITLE = 150
+MAX_SNIPPET = 700
 
 
 def _clean(text: str, limit: int) -> str:
@@ -38,18 +38,23 @@ def _when(moment: datetime | None) -> str:
 
 
 def order_message(order: Order, match: MatchResult, source_title: str = "") -> str:
+    """Карточка заказа: название, бюджет, раздел биржи, описание и ссылка."""
     lines = [f"🔎 <b>{_clean(order.title, MAX_TITLE)}</b>"]
+
+    budget = order.guess_budget()
+    lines.append(f"💰 <b>{escape(budget)}</b>" if budget else "💰 бюджет не указан")
+
+    if order.category:
+        lines.append(f"🗂 {_clean(order.category, 90)}")
 
     snippet = _clean(order.description, MAX_SNIPPET)
     if snippet:
-        lines.append(snippet)
-
-    budget = order.guess_budget()
-    if budget:
-        lines.append(f"💰 <b>{escape(budget)}</b>")
+        lines += ["", snippet, ""]
+    else:
+        lines.append("")
 
     if match.tags:
-        lines.append("🏷 " + escape(", ".join(match.tags[:5])))
+        lines.append("🏷 подходит по: " + escape(", ".join(match.tags[:5])))
 
     meta = [f"⭐ {match.score}"]
     if source_title or order.source:
@@ -60,7 +65,7 @@ def order_message(order: Order, match: MatchResult, source_title: str = "") -> s
     lines.append(" · ".join(meta))
 
     if order.url:
-        lines.append(f'👉 <a href="{escape(order.url, quote=True)}">Открыть заказ</a>')
+        lines.append(f'👉 <a href="{escape(order.url, quote=True)}">Открыть заказ на бирже</a>')
 
     return "\n".join(lines)
 
@@ -74,6 +79,9 @@ def row_message(row, index: int | None = None) -> str:
     if row["budget"]:
         tail.insert(0, f"💰 {escape(row['budget'])}")
     parts.append(" · ".join(tail))
+    category = row["category"] if "category" in row.keys() else None
+    if category:
+        parts.append(f"🗂 {escape(category[:90])}")
     if row["url"]:
         parts.append(f'👉 <a href="{escape(row["url"], quote=True)}">ссылка</a>')
     return "\n".join(parts)

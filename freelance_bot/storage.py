@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS orders (
     url          TEXT,
     description  TEXT,
     budget       TEXT,
+    category     TEXT,
     published_at TEXT,
     score        INTEGER NOT NULL DEFAULT 0,
     tags         TEXT,
@@ -84,8 +85,17 @@ class Storage:
         self._db.row_factory = aiosqlite.Row
         await self._db.execute("PRAGMA journal_mode=WAL")
         await self._db.executescript(SCHEMA)
+        await self._migrate()
         await self._db.commit()
         return self
+
+    async def _migrate(self) -> None:
+        """Досоздать колонки, появившиеся позже, — базы живут между запусками."""
+        async with self._db.execute("PRAGMA table_info(orders)") as cursor:  # type: ignore[union-attr]
+            columns = {row[1] for row in await cursor.fetchall()}
+        for name, ddl in (("category", "TEXT"),):
+            if name not in columns:
+                await self._db.execute(f"ALTER TABLE orders ADD COLUMN {name} {ddl}")  # type: ignore[union-attr]
 
     async def close(self) -> None:
         if self._db is not None:
@@ -155,8 +165,8 @@ class Storage:
         """Сохраняет заказ. Возвращает True, если он встретился впервые."""
         cursor = await self.db.execute(
             "INSERT OR IGNORE INTO orders "
-            "(uid, source, external_id, title, url, description, budget, published_at, score, tags, found_at) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "(uid, source, external_id, title, url, description, budget, category, published_at, score, tags, found_at) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
                 order.uid,
                 order.source,
@@ -165,6 +175,7 @@ class Storage:
                 order.url,
                 (order.description or "")[:4000],
                 order.guess_budget(),
+                order.category,
                 order.published_at.isoformat() if order.published_at else None,
                 score,
                 ", ".join(tags),

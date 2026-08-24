@@ -28,6 +28,7 @@ class Order:
     url: str
     description: str = ""
     budget: str | None = None
+    category: str | None = None
     published_at: datetime | None = None
     extra: dict[str, str] = field(default_factory=dict)
 
@@ -39,7 +40,8 @@ class Order:
 
     @property
     def text(self) -> str:
-        return f"{self.title}\n{strip_html(self.description)}"
+        """Всё, по чему оцениваем релевантность, включая раздел биржи."""
+        return "\n".join(filter(None, [self.title, self.category, strip_html(self.description)]))
 
     def guess_budget(self) -> str | None:
         """Если источник не отдал бюджет отдельно — пытаемся вытащить из текста."""
