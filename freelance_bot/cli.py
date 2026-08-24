@@ -88,7 +88,9 @@ def _extract_json_var(text: str, name: str):
     import json
     import re
 
-    match = re.search(rf"{re.escape(name)}\s*=\s*", text)
+    # переменная (`window.x = {...}`) или ключ внутри JSON (`"x": {...}`)
+    pattern = rf'(?:{re.escape(name)}\s*=\s*|"{re.escape(name.split(".")[-1])}"\s*:\s*)'
+    match = re.search(pattern, text)
     if not match:
         return None
     try:
@@ -96,6 +98,22 @@ def _extract_json_var(text: str, name: str):
     except ValueError:
         return None
     return value
+
+
+def _find_lists(node, path: str = "", depth: int = 0) -> list[tuple[str, list]]:
+    """Все вложенные списки словарей — среди них и лежит перечень заказов."""
+    found: list[tuple[str, list]] = []
+    if depth > 4:
+        return found
+    if isinstance(node, dict):
+        for key, value in node.items():
+            found += _find_lists(value, f"{path}.{key}" if path else str(key), depth + 1)
+    elif isinstance(node, list):
+        if node and isinstance(node[0], dict) and len(node) >= 3:
+            found.append((path or "root", node))
+        elif node and isinstance(node[0], (dict, list)):
+            found += _find_lists(node[0], f"{path}[0]", depth + 1)
+    return found
 
 
 def _inspect_html(raw: bytes) -> None:
@@ -110,18 +128,13 @@ def _inspect_html(raw: bytes) -> None:
         if value is None:
             print(f"  {name}: нет")
             continue
-        if isinstance(value, dict):
-            print(f"  {name}: объект, ключи: {list(value)[:20]}")
-            for key, item in value.items():
-                if isinstance(item, list) and item and isinstance(item[0], dict):
-                    print(f"    список «{key}»: {len(item)} шт., поля: {list(item[0])[:25]}")
-                    print("    пример: " + " ".join(json.dumps(item[0], ensure_ascii=False)[:900].split()))
-                    break
-        elif isinstance(value, list):
-            print(f"  {name}: список из {len(value)}")
-            if value and isinstance(value[0], dict):
-                print(f"    поля: {list(value[0])[:25]}")
-                print("    пример: " + " ".join(json.dumps(value[0], ensure_ascii=False)[:900].split()))
+        print(f"  {name}: {type(value).__name__}")
+        for path, items in _find_lists(value):
+            print(f"    «{path}»: {len(items)} шт., поля: {list(items[0])[:25]}")
+        best = max((pair for pair in _find_lists(value)), key=lambda pair: len(pair[1]), default=None)
+        if best:
+            print(f"    пример из «{best[0]}»: "
+                  + " ".join(json.dumps(best[1][0], ensure_ascii=False)[:1200].split()))
 
 
 async def dry_run(limit: int = 15) -> None:
