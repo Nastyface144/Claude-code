@@ -23,7 +23,8 @@ async def cmd_start(message: Message, radar: Radar) -> None:
     await message.answer(
         "✅ Рассылка включена.\n"
         f"Проверяю биржи каждые {settings.poll_interval // 60} мин "
-        f"и присылаю заказы с баллом от {settings.min_score}.\n\n" + HELP_TEXT
+        f"и присылаю заказы с баллом от {settings.min_score}.\n\n"
+        "Список команд — /help"
     )
 
 
