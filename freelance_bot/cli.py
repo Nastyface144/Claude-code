@@ -72,11 +72,55 @@ async def sample(url: str, count: int = 3) -> None:
             raw = await response.read()
 
     feed = feedparser.parse(raw)
+    if not feed.entries:
+        _inspect_html(raw)
+        return
+
     for entry in feed.entries[:count]:
         print("=" * 70)
         for key, value in entry.items():
             text = str(value).replace("\n", " ")
             print(f"  {key}: {text[:400]}")
+
+
+def _inspect_html(raw: bytes) -> None:
+    """Не лента, а страница: ищем встроенный JSON с данными (Vue/Nuxt/React)."""
+    import json
+    import re
+
+    text = raw.decode("utf-8", "replace")
+    print(f"HTML, {len(text)} символов. Ищу встроенные данные…")
+
+    markers = ("window.stateData", "__NUXT__", "__INITIAL_STATE__", "application/ld+json", "wantsListData")
+    for marker in markers:
+        position = text.find(marker)
+        print(f"  {marker}: {'найден на позиции ' + str(position) if position >= 0 else 'нет'}")
+
+    match = re.search(r"window\.stateData\s*=\s*(\{.*?\});?\s*</script>", text, re.DOTALL)
+    if not match:
+        match = re.search(r"window\.stateData\s*=\s*(\{.*?\})\s*;\s*\n", text, re.DOTALL)
+    if not match:
+        print("  stateData не разобран, показываю фрагмент вокруг слова «wants»:")
+        spot = text.find("wants")
+        if spot > 0:
+            print("  " + " ".join(text[spot - 200 : spot + 800].split())[:900])
+        return
+
+    payload = match.group(1)
+    print(f"  stateData: {len(payload)} символов")
+    try:
+        data = json.loads(payload)
+    except json.JSONDecodeError as exc:
+        print(f"  JSON не разобран: {exc}")
+        print("  " + " ".join(payload[:600].split()))
+        return
+
+    print(f"  ключи: {list(data)[:25]}")
+    for key, value in data.items():
+        if isinstance(value, list) and value and isinstance(value[0], dict):
+            print(f"  список «{key}»: {len(value)} элементов, поля: {list(value[0])[:20]}")
+            print("  первый: " + " ".join(json.dumps(value[0], ensure_ascii=False)[:600].split()))
+            break
 
 
 async def dry_run(limit: int = 15) -> None:
