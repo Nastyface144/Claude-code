@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tonify — AI-копирайтер для соцсетей и рекламы</title>
+<meta name="description" content="Tonify генерирует тексты для постов, рекламы и сторис в тоне вашего бренда за 30 секунд. Первые 5 генераций бесплатно.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<header class="site-header" id="top">
+  <div class="container header-inner">
+    <a href="#top" class="logo">Ton<span class="accent-dot">i</span>fy</a>
+
+    <nav class="main-nav" id="main-nav">
+      <a href="#problem">Задачи</a>
+      <a href="#solution">Как это работает</a>
+      <a href="#trust">Вопросы</a>
+      <a href="#cta" class="nav-cta">Попробовать бесплатно</a>
+    </nav>
+
+    <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-glow hero-glow--violet" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow--cyan" aria-hidden="true"></div>
+
+    <div class="container hero-inner">
+      <div class="hero-copy reveal">
+        <p class="kicker">AI-копирайтинг для соцсетей и рекламы</p>
+        <h1>
+          Тексты, которые звучат<br>
+          как ваш бренд — <span class="text-gradient">а не как нейросеть</span>
+        </h1>
+        <p class="hero-sub">
+          Опишите продукт в двух предложениях — через 30 секунд получите
+          десяток постов, объявлений и подписей к сторис, готовых к публикации.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#cta" class="btn btn-primary">
+            Сгенерировать первый текст
+          </a>
+          <a href="#solution" class="btn btn-ghost">
+            Как это работает
+          </a>
+        </div>
+
+        <p class="hero-micro">5 генераций бесплатно · без банковской карты</p>
+      </div>
+
+      <div class="hero-visual reveal" style="--delay:120ms">
+        <div class="mock-card">
+          <div class="mock-card__head">
+            <div class="mock-dots"><span></span><span></span><span></span></div>
+            <span class="mock-card__title">Новая генерация</span>
+          </div>
+
+          <div class="mock-field">
+            <span class="mock-field__label">Продукт</span>
+            <span class="mock-field__value">Онлайн-курс по йоге для начинающих</span>
+          </div>
+
+          <div class="mock-tags">
+            <span class="mock-tag mock-tag--active">Instagram</span>
+            <span class="mock-tag">Telegram Ads</span>
+            <span class="mock-tag">VK</span>
+          </div>
+
+          <div class="mock-result">
+            <div class="mock-result__badge">Вариант 1 / 8</div>
+            <p class="mock-result__text">
+              «Тело помнит, что такое лёгкость — вопрос в том, когда вы дадите
+              ему шанс вспомнить.» Первое занятие — бесплатно, без коврика
+              и опыта.
+            </p>
+            <span class="mock-caret" aria-hidden="true"></span>
+          </div>
+
+          <div class="mock-footer">
+            <span>Тон: дружелюбный, вдохновляющий</span>
+            <span class="mock-footer__ok">✓ готово к публикации</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROBLEM ============ -->
+  <section class="problem" id="problem">
+    <div class="container">
+      <p class="kicker kicker--center reveal">Узнаёте себя?</p>
+      <h2 class="section-title reveal">Контент-план не пишет себя сам</h2>
+
+      <div class="problem-grid">
+        <article class="problem-card reveal">
+          <span class="problem-num">01</span>
+          <h3>Дедлайн сегодня, текст — нет</h3>
+          <p>Пост должен выйти в 18:00, а курсор мигает на пустой странице третий час подряд.</p>
+        </article>
+
+        <article class="problem-card reveal" style="--delay:80ms">
+          <span class="problem-num">02</span>
+          <h3>Бриф поняли по-своему</h3>
+          <p>Отдали текст на аутсорс — получили обратно совсем не тот тон. Ещё два круга правок, ещё два дня ожидания.</p>
+        </article>
+
+        <article class="problem-card reveal" style="--delay:160ms">
+          <span class="problem-num">03</span>
+          <h3>Одно объявление на всю кампанию</h3>
+          <p>Реклама крутится без изменений неделями: переписать десять вариантов для A/B-теста — это целый рабочий день.</p>
+        </article>
+
+        <article class="problem-card reveal" style="--delay:240ms">
+          <span class="problem-num">04</span>
+          <h3>Тексты «под копирку»</h3>
+          <p>Взяли шаблон из подборки в интернете — а через день видите точно такой же у конкурента в ленте.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOLUTION ============ -->
+  <section class="solution" id="solution">
+    <div class="container">
+      <p class="kicker kicker--center reveal">Как это работает</p>
+      <h2 class="section-title reveal">Второй копирайтер, который уже знает голос вашего бренда</h2>
+      <p class="section-sub reveal">
+        Не абстрактный генератор «текста вообще» — сервис настраивается один раз
+        под вашу лексику и дальше выдаёт черновики, которые не стыдно публиковать.
+      </p>
+
+      <div class="steps reveal">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Опишите задачу</h3>
+          <p>Продукт, площадка — Instagram, VK, Telegram Ads, email-рассылка — и цель: продать, прогреть, анонсировать.</p>
+        </div>
+        <div class="step-line" aria-hidden="true"></div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Настройте Brand Voice</h3>
+          <p>Один раз загрузите 3–5 своих текстов — сервис запомнит тон и лексику бренда: дерзкий, экспертный, дружелюбный.</p>
+        </div>
+        <div class="step-line" aria-hidden="true"></div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Получите 8–10 вариантов</h3>
+          <p>Разные структуры, заголовки и хуки — есть из чего выбрать и что сравнить в A/B-тесте.</p>
+        </div>
+        <div class="step-line" aria-hidden="true"></div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <h3>Донастройте в редакторе</h3>
+          <p>Одной кнопкой: короче, эмоциональнее, добавить призыв к действию, сменить тон на более деловой.</p>
+        </div>
+      </div>
+
+      <div class="features">
+        <article class="feature-card reveal">
+          <div class="feature-icon feature-icon--violet" aria-hidden="true">◈</div>
+          <h3>Brand Voice</h3>
+          <p>Тексты в тоне вашего бренда, а не в усреднённом стиле нейросети «как у всех».</p>
+        </article>
+        <article class="feature-card reveal" style="--delay:80ms">
+          <div class="feature-icon feature-icon--cyan" aria-hidden="true">▣</div>
+          <h3>Мультиформатность</h3>
+          <p>Посты, рекламные объявления, подписи к сторис и email — в одном интерфейсе.</p>
+        </article>
+        <article class="feature-card reveal" style="--delay:160ms">
+          <div class="feature-icon feature-icon--violet" aria-hidden="true">⌘</div>
+          <h3>Пакетная генерация</h3>
+          <p>До 10 вариантов за один запрос — удобно сравнивать и запускать A/B-тесты в рекламе.</p>
+        </article>
+        <article class="feature-card reveal" style="--delay:240ms">
+          <div class="feature-icon feature-icon--cyan" aria-hidden="true">☰</div>
+          <h3>Библиотека текстов</h3>
+          <p>Сохраняйте удачные формулировки и переиспользуйте их в новых кампаниях.</p>
+        </article>
+      </div>
+
+      <div class="section-cta reveal">
+        <a href="#cta" class="btn btn-primary">Попробовать на своём продукте</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TRUST ============ -->
+  <section class="trust" id="trust">
+    <div class="container">
+      <p class="kicker kicker--center reveal">Кому подходит</p>
+      <h2 class="section-title reveal">Для тех, кто пишет тексты каждую неделю, а не раз в квартал</h2>
+
+      <div class="personas">
+        <article class="persona-card reveal">
+          <h3>SMM-специалист</h3>
+          <p>Ведёте несколько аккаунтов сразу? Держите единый тон для каждого бренда и закрываете контент-план за час, а не за день.</p>
+        </article>
+        <article class="persona-card reveal" style="--delay:80ms">
+          <h3>Маркетолог</h3>
+          <p>Нужно быстро тестировать гипотезы в рекламе? Получайте по 10 вариантов объявления и оставляйте только те, что конвертят.</p>
+        </article>
+        <article class="persona-card reveal" style="--delay:160ms">
+          <h3>Владелец малого бизнеса</h3>
+          <p>Нет бюджета на штатного копирайтера? Пишите тексты для соцсетей сами — быстро и без ощущения «это не мой стиль».</p>
+        </article>
+      </div>
+
+      <div class="faq reveal">
+        <h3 class="faq-title">Частые вопросы</h3>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Тексты не будут звучать как нейросеть?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Сервис обучается на ваших собственных примерах текстов — чем больше вы загрузите, тем точнее совпадает тон и лексика бренда.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Это заменит копирайтера в команде?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Нет. Сервис берёт на себя первые черновики и рутинные форматы, а копирайтер фокусируется на стратегии и финальной редактуре.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Нужно разбираться в промптах или в AI?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Нет. Интерфейс — обычная форма: продукт, площадка, цель. Все настройки тона скрыты за понятными переключателями.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Что если результат не подойдёт?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Меняйте тон, длину и структуру в один клик или сгенерируйте новую партию вариантов — без ограничения по числу попыток.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Куда сохраняются мои тексты о бренде?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Примеры голоса бренда хранятся в вашем личном кабинете и используются только для генерации ваших собственных текстов.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="guarantee reveal">
+        7 дней полного доступа бесплатно. Отмена в один клик — без звонков в поддержку и объяснений.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="final-cta" id="cta">
+    <div class="hero-glow hero-glow--violet" aria-hidden="true"></div>
+    <div class="container final-cta__inner reveal">
+      <h2>Следующий пост можно закрыть за 30 секунд</h2>
+      <p>Пока конкуренты открывают чистый лист в Google Docs, вы уже выбираете из десяти готовых вариантов.</p>
+
+      <form class="cta-form" id="cta-form">
+        <label for="email" class="visually-hidden">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@company.com" required autocomplete="email">
+        <button type="submit" class="btn btn-primary">Получить 5 текстов бесплатно</button>
+      </form>
+      <p class="cta-note" id="cta-note">Без банковской карты. Отписаться можно в любой момент.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <a href="#top" class="logo logo--small">Ton<span class="accent-dot">i</span>fy</a>
+    <p class="footer-tagline">AI-ассистент для копирайтинга в соцсетях и рекламе.</p>
+    <p class="footer-copy">© 2026 Tonify. Все права защищены.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
