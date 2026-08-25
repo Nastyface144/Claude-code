@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LINEA — студия бровей и ресниц</title>
+<meta name="description" content="Индивидуальная форма бровей и ресниц под черты вашего лица. Гипоаллергенные пигменты, результат на 3–4 недели, бесплатная коррекция. Запись онлайн.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site-header" id="top">
+  <div class="container header-inner">
+    <a href="#top" class="logo">LINEA</a>
+
+    <nav class="main-nav" id="main-nav">
+      <a href="#problem">Знакомо?</a>
+      <a href="#solution">Как проходит</a>
+      <a href="#trust">Вопросы</a>
+      <a href="#cta" class="nav-cta">Записаться</a>
+    </nav>
+
+    <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-arc" aria-hidden="true"></div>
+
+    <div class="container hero-inner">
+      <div class="hero-copy reveal">
+        <p class="kicker">Студия бровей и ресниц · ваш район</p>
+        <h1>
+          Брови и ресницы, которые не нужно<br class="hide-mobile">
+          поправлять <span class="text-accent">каждое утро</span>
+        </h1>
+        <p class="hero-sub">
+          Форма подбирается под черты вашего лица, а не берётся из каталога.
+          Гипоаллергенные пигменты и результат, который держится 3–4 недели
+          без ежедневной коррекции карандашом или тушью.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#cta" class="btn btn-primary">Записаться на диагностику формы</a>
+          <a href="#solution" class="btn btn-ghost">Как проходит процедура</a>
+        </div>
+
+        <p class="hero-micro">Бесплатная коррекция, если форма осядет неровно в первые дни</p>
+      </div>
+
+      <div class="hero-visual reveal" style="--delay:120ms">
+        <div class="booking-card">
+          <div class="booking-card__head">
+            <span class="booking-card__title">Запись на процедуру</span>
+            <span class="booking-dot" aria-hidden="true"></span>
+          </div>
+
+          <div class="booking-field">
+            <span class="booking-field__label">Услуга</span>
+            <div class="booking-chips">
+              <span class="chip chip--active">Ламинирование бровей</span>
+              <span class="chip">Ресницы</span>
+              <span class="chip">Окрашивание</span>
+            </div>
+          </div>
+
+          <div class="booking-field">
+            <span class="booking-field__label">Удобный день</span>
+            <div class="booking-days">
+              <span class="day">ЧТ</span>
+              <span class="day day--active">ПТ</span>
+              <span class="day">СБ</span>
+              <span class="day">ВС</span>
+            </div>
+          </div>
+
+          <div class="booking-field">
+            <span class="booking-field__label">Время</span>
+            <div class="booking-slots">
+              <span class="slot">11:00</span>
+              <span class="slot slot--active">14:30</span>
+              <span class="slot">17:00</span>
+            </div>
+          </div>
+
+          <div class="booking-card__footer">
+            <span>Диагностика формы включена</span>
+            <span class="booking-check">✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROBLEM ============ -->
+  <section class="problem" id="problem">
+    <div class="container">
+      <p class="kicker kicker--center reveal">Знакомая история?</p>
+      <h2 class="section-title section-title--center reveal">Почему форма «уплывает» уже через пару дней</h2>
+
+      <div class="problem-grid">
+        <article class="problem-card reveal">
+          <span class="problem-num">01</span>
+          <h3>Каждое утро — коррекция карандашом</h3>
+          <p>Без укладки волоски топорщатся в разные стороны, а нарисованная вчера форма сегодня уже не совпадает.</p>
+        </article>
+
+        <article class="problem-card reveal" style="--delay:80ms">
+          <span class="problem-num">02</span>
+          <h3>Мастер делает «как всем»</h3>
+          <p>Одна и та же дугообразная форма для любого лица — без учёта пропорций и природного роста волосков.</p>
+        </article>
+
+        <article class="problem-card reveal" style="--delay:160ms">
+          <span class="problem-num">03</span>
+          <h3>Тушь стекает уже к обеду</h3>
+          <p>Ресницы теряют изгиб и объём за несколько часов, а подкрашивать на бегу — неудобно и незаметно не выйдет.</p>
+        </article>
+
+        <article class="problem-card reveal" style="--delay:240ms">
+          <span class="problem-num">04</span>
+          <h3>Страшно, что кожа отреагирует</h3>
+          <p>Неизвестно, чем красят, и что делать, если после процедуры появится раздражение.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOLUTION ============ -->
+  <section class="solution" id="solution">
+    <div class="container">
+      <p class="kicker kicker--center reveal">Как это устроено</p>
+      <h2 class="section-title section-title--center reveal">Форма считается по чертам лица, а не берётся из каталога</h2>
+      <p class="section-sub section-sub--center reveal">
+        Перед процедурой мастер измеряет пропорции лица и учитывает природный рост волосков.
+        Контур утверждается вместе с вами — до того, как в дело идёт пигмент.
+      </p>
+
+      <div class="steps reveal">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Диагностика</h3>
+          <p>Замеры лица, разговор о желаемом результате и тест пигмента на чувствительность кожи. 10–15 минут.</p>
+        </div>
+        <div class="step-line" aria-hidden="true"></div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Индивидуальная схема</h3>
+          <p>Контур прорисовывается под ваши пропорции и утверждается вами до начала работы.</p>
+        </div>
+        <div class="step-line" aria-hidden="true"></div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Процедура</h3>
+          <p>Одноразовые стерильные материалы, гипоаллергенные пигменты, комфортное положение в кресле.</p>
+        </div>
+        <div class="step-line" aria-hidden="true"></div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <h3>Уход и коррекция</h3>
+          <p>Рекомендации на первые 48 часов и бесплатная коррекция, если форма нуждается в правке.</p>
+        </div>
+      </div>
+
+      <div class="features">
+        <article class="feature-card reveal">
+          <div class="feature-icon" aria-hidden="true">◡</div>
+          <h3>Форма под ваше лицо</h3>
+          <p>Подбор под тип лица и природный рост волосков — не шаблон «как в каталоге».</p>
+        </article>
+        <article class="feature-card reveal" style="--delay:80ms">
+          <div class="feature-icon" aria-hidden="true">✧</div>
+          <h3>Гипоаллергенные пигменты</h3>
+          <p>Перед первой процедурой — обязательный тест на чувствительность кожи.</p>
+        </article>
+        <article class="feature-card reveal" style="--delay:160ms">
+          <div class="feature-icon" aria-hidden="true">◐</div>
+          <h3>Результат на 3–4 недели</h3>
+          <p>Без ежедневной коррекции карандашом или тушью по утрам.</p>
+        </article>
+        <article class="feature-card reveal" style="--delay:240ms">
+          <div class="feature-icon" aria-hidden="true">↺</div>
+          <h3>Бесплатная коррекция</h3>
+          <p>Если в первые дни форма осела неровно — поправим без доплаты.</p>
+        </article>
+      </div>
+
+      <div class="section-cta reveal">
+        <a href="#cta" class="btn btn-primary">Выбрать процедуру и время</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TRUST ============ -->
+  <section class="trust" id="trust">
+    <div class="container">
+      <p class="kicker kicker--center reveal">Почему можно не переживать</p>
+      <h2 class="section-title section-title--center reveal">Прозрачно на каждом шаге — от диагностики до результата</h2>
+
+      <div class="principles">
+        <article class="principle-card reveal">
+          <h3>Гарантия формы</h3>
+          <p>Если в первые дни после процедуры форма осядет неровно, коррекция — бесплатно.</p>
+        </article>
+        <article class="principle-card reveal" style="--delay:80ms">
+          <h3>Стерильность</h3>
+          <p>Все расходники одноразовые, инструменты проходят стерилизацию перед каждым клиентом.</p>
+        </article>
+        <article class="principle-card reveal" style="--delay:160ms">
+          <h3>Согласование до начала</h3>
+          <p>Форма и цвет обсуждаются и утверждаются вами до начала процедуры — без сюрпризов на выходе.</p>
+        </article>
+      </div>
+
+      <div class="portfolio reveal">
+        <h3 class="portfolio-title">Портфолио работ</h3>
+        <div class="portfolio-grid">
+          <div class="portfolio-item"><span>Фото до / после</span></div>
+          <div class="portfolio-item"><span>Фото до / после</span></div>
+          <div class="portfolio-item"><span>Фото до / после</span></div>
+          <div class="portfolio-item"><span>Фото до / после</span></div>
+        </div>
+        <p class="portfolio-note">Здесь появятся примеры работ мастера — раздел обновляется после каждой съёмки.</p>
+      </div>
+
+      <div class="faq reveal">
+        <h3 class="faq-title">Частые вопросы</h3>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Это больно?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Нет. Окрашивание и ламинирование не требуют проколов кожи — ощущается разве что лёгкое тепло состава на несколько минут.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Не будет ли аллергии?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Перед первой процедурой мастер обязательно проводит тест состава на небольшом участке кожи, чтобы исключить реакцию.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Сколько держится результат?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Окрашивание и ламинирование бровей или ресниц держатся 3–4 недели. Для наращивания ресниц срок обсуждается индивидуально на диагностике.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Форма будет выглядеть естественно?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Да. Форма и цвет подбираются под ваши природные черты лица и рост волосков, а не по шаблону.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Сколько стоит и как записаться?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Стоимость зависит от выбранной процедуры и уточняется на диагностике. Записаться можно онлайн за минуту — форма ниже.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="final-cta" id="cta">
+    <div class="hero-arc hero-arc--small" aria-hidden="true"></div>
+    <div class="container final-cta__inner reveal">
+      <h2>Выберите время, которое вам удобно</h2>
+      <p>Форма под черты вашего лица, гипоаллергенные материалы и бесплатная коррекция — результат, который не нужно поправлять по утрам.</p>
+
+      <form class="cta-form" id="cta-form">
+        <div class="cta-form__row">
+          <div class="cta-form__field">
+            <label for="cta-name" class="visually-hidden">Имя</label>
+            <input type="text" id="cta-name" name="name" placeholder="Ваше имя" required autocomplete="name">
+          </div>
+          <div class="cta-form__field">
+            <label for="cta-phone" class="visually-hidden">Телефон</label>
+            <input type="tel" id="cta-phone" name="phone" placeholder="Телефон" required autocomplete="tel">
+          </div>
+        </div>
+        <div class="cta-form__field">
+          <label for="cta-service" class="visually-hidden">Процедура</label>
+          <select id="cta-service" name="service" required>
+            <option value="" disabled selected>Выберите процедуру</option>
+            <option value="brows-shape">Оформление и окрашивание бровей</option>
+            <option value="brows-lam">Ламинирование бровей</option>
+            <option value="lashes-lam">Ламинирование ресниц</option>
+            <option value="lashes-ext">Наращивание ресниц</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Записаться на процедуру</button>
+      </form>
+      <p class="cta-note" id="cta-note">Перезвоним в течение дня, чтобы согласовать время. Перенести или отменить запись можно бесплатно.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <a href="#top" class="logo logo--small">LINEA</a>
+    <p class="footer-tagline">Индивидуальная форма бровей и ресниц под черты вашего лица.</p>
+    <p class="footer-contacts">Ваш город, район · ваш телефон · @ваш_instagram</p>
+    <p class="footer-copy">© 2026 LINEA. Все права защищены.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
