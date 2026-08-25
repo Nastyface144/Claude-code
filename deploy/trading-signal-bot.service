@@ -1,0 +1,14 @@
+[Unit]
+Description=Trading signal bot (TradingView -> AI review -> Telegram)
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/trading-signal-bot
+EnvironmentFile=/opt/trading-signal-bot/.env
+ExecStart=/opt/trading-signal-bot/.venv/bin/python -m trading_signal_bot run
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

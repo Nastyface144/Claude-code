@@ -398,3 +398,151 @@ tests/              — pytest
 ```cron
 */10 * * * * cd /opt/freelance-bot && .venv/bin/python -m freelance_bot once >> radar.log 2>&1
 ```
+
+---
+
+# Торговый сигнальный бот (TradingView -> ИИ -> Telegram)
+
+Второй, независимый бот в этом репозитории — `trading_signal_bot/`. Он не связан с
+фриланс-радаром выше и живёт на VPS отдельным процессом.
+
+Бот принимает алерты от твоих индикаторов TradingView, собирает подтверждения по
+каждому символу/таймфрейму, при достижении порога проверяет получившийся сетап через
+Claude, считает объём позиции под риск проп-счёта и присылает в Telegram готовый приказ
+на **ручной** вход. Сам он ордера не выставляет и на биржу/брокера не подключается —
+только собирает, проверяет и присылает.
+
+```
+7 алертов TradingView  ──►  вебхук  ──►  агрегация по символу     ──►  проверка Claude  ──►  расчёт риска  ──►  Telegram
+  (по одному на           (aiohttp,      (N из 7 индикаторов          (согласованность        (объём под %
+   индикатор)               с секретом     согласны в течение          сетапа, есть ли          от баланса,
+                             в пути URL)    заданного окна)             противоречия)            стоп/тейк)
+```
+
+⚠️ **Дисклеймер.** Это инструмент уведомления, а не финансовый совет и не автотрейдинг.
+Итоговое решение о входе и его исполнение — за тобой. Перед реальным использованием:
+проверь у своей проп-компании, разрешён ли у неё такой сигнальный/риск-инструмент;
+прогони бота на демо; убедись, что параметры инструментов в `instruments.py` (объём
+контракта, валюта котировки) соответствуют твоему брокеру.
+
+## Настройка алертов в TradingView
+
+На каждый из 7 индикаторов заводишь свой алерт с одним и тем же URL вебхука и телом
+в формате JSON. Индикаторы отличаются только полем `indicator`:
+
+```
+Webhook URL: http://<твой-vps>:8080/webhook/<WEBHOOK_SECRET>
+```
+
+```json
+{
+  "indicator": "RSI_Divergence",
+  "symbol": "{{ticker}}",
+  "timeframe": "{{interval}}",
+  "direction": "buy",
+  "price": {{close}},
+  "stop_loss": {{close}},
+  "take_profit": {{close}},
+  "note": "bullish divergence on H1"
+}
+```
+
+- `direction` — `buy`/`sell` (или `long`/`short`) фиксируешь в тексте алерта под условие
+  срабатывания индикатора (для алерта на покупку — `buy`, на продажу — отдельный алерт с `sell`).
+- `stop_loss` и `take_profit` — необязательны. Если индикатор их не считает, оставь
+  плейсхолдер `{{close}}` пустым/убери поле — бот подставит запасной стоп (`DEFAULT_SL_PCT`)
+  и тейк по запасному R:R (`DEFAULT_RISK_REWARD`).
+- `{{ticker}}` и `{{interval}}` — стандартные плейсхолдеры TradingView, их не нужно менять.
+- Секрет передаётся прямо в пути URL, потому что TradingView не даёт добавлять
+  собственные HTTP-заголовки в настройках алерта.
+
+Когда за `SIGNAL_WINDOW_SECONDS` по одному символу/таймфрейму/направлению накопится
+`MIN_CONFIRMATIONS` подтверждений от разных индикаторов — сетап уходит на проверку ИИ,
+расчёт риска и в Telegram.
+
+## Настройка и запуск
+
+```bash
+cp trading_signal_bot/.env.example .env.trading
+# впишите BOT_TOKEN, WEBHOOK_SECRET, ANTHROPIC_API_KEY, ACCOUNT_BALANCE и лимиты риска
+pip install -r requirements.txt
+python -m trading_signal_bot run
+```
+
+Все переменные окружения описаны с комментариями в `trading_signal_bot/.env.example`:
+токен бота, секрет вебхука, порог подтверждений и окно агрегации, параметры ИИ-проверки
+(`ANTHROPIC_API_KEY`, `AI_MODEL`, по умолчанию `claude-opus-5`), баланс и валюта счёта,
+риск на сделку, дневной лимит убытка проп-компании, лимит сделок в день.
+
+### На VPS — systemd
+
+```bash
+sudo useradd -r -s /usr/sbin/nologin trading-bot || true
+sudo mkdir -p /opt/trading-signal-bot
+sudo cp -r trading_signal_bot requirements.txt /opt/trading-signal-bot/
+sudo cp .env.trading /opt/trading-signal-bot/.env
+cd /opt/trading-signal-bot
+sudo python3 -m venv .venv
+sudo .venv/bin/pip install -r requirements.txt
+sudo cp deploy/trading-signal-bot.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now trading-signal-bot
+```
+
+Открой на VPS порт из `.env` (`PORT`, по умолчанию 8080) в firewall — на него будет стучаться
+TradingView. Логи: `journalctl -u trading-signal-bot -f`.
+
+### Docker
+
+```bash
+docker compose up -d --build trading-bot
+```
+
+Сервис `trading-bot` описан в `docker-compose.yml`, использует `Dockerfile.trading`,
+читает переменные из `.env.trading` и слушает `8080:8080`.
+
+## Команды Telegram-бота
+
+```
+/start   — включить рассылку сигналов
+/status  — баланс, лимиты, использованный дневной риск-бюджет
+/trades [N] — последние сделки с параметрами и вердиктом ИИ
+/close <id> <pnl> — зафиксировать факт. результат сделки (используется для дневного лимита убытка)
+/stop    — выключить рассылку
+```
+
+`/close` важен: без фактических результатов бот ограничивает риск только по сумме
+*предложенного* риска за день (консервативная оценка «если взять все сигналы и словить
+стоп по каждому»). Если фиксировать реальные результаты через `/close`, дневной лимит
+убытка (`MAX_DAILY_LOSS_PCT`) считается уже по факту закрытых сделок.
+
+## Как считается объём позиции
+
+`объём = (баланс × риск_на_сделку%) / (|цена_входа − стоп| × размер_контракта)`,
+дальше округляется вниз до `LOT_STEP`. Таблица размеров контракта — в
+`trading_signal_bot/instruments.py` (форекс-мажоры, золото/серебро, индексы, BTC/ETH).
+Формула предполагает, что инструмент котируется в валюте счёта (верно для XXXUSD-пар,
+золота, индексов и крипты на USD-счету); для пар вроде USDJPY на не-USD счету добавь
+свой `pip_value_override` через `INSTRUMENTS_FILE` (путь к JSON, формат — в комментарии
+внутри `instruments.py`).
+
+## Структура
+
+```
+trading_signal_bot/
+├── app.py          — сборка бота: aiohttp-сервер вебхуков + aiogram-поллинг
+├── cli.py          — точка входа `run`
+├── bot.py          — команды Telegram
+├── webhook.py      — приём и разбор алертов TradingView
+├── service.py      — TradingEngine: агрегация -> ИИ -> риск -> рассылка
+├── ai_review.py     — проверка сетапа через Claude (structured output)
+├── risk.py         — расчёт объёма позиции и дневные лимиты риска
+├── instruments.py  — размеры контрактов инструментов
+├── models.py       — Signal / Setup
+├── storage.py      — SQLite: сигналы, отправленные сетапы, сделки, подписчики
+└── formatting.py   — тексты сообщений
+```
+
+```bash
+python -m pytest tests/test_trading_*.py -q
+```
