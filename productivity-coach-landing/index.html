@@ -7,12 +7,13 @@
 <meta name="description" content="Персональный разбор вашей рабочей недели и пересборка системы приоритетов, делегирования и фокуса. Диагностический созвон 60 минут, без абстрактных советов.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="grain" aria-hidden="true"></div>
+<div class="topline" aria-hidden="true"></div>
 
 <header class="header" id="top">
   <div class="container header-inner">
@@ -22,10 +23,10 @@
     </a>
 
     <nav class="nav" id="nav">
-      <a href="#problem">Проблема</a>
-      <a href="#solution">Решение</a>
-      <a href="#trust">Как это устроено</a>
-      <a href="#faq">Вопросы</a>
+      <a href="#problem"><span>01</span> Проблема</a>
+      <a href="#solution"><span>02</span> Решение</a>
+      <a href="#trust"><span>03</span> Формат</a>
+      <a href="#faq"><span>04</span> Вопросы</a>
       <a href="#cta" class="nav-cta">Записаться на созвон</a>
     </nav>
 
@@ -39,80 +40,108 @@
 
   <!-- ================= HERO ================= -->
   <section class="hero" id="hero">
-    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-blob" id="hero-blob" aria-hidden="true"></div>
+    <span class="hero-watermark" aria-hidden="true">ФОКУС</span>
+
     <div class="container hero-inner">
       <div class="hero-copy reveal">
         <p class="eyebrow">Коучинг по продуктивности · для предпринимателей и фрилансеров</p>
-        <h1>Работайте на 10–15 часов в неделю меньше — и делайте больше того, что двигает бизнес</h1>
+        <h1>
+          Работайте <span class="hl">на 10–15 часов</span> в неделю меньше —
+          и делайте больше того, что двигает бизнес
+        </h1>
         <p class="hero-sub">
           Персональная система приоритетов, делегирования и фокуса — под вашу конкретную неделю,
           а не общие советы из книг про тайм-менеджмент.
         </p>
         <div class="hero-actions">
-          <a href="#cta" class="btn btn-primary">Записаться на диагностический созвон</a>
-          <a href="#solution" class="btn btn-ghost">Как проходит консультация</a>
+          <a href="#cta" class="btn btn-primary magnetic">Записаться на диагностический созвон</a>
+          <a href="#solution" class="btn btn-ghost magnetic">Как проходит консультация</a>
         </div>
         <p class="hero-note">Первая встреча — диагностика на 60 минут. Без записи на долгосрочную программу.</p>
       </div>
 
       <div class="hero-visual reveal" aria-hidden="true">
-        <div class="visual-card">
-          <div class="visual-ring ring-1"></div>
-          <div class="visual-ring ring-2"></div>
-          <div class="visual-avatar">МД</div>
-          <div class="visual-chip chip-1">
-            <span class="chip-dot"></span>
-            Фокус-блок · 9:00–11:30
-          </div>
-          <div class="visual-chip chip-2">
-            60 минут онлайн
-          </div>
+        <div class="visual-ring" aria-hidden="true"></div>
+        <div class="visual-card-main">
+          <span class="visual-mono">МД</span>
+          <span class="visual-tag">Коуч по продуктивности</span>
+        </div>
+        <div class="visual-card-side">
+          <span class="chip-dot"></span>
+          Формат 1:1 · онлайн
+        </div>
+        <div class="visual-chip">
+          Фокус-блок · 9:00–11:30
         </div>
       </div>
     </div>
   </section>
+
+  <!-- ================= TICKER ================= -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>ДИАГНОСТИКА&nbsp;&nbsp;·&nbsp;&nbsp;ПРИОРИТЕТЫ&nbsp;&nbsp;·&nbsp;&nbsp;ГРАНИЦЫ&nbsp;&nbsp;·&nbsp;&nbsp;ФОКУС&nbsp;&nbsp;·&nbsp;&nbsp;ЭНЕРГИЯ&nbsp;&nbsp;·&nbsp;&nbsp;ДЕЛЕГИРОВАНИЕ&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>ДИАГНОСТИКА&nbsp;&nbsp;·&nbsp;&nbsp;ПРИОРИТЕТЫ&nbsp;&nbsp;·&nbsp;&nbsp;ГРАНИЦЫ&nbsp;&nbsp;·&nbsp;&nbsp;ФОКУС&nbsp;&nbsp;·&nbsp;&nbsp;ЭНЕРГИЯ&nbsp;&nbsp;·&nbsp;&nbsp;ДЕЛЕГИРОВАНИЕ&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+    </div>
+  </div>
 
   <!-- ================= PROBLEM ================= -->
   <section class="problem" id="problem">
     <div class="container">
       <div class="section-head reveal">
         <p class="eyebrow">Знакомая картина?</p>
-        <h2>Дело не в лени и не в отсутствии дисциплины</h2>
+        <h2>Дело не в лени и не в <span class="hl">отсутствии дисциплины</span></h2>
         <p class="section-sub">Обычно это выглядит так — независимо от того, чем именно вы занимаетесь.</p>
       </div>
 
-      <div class="problem-grid">
-        <article class="problem-card reveal">
-          <span class="problem-index">01</span>
-          <h3>Календарь забит, а важное не сделано</h3>
-          <p>Весь день проходит в звонках и мелких задачах, а стратегические решения откладываются
-            на «когда будет время». Оно не наступает.</p>
-        </article>
+      <div class="problem-list">
+        <div class="problem-row reveal">
+          <span class="problem-num">01</span>
+          <div class="problem-text">
+            <h3>Календарь забит, а важное не сделано</h3>
+            <p>Весь день проходит в звонках и мелких задачах, а стратегические решения
+              откладываются на «когда будет время». Оно не наступает.</p>
+          </div>
+          <span class="problem-arrow" aria-hidden="true">→</span>
+        </div>
 
-        <article class="problem-card reveal">
-          <span class="problem-index">02</span>
-          <h3>Вы — узкое место своего бизнеса</h3>
-          <p>Без вашего решения не двигается ни один процесс. Делегировать страшно: проще сделать
-            самому, чем объяснять задачу ещё раз.</p>
-        </article>
+        <div class="problem-row reveal">
+          <span class="problem-num">02</span>
+          <div class="problem-text">
+            <h3>Вы — узкое место своего бизнеса</h3>
+            <p>Без вашего решения не двигается ни один процесс. Делегировать страшно: проще
+              сделать самому, чем объяснять задачу ещё раз.</p>
+          </div>
+          <span class="problem-arrow" aria-hidden="true">→</span>
+        </div>
 
-        <article class="problem-card reveal">
-          <span class="problem-index">03</span>
-          <h3>Работа съедает вечера и выходные</h3>
-          <p>Формально гибкий график на деле означает, что рабочий чат открыт в 23:00, а
-            восстановиться толком некогда.</p>
-        </article>
+        <div class="problem-row reveal">
+          <span class="problem-num">03</span>
+          <div class="problem-text">
+            <h3>Работа съедает вечера и выходные</h3>
+            <p>Формально гибкий график на деле означает, что рабочий чат открыт в 23:00, а
+              восстановиться толком некогда.</p>
+          </div>
+          <span class="problem-arrow" aria-hidden="true">→</span>
+        </div>
 
-        <article class="problem-card reveal">
-          <span class="problem-index">04</span>
-          <h3>Много активности — мало роста</h3>
-          <p>Задачи закрываются, инбокс пустеет, а выручка и ключевые показатели бизнеса стоят
-            на месте уже несколько месяцев.</p>
-        </article>
+        <div class="problem-row reveal">
+          <span class="problem-num">04</span>
+          <div class="problem-text">
+            <h3>Много активности — мало роста</h3>
+            <p>Задачи закрываются, инбокс пустеет, а выручка и ключевые показатели бизнеса
+              стоят на месте уже несколько месяцев.</p>
+          </div>
+          <span class="problem-arrow" aria-hidden="true">→</span>
+        </div>
       </div>
 
-      <p class="problem-footnote reveal">Если хотя бы два пункта откликнулись — дело не в списках задач.
-        Дело в системе, по которой вы сейчас работаете.</p>
+      <p class="problem-footnote reveal">
+        <span class="quote-mark" aria-hidden="true">“</span>
+        Если хотя бы два пункта откликнулись — дело не в списках задач.
+        Дело в системе, по которой вы сейчас работаете.
+      </p>
     </div>
   </section>
 
@@ -121,39 +150,48 @@
     <div class="container">
       <div class="section-head reveal">
         <p class="eyebrow">Что мы перестраиваем</p>
-        <h2>Разбор вашей недели — не курс и не список из «10 лайфхаков»</h2>
+        <h2>Разбор вашей недели — не курс и не список из <span class="hl">«10 лайфхаков»</span></h2>
         <p class="section-sub">Персональная пересборка того, как именно вы принимаете решения,
           распределяете задачи и восстанавливаетесь.</p>
       </div>
 
-      <div class="steps">
-        <div class="step reveal">
-          <div class="step-num">1</div>
-          <div class="step-body">
+      <div class="timeline">
+        <div class="timeline-line" aria-hidden="true"></div>
+
+        <div class="tl-step reveal">
+          <div class="tl-body">
             <h3>Диагностика</h3>
             <p>Разбираем, куда уходит время и энергия за последние две недели: календарь, задачи,
               решения, которые тормозят вас или команду.</p>
           </div>
+          <div class="tl-num">1</div>
+          <div class="tl-spacer"></div>
         </div>
-        <div class="step reveal">
-          <div class="step-num">2</div>
-          <div class="step-body">
+
+        <div class="tl-step reveal">
+          <div class="tl-spacer"></div>
+          <div class="tl-num">2</div>
+          <div class="tl-body">
             <h3>Приоритеты</h3>
-            <p>Выделяем задачи, которые реально двигают бизнес, и находим, что можно делегировать,
-              автоматизировать или просто убрать.</p>
+            <p>Выделяем задачи, которые реально двигают бизнес, и находим, что можно
+              делегировать, автоматизировать или просто убрать.</p>
           </div>
         </div>
-        <div class="step reveal">
-          <div class="step-num">3</div>
-          <div class="step-body">
+
+        <div class="tl-step reveal">
+          <div class="tl-body">
             <h3>Система</h3>
             <p>Собираем персональный ритм недели: фокус-блоки, границы, правила для команды и
               клиентов — так, чтобы система не держалась на силе воли.</p>
           </div>
+          <div class="tl-num">3</div>
+          <div class="tl-spacer"></div>
         </div>
-        <div class="step reveal">
-          <div class="step-num">4</div>
-          <div class="step-body">
+
+        <div class="tl-step reveal">
+          <div class="tl-spacer"></div>
+          <div class="tl-num">4</div>
+          <div class="tl-body">
             <h3>Сопровождение — при необходимости</h3>
             <p>Серия созвонов, чтобы новая система прижилась и выдержала первый «горящий»
               дедлайн, а не осталась планом на бумаге.</p>
@@ -163,24 +201,24 @@
 
       <div class="features">
         <div class="feature reveal">
-          <div class="feature-icon" style="background:#FF9F1C1a;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1" stroke="#FF9F1C" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="3.2" stroke="#FF9F1C" stroke-width="1.8"/></svg>
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1" stroke="#FF9F1C" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="3.2" stroke="#FF9F1C" stroke-width="1.8"/></svg>
           </div>
           <h3>Под ваш бизнес, не под шаблон</h3>
           <p>Никаких универсальных методик. Разбираем именно вашу модель работы — агентство,
             консалтинг, соло-практика или онлайн-продукт.</p>
         </div>
         <div class="feature reveal">
-          <div class="feature-icon" style="background:#2EC4B61a;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2v6l4 2" stroke="#2EC4B6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="9" stroke="#2EC4B6" stroke-width="1.8"/></svg>
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v6l4 2" stroke="#2EC4B6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="9" stroke="#2EC4B6" stroke-width="1.8"/></svg>
           </div>
           <h3>Фокус на энергии, а не только на часах</h3>
-          <p>Учитываем не только тайм-менеджмент, но и то, когда у вас пик концентрации, а когда —
-            рутинные задачи без потерь качества.</p>
+          <p>Учитываем не только тайм-менеджмент, но и то, когда у вас пик концентрации, а
+            когда — рутинные задачи без потери качества.</p>
         </div>
         <div class="feature reveal">
-          <div class="feature-icon" style="background:#2121211a;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#212121" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#FAFAFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <h3>Конкретные договорённости, а не мотивация</h3>
           <p>Каждый созвон заканчивается письменным списком изменений на неделю вперёд — не
@@ -189,7 +227,7 @@
       </div>
 
       <div class="solution-cta reveal">
-        <a href="#cta" class="btn btn-primary">Записаться на диагностический созвон</a>
+        <a href="#cta" class="btn btn-primary magnetic">Записаться на диагностический созвон</a>
       </div>
     </div>
   </section>
@@ -199,7 +237,7 @@
     <div class="container">
       <div class="section-head reveal">
         <p class="eyebrow">Как проходит консультация</p>
-        <h2>Прозрачный формат — без сюрпризов и обязательств</h2>
+        <h2>Прозрачный формат — <span class="hl">без сюрпризов</span> и обязательств</h2>
       </div>
 
       <div class="format-grid reveal">
@@ -209,11 +247,11 @@
         </div>
         <div class="format-card">
           <span class="format-label">Формат</span>
-          <span class="format-value">Онлайн-звонок, Zoom или Telegram</span>
+          <span class="format-value">Онлайн, Zoom или Telegram</span>
         </div>
         <div class="format-card">
           <span class="format-label">На выходе</span>
-          <span class="format-value">Письменный план действий на неделю</span>
+          <span class="format-value">План действий на неделю</span>
         </div>
         <div class="format-card">
           <span class="format-label">Обязательства</span>
@@ -222,59 +260,63 @@
       </div>
 
       <div class="guarantee reveal">
-        <div class="guarantee-icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2l7 3v6c0 5-3.4 8.4-7 11-3.6-2.6-7-6-7-11V5l7-3z" stroke="#FF9F1C" stroke-width="1.8" stroke-linejoin="round"/></svg>
-        </div>
-        <p><strong>Гарантия результата первой встречи.</strong> Если после диагностического
-          созвона вы не увидите, что конкретно поменять в своей неделе уже сейчас — верну оплату.
-          Без объяснений и уговоров остаться.</p>
+        <span class="guarantee-quote" aria-hidden="true">“</span>
+        <p>Если после диагностического созвона вы не увидите, что конкретно поменять
+          в своей неделе уже сейчас — верну оплату. Без объяснений и уговоров остаться.</p>
+        <span class="guarantee-tag">Гарантия результата первой встречи</span>
       </div>
 
       <div class="faq" id="faq">
         <h3 class="faq-title reveal">Частые вопросы</h3>
 
-        <div class="faq-item reveal">
-          <button class="faq-q" aria-expanded="false">
-            <span>Чем это отличается от книг и курсов по тайм-менеджменту?</span>
-            <span class="faq-toggle" aria-hidden="true"></span>
-          </button>
-          <div class="faq-a">
-            <p>Книга не видит ваш конкретный календарь и вашу команду. На созвоне мы разбираем
-              реальные задачи и решения текущей недели — рекомендации сразу привязаны к вашему
-              бизнесу, а не к абстрактному читателю.</p>
+        <div class="faq-grid">
+          <div class="faq-item reveal">
+            <button class="faq-q" aria-expanded="false">
+              <span class="faq-q-num">01</span>
+              <span class="faq-q-text">Чем это отличается от книг и курсов по тайм-менеджменту?</span>
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </button>
+            <div class="faq-a">
+              <p>Книга не видит ваш конкретный календарь и вашу команду. На созвоне мы
+                разбираем реальные задачи и решения текущей недели — рекомендации сразу
+                привязаны к вашему бизнесу, а не к абстрактному читателю.</p>
+            </div>
           </div>
-        </div>
 
-        <div class="faq-item reveal">
-          <button class="faq-q" aria-expanded="false">
-            <span>У меня и так нет времени — как выделить час на созвон?</span>
-            <span class="faq-toggle" aria-hidden="true"></span>
-          </button>
-          <div class="faq-a">
-            <p>Именно поэтому первая встреча — диагностика на 60 минут, а не программа на месяцы.
-              Одна встреча, чтобы найти, откуда взять остальные часы.</p>
+          <div class="faq-item reveal">
+            <button class="faq-q" aria-expanded="false">
+              <span class="faq-q-num">02</span>
+              <span class="faq-q-text">У меня и так нет времени — как выделить час на созвон?</span>
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </button>
+            <div class="faq-a">
+              <p>Именно поэтому первая встреча — диагностика на 60 минут, а не программа
+                на месяцы. Одна встреча, чтобы найти, откуда взять остальные часы.</p>
+            </div>
           </div>
-        </div>
 
-        <div class="faq-item reveal">
-          <button class="faq-q" aria-expanded="false">
-            <span>Подходит, если я работаю один, без команды?</span>
-            <span class="faq-toggle" aria-hidden="true"></span>
-          </button>
-          <div class="faq-a">
-            <p>Да. Часть запросов — от фрилансеров и соло-предпринимателей: там управлять
-              приоритетами и энергией сложнее, потому что делегировать формально некому.</p>
+          <div class="faq-item reveal">
+            <button class="faq-q" aria-expanded="false">
+              <span class="faq-q-num">03</span>
+              <span class="faq-q-text">Подходит, если я работаю один, без команды?</span>
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </button>
+            <div class="faq-a">
+              <p>Да. Часть запросов — от фрилансеров и соло-предпринимателей: там управлять
+                приоритетами и энергией сложнее, потому что делегировать формально некому.</p>
+            </div>
           </div>
-        </div>
 
-        <div class="faq-item reveal">
-          <button class="faq-q" aria-expanded="false">
-            <span>А если после разбора я не захочу продолжать?</span>
-            <span class="faq-toggle" aria-hidden="true"></span>
-          </button>
-          <div class="faq-a">
-            <p>Никаких обязательств. Диагностический созвон — самостоятельный продукт: вы получите
-              план действий независимо от того, будем ли мы работать дальше.</p>
+          <div class="faq-item reveal">
+            <button class="faq-q" aria-expanded="false">
+              <span class="faq-q-num">04</span>
+              <span class="faq-q-text">А если после разбора я не захочу продолжать?</span>
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </button>
+            <div class="faq-a">
+              <p>Никаких обязательств. Диагностический созвон — самостоятельный продукт: вы
+                получите план действий независимо от того, будем ли мы работать дальше.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -283,6 +325,7 @@
 
   <!-- ================= FINAL CTA ================= -->
   <section class="cta-final" id="cta">
+    <span class="cta-watermark" aria-hidden="true">СОЗВОН</span>
     <div class="container cta-inner">
       <div class="cta-copy reveal">
         <h2>Начните с одного созвона, который покажет, где вы теряете часы</h2>
@@ -327,13 +370,24 @@
 </main>
 
 <footer class="footer">
+  <span class="footer-watermark" aria-hidden="true">МД</span>
   <div class="container footer-inner">
-    <a href="#top" class="logo">
-      <span class="logo-mark">МД</span>
-      <span class="logo-text">Марина Дегтярёва</span>
-    </a>
-    <p class="footer-note">Коучинг по продуктивности для предпринимателей и фрилансеров</p>
-    <p class="footer-copy">© 2026. Все консультации проводятся онлайн.</p>
+    <div class="footer-top">
+      <a href="#top" class="logo">
+        <span class="logo-mark">МД</span>
+        <span class="logo-text">Марина Дегтярёва</span>
+      </a>
+      <nav class="footer-nav">
+        <a href="#problem">Проблема</a>
+        <a href="#solution">Решение</a>
+        <a href="#trust">Формат</a>
+        <a href="#faq">Вопросы</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-note">Коучинг по продуктивности для предпринимателей и фрилансеров</p>
+      <p class="footer-copy">© 2026. Все консультации проводятся онлайн.</p>
+    </div>
   </div>
 </footer>
 
