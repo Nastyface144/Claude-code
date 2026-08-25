@@ -7,10 +7,14 @@
 <meta name="description" content="Pulse X1: AMOLED-экран, точный пульс и сон, гибкие уведомления с телефона — и 14 дней без зарядки вместо одного. Предзаказ со скидкой.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<div class="noise-overlay" aria-hidden="true"></div>
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+<div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
 
 <header class="site-header" id="top">
   <div class="container header-inner">
@@ -33,14 +37,17 @@
 
   <!-- ============ 1. HERO ============ -->
   <section class="hero">
+    <span class="bg-numeral" aria-hidden="true">14</span>
     <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-grid" aria-hidden="true"></div>
+
     <div class="container hero-inner">
       <div class="hero-text reveal">
         <p class="eyebrow">Pulse X1 · умные часы нового поколения</p>
-        <h1>Часы, которые работают неделями, а не часами до&nbsp;зарядки</h1>
+        <h1>Часы, которые работают <span class="text-accent">неделями</span>,<br>а не часами до зарядки</h1>
         <p class="hero-sub">AMOLED-экран, точный пульс и сон, уведомления с телефона под контролем — и 14 дней автономности вместо одного. Для тех, кто носит часы каждый день, а не заряжает их каждый вечер.</p>
         <div class="hero-actions">
-          <a href="#cta" class="btn btn-primary">Заказать Pulse X1 — 11 990 ₽</a>
+          <a href="#cta" class="btn btn-primary btn-shine">Заказать Pulse X1 — 11 990 ₽</a>
           <a href="#solution" class="btn btn-ghost">Смотреть характеристики</a>
         </div>
         <ul class="hero-meta">
@@ -51,9 +58,23 @@
       </div>
 
       <div class="hero-visual reveal">
+        <div class="orbit-ring orbit-ring--1" aria-hidden="true"></div>
+        <div class="orbit-ring orbit-ring--2" aria-hidden="true"></div>
+
+        <div class="hero-badge hero-badge--1">
+          <span class="hero-badge-icon">🔋</span> 14 дней заряда
+        </div>
+        <div class="hero-badge hero-badge--2">
+          <span class="hero-badge-icon">💧</span> 5ATM
+        </div>
+        <div class="hero-badge hero-badge--3">
+          <span class="hero-badge-icon">☀️</span> 1000 нит
+        </div>
+
         <div class="watch-mock">
           <div class="watch-strap watch-strap--top"></div>
           <div class="watch-body">
+            <div class="watch-crown"></div>
             <div class="watch-face">
               <div class="watch-time">09:41</div>
               <div class="watch-hr">
@@ -62,11 +83,31 @@
                 </svg>
                 <span>72 уд/мин</span>
               </div>
-              <div class="watch-battery">Заряд 86% · осталось 12 дней</div>
+              <div class="watch-battery">
+                <span class="watch-battery-bar"><i style="width:86%"></i></span>
+                Заряд 86% · 12 дней
+              </div>
             </div>
           </div>
           <div class="watch-strap watch-strap--bottom"></div>
         </div>
+      </div>
+    </div>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>14 дней автономности</span><span>·</span>
+        <span>AMOLED 1.43″ / 1000 нит</span><span>·</span>
+        <span>Защита 5ATM</span><span>·</span>
+        <span>Пульс, SpO2, сон</span><span>·</span>
+        <span>Зарядка за 10 минут</span><span>·</span>
+        <span>iOS и Android</span><span>·</span>
+        <span>14 дней автономности</span><span>·</span>
+        <span>AMOLED 1.43″ / 1000 нит</span><span>·</span>
+        <span>Защита 5ATM</span><span>·</span>
+        <span>Пульс, SpO2, сон</span><span>·</span>
+        <span>Зарядка за 10 минут</span><span>·</span>
+        <span>iOS и Android</span><span>·</span>
       </div>
     </div>
   </section>
@@ -74,26 +115,41 @@
   <!-- ============ 2. ПРОБЛЕМА ============ -->
   <section class="problem" id="problem">
     <div class="container">
-      <p class="eyebrow eyebrow-center reveal">Знакомая ситуация?</p>
-      <h2 class="section-title reveal">Обычные умные часы не успевают за днём</h2>
+      <div class="section-head">
+        <p class="eyebrow reveal">Знакомая ситуация?</p>
+        <h2 class="section-title reveal">Обычные умные часы<br>не успевают за днём</h2>
+      </div>
 
-      <div class="problem-grid">
-        <div class="problem-card reveal">
+      <div class="problem-bento">
+        <div class="problem-card problem-card--big reveal">
           <span class="problem-num">01</span>
           <h3>Разряд к шести вечера</h3>
           <p>Большинство смарт-часов держат заряд меньше суток. К концу рабочего дня экран гаснет — и часы становятся просто браслетом.</p>
+          <div class="compare-bars">
+            <div class="compare-row">
+              <span class="compare-label">Обычные часы</span>
+              <span class="compare-track"><i style="width:34%"></i></span>
+            </div>
+            <div class="compare-row compare-row--muted">
+              <span class="compare-label">Pulse X1</span>
+              <span class="compare-track compare-track--accent"><i style="width:100%"></i></span>
+            </div>
+          </div>
         </div>
+
         <div class="problem-card reveal">
           <span class="problem-num">02</span>
           <h3>Пробежка с телефоном в руке</h3>
           <p>Без телефона не видно ни пульса, ни темпа, ни маршрута. С телефоном — неудобно бежать и страшно уронить.</p>
         </div>
+
         <div class="problem-card reveal">
           <span class="problem-num">03</span>
           <h3>Вибрация на каждое письмо</h3>
           <p>Уведомления сыплются все подряд — от игр до рассылок. Важный звонок тонет в потоке того, что могло подождать.</p>
         </div>
-        <div class="problem-card reveal">
+
+        <div class="problem-card problem-card--wide reveal">
           <span class="problem-num">04</span>
           <h3>Часы, которые сняли через месяц</h3>
           <p>Тяжёлый корпус, неудобный ремешок и приложение, в котором сложно разобраться — и часы остаются лежать в ящике стола.</p>
@@ -105,36 +161,44 @@
   <!-- ============ 3. РЕШЕНИЕ / ПРОДУКТ ============ -->
   <section class="solution" id="solution">
     <div class="container">
-      <p class="eyebrow eyebrow-center reveal">Что внутри Pulse X1</p>
-      <h2 class="section-title reveal">Всё нужное для дня — без компромисса на автономность</h2>
+      <div class="section-head">
+        <p class="eyebrow reveal">Что внутри Pulse X1</p>
+        <h2 class="section-title reveal">Всё нужное для дня —<br>без компромисса на автономность</h2>
+      </div>
 
-      <div class="feature-grid">
-        <div class="feature-card reveal">
+      <div class="feature-bento">
+        <div class="feature-card feature-card--big reveal">
           <div class="feature-icon" aria-hidden="true">🔋</div>
-          <h3>14 дней от одной зарядки</h3>
+          <div class="feature-big-number">14<span>дней</span></div>
+          <h3>от одной зарядки</h3>
           <p>В обычном режиме — до 14 дней, с постоянным GPS-трекингом — до 24 часов. Заряжать раз в две недели, а не каждую ночь.</p>
         </div>
-        <div class="feature-card reveal">
+
+        <div class="feature-card feature-card--wide reveal">
           <div class="feature-icon" aria-hidden="true">☀️</div>
           <h3>AMOLED-экран 1.43″</h3>
           <p>Яркость до 1000 нит — циферблат читается на солнце так же чётко, как в помещении.</p>
         </div>
+
         <div class="feature-card reveal">
           <div class="feature-icon" aria-hidden="true">❤️</div>
           <h3>Пульс, сон, стресс</h3>
-          <p>Пульс и SpO2 — каждую минуту, сон — по фазам, уровень стресса — по вариабельности сердечного ритма. Данные, а не догадки.</p>
+          <p>Пульс и SpO2 каждую минуту, сон по фазам, стресс по вариабельности сердечного ритма.</p>
         </div>
+
         <div class="feature-card reveal">
           <div class="feature-icon" aria-hidden="true">💧</div>
           <h3>Защита 5ATM</h3>
-          <p>Дождь, душ, бассейн — часы можно не снимать. Дополнительный корпус или чехол не нужен.</p>
+          <p>Дождь, душ, бассейн — часы можно не снимать.</p>
         </div>
-        <div class="feature-card reveal">
+
+        <div class="feature-card feature-card--wide reveal">
           <div class="feature-icon" aria-hidden="true">🔕</div>
           <h3>Уведомления под контролем</h3>
           <p>Выбираете, какие приложения и контакты вибрируют на запястье. Остальное ждёт вас в телефоне.</p>
         </div>
-        <div class="feature-card reveal">
+
+        <div class="feature-card feature-card--wide reveal">
           <div class="feature-icon" aria-hidden="true">⚡</div>
           <h3>Быстрая зарядка</h3>
           <p>10 минут на магнитной подставке — и часов хватит ещё на день, если забыли поставить на ночь.</p>
@@ -160,7 +224,7 @@
       </div>
 
       <div class="solution-cta reveal">
-        <a href="#cta" class="btn btn-primary">Заказать Pulse X1 — 11 990 ₽</a>
+        <a href="#cta" class="btn btn-primary btn-shine">Заказать Pulse X1 — 11 990 ₽</a>
       </div>
     </div>
   </section>
@@ -175,24 +239,44 @@
         <div class="trust-num"><span>30 дней</span>на возврат</div>
       </div>
 
-      <p class="eyebrow eyebrow-center reveal">Отзывы покупателей</p>
-      <h2 class="section-title reveal">Что говорят те, кто уже носит Pulse X1</h2>
+      <div class="section-head">
+        <p class="eyebrow reveal">Отзывы покупателей</p>
+        <h2 class="section-title reveal">Что говорят те, кто уже<br>носит Pulse X1</h2>
+      </div>
 
       <div class="reviews-grid">
         <div class="review-card reveal">
+          <div class="review-top">
+            <span class="avatar" style="--a1:#3B82F6;--a2:#93C5FD">ИД</span>
+            <div>
+              <span class="review-author">Игорь Д.</span>
+              <span class="review-city">Москва</span>
+            </div>
+          </div>
           <div class="review-stars" aria-label="Оценка 5 из 5">★★★★★</div>
           <p>«Главное — реально забыл, что такое заряжать часы каждый день. Ставлю на базу раз в полторы недели».</p>
-          <span class="review-author">Игорь Д. — Москва</span>
         </div>
         <div class="review-card reveal">
+          <div class="review-top">
+            <span class="avatar" style="--a1:#2563EB;--a2:#60A5FA">АК</span>
+            <div>
+              <span class="review-author">Анна К.</span>
+              <span class="review-city">Санкт-Петербург</span>
+            </div>
+          </div>
           <div class="review-stars" aria-label="Оценка 5 из 5">★★★★★</div>
           <p>«Настроил уведомления только от рабочих чатов и звонков — телефон теперь достаю в разы реже».</p>
-          <span class="review-author">Анна К. — Санкт-Петербург</span>
         </div>
         <div class="review-card reveal">
+          <div class="review-top">
+            <span class="avatar" style="--a1:#1D4ED8;--a2:#3B82F6">МР</span>
+            <div>
+              <span class="review-author">Максим Р.</span>
+              <span class="review-city">Казань</span>
+            </div>
+          </div>
           <div class="review-stars" aria-label="Оценка 4 из 5">★★★★☆</div>
-          <p>«Бегаю с ними без телефона в кармане — трек и пульс на месте. Ремешок пришлось докупить под руку потоньше».</p>
-          <span class="review-author">Максим Р. — Казань</span>
+          <p>«Бегаю с ними без телефона в кармане — трек и пульс на месте. Ремешок пришлось докупить потоньше».</p>
         </div>
       </div>
       <p class="review-note">Отзывы приведены в качестве примера оформления блока — замените на реальные отзывы покупателей после старта продаж.</p>
@@ -240,6 +324,8 @@
 
   <!-- ============ 5. ФИНАЛЬНЫЙ CTA ============ -->
   <section class="final-cta" id="cta">
+    <span class="bg-numeral bg-numeral--cta" aria-hidden="true">X1</span>
+    <div class="final-glow" aria-hidden="true"></div>
     <div class="container final-cta-inner">
       <h2 class="reveal">Часы, о зарядке которых вы забудете на две недели</h2>
       <p class="final-sub reveal">AMOLED-экран, точный мониторинг здоровья и уведомления под вашим контролем — в одном устройстве с автономностью, которой действительно хватает на будни.</p>
@@ -250,11 +336,11 @@
           <span class="price-new">11 990 ₽</span>
         </div>
         <p class="price-note">Цена предзаказа для первой партии — после старта продаж вырастет до розничной.</p>
-        <a href="#" class="btn btn-primary btn-large">Оформить предзаказ за 11 990 ₽</a>
+        <a href="#" class="btn btn-primary btn-large btn-shine">Оформить предзаказ за 11 990 ₽</a>
         <ul class="price-guarantees">
-          <li>Бесплатная доставка по России</li>
-          <li>Оплата картой онлайн или при получении</li>
-          <li>Возврат в течение 30 дней без объяснения причин</li>
+          <li><span class="icon-check">✓</span>Бесплатная доставка по России</li>
+          <li><span class="icon-check">✓</span>Оплата картой онлайн или при получении</li>
+          <li><span class="icon-check">✓</span>Возврат в течение 30 дней без объяснения причин</li>
         </ul>
       </div>
     </div>

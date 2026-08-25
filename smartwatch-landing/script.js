@@ -1,3 +1,27 @@
+// Полоса прогресса скролла
+const progressBar = document.getElementById('scroll-progress');
+function updateProgress() {
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const ratio = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+  if (progressBar) progressBar.style.width = ratio + '%';
+}
+document.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+
+// Курсор-глоу в hero (только для устройств с точным указателем)
+const cursorGlow = document.getElementById('cursor-glow');
+const heroSection = document.querySelector('.hero');
+if (cursorGlow && heroSection && window.matchMedia('(pointer: fine)').matches) {
+  heroSection.addEventListener('mousemove', (e) => {
+    cursorGlow.style.setProperty('--x', e.clientX + 'px');
+    cursorGlow.style.setProperty('--y', e.clientY + 'px');
+    cursorGlow.classList.add('is-active');
+  });
+  heroSection.addEventListener('mouseleave', () => {
+    cursorGlow.classList.remove('is-active');
+  });
+}
+
 // Мобильное меню
 const burger = document.getElementById('burger');
 const nav = document.getElementById('main-nav');
