@@ -53,6 +53,23 @@
     revealEls.forEach((el) => el.classList.add('is-visible'));
   }
 
+  // ---- hero booking card: subtle tilt on mouse move ----
+  const bookingCard = document.getElementById('booking-card');
+  const heroVisual = document.querySelector('.hero-visual');
+
+  if (bookingCard && heroVisual && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    heroVisual.addEventListener('mousemove', (e) => {
+      const rect = heroVisual.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      bookingCard.style.transform = `rotateY(${x * 6}deg) rotateX(${y * -6}deg)`;
+    });
+
+    heroVisual.addEventListener('mouseleave', () => {
+      bookingCard.style.transform = 'rotateY(0) rotateX(0)';
+    });
+  }
+
   // ---- hero booking mock: light interactivity ----
   document.querySelectorAll('.booking-chips, .booking-days, .booking-slots').forEach((group) => {
     group.querySelectorAll('span').forEach((item) => {
