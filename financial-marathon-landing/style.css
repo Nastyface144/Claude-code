@@ -83,7 +83,21 @@ button { font-family: inherit; cursor: pointer; }
   background: var(--dark);
   color: var(--white);
   box-shadow: 0 12px 30px -12px rgba(27, 67, 50, 0.55);
+  position: relative;
+  overflow: hidden;
 }
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+.btn-primary:hover::before { left: 130%; }
 .btn-primary:hover {
   background: var(--dark-soft);
   transform: translateY(-2px);
@@ -201,6 +215,23 @@ button { font-family: inherit; cursor: pointer; }
   background: var(--gold-soft);
   bottom: -160px;
   left: -120px;
+}
+
+.hero-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: min(46vw, 620px);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--dark);
+  opacity: 0.035;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
 }
 
 .hero-inner {
@@ -367,6 +398,67 @@ button { font-family: inherit; cursor: pointer; }
 }
 .visual-float strong { color: var(--mint); font-family: var(--font-body); }
 
+/* ===================== Marquee ===================== */
+.marquee {
+  background: var(--dark);
+  overflow: hidden;
+  padding: 20px 0;
+}
+.marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--mint);
+  white-space: nowrap;
+  animation: marquee-scroll 32s linear infinite;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee-dot { color: var(--gold); opacity: 0.8; }
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ===================== Icon badges & spotlight cards ===================== */
+.icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  margin-bottom: 18px;
+  color: var(--dark);
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.icon-badge svg { width: 24px; height: 24px; }
+.icon-badge--mint { background: var(--mint-soft); }
+.icon-badge--gold { background: var(--gold-soft); }
+
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 0%), rgba(212, 163, 115, 0.16), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+.spotlight:hover::before { opacity: 1; }
+
 /* ===================== Section shared ===================== */
 section { padding: 100px 0; }
 
@@ -414,12 +506,12 @@ section { padding: 100px 0; }
   box-shadow: var(--shadow-soft);
 }
 .problem-num {
-  display: inline-block;
+  display: block;
   font-family: var(--font-display);
   font-size: 15px;
   font-weight: 600;
   color: var(--gold);
-  margin-bottom: 14px;
+  margin-bottom: 6px;
 }
 .problem-card h3 {
   font-size: 20px;
@@ -431,12 +523,30 @@ section { padding: 100px 0; }
   font-size: 15px;
 }
 
+@media (min-width: 961px) {
+  .problem-card:nth-child(even) { margin-top: 32px; }
+}
+
 /* ===================== Solution ===================== */
 .roadmap {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-bottom: 28px;
+  position: relative;
+}
+@media (min-width: 961px) {
+  .roadmap::before {
+    content: "";
+    position: absolute;
+    top: 50px;
+    left: calc(16.66% - 4px);
+    right: calc(16.66% - 4px);
+    height: 1px;
+    background: repeating-linear-gradient(90deg, var(--border) 0 8px, transparent 8px 16px);
+    z-index: 0;
+  }
+  .roadmap-step { z-index: 1; }
 }
 
 .roadmap-step {
@@ -455,6 +565,20 @@ section { padding: 100px 0; }
   height: 4px;
   background: linear-gradient(90deg, var(--dark), var(--mint));
   border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+.roadmap-step__circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--dark);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 18px;
 }
 .roadmap-step__days {
   display: inline-block;
@@ -498,11 +622,16 @@ section { padding: 100px 0; }
   padding: 26px 24px;
   border-radius: var(--radius-md);
   background: var(--mint-soft);
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.feature-card:nth-child(even) { background: var(--gold-soft); }
 .feature-card:hover {
-  background: var(--gold-soft);
-  transform: translateY(-3px);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-soft);
+}
+.feature-card .icon-badge {
+  background: var(--white);
+  box-shadow: 0 10px 22px -14px rgba(27, 67, 50, 0.5);
 }
 .feature-card h4 {
   font-size: 17px;
@@ -531,9 +660,18 @@ section { padding: 100px 0; }
 }
 .trust-badge {
   text-align: center;
-  padding: 28px 20px;
+  padding: 32px 20px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.trust-badge:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-soft);
+}
+.trust-badge .icon-badge {
+  margin-left: auto;
+  margin-right: auto;
 }
 .trust-badge strong {
   display: block;
@@ -772,4 +910,6 @@ section { padding: 100px 0; }
   .features { grid-template-columns: 1fr; }
   .visual-float { position: static; margin-top: 16px; text-align: center; }
   .hero-visual { flex-direction: column; }
+  .hero-watermark { font-size: 260px; opacity: 0.05; }
+  .marquee-track { font-size: 13.5px; }
 }
