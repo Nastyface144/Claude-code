@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEVDAY — однодневная IT-конференция для разработчиков</title>
+<meta name="description" content="14 ноября 2026, Москва. 5 треков, 24 доклада от практикующих инженеров, ноль воды. Билеты с ранней ценой — количество мест ограничено площадкой.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="grid-overlay" aria-hidden="true"></div>
+
+<header class="site-header" id="top">
+  <div class="container header-inner">
+    <a href="#top" class="logo">DEV<span class="accent">DAY</span></a>
+
+    <nav class="main-nav" id="main-nav">
+      <a href="#problem">Зачем ехать</a>
+      <a href="#solution">Треки</a>
+      <a href="#trust">Вопросы</a>
+      <a href="#cta" class="nav-cta">Билеты</a>
+    </nav>
+
+    <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-glow hero-glow--orange" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow--teal" aria-hidden="true"></div>
+
+    <div class="container hero-inner">
+      <p class="eyebrow reveal">14 ноября 2026 · Москва · 1 день</p>
+
+      <h1 class="hero-title reveal">
+        Один день.<br>
+        Пять треков.<br>
+        <span class="accent">Ноль воды.</span>
+      </h1>
+
+      <p class="hero-sub reveal">
+        Конференция для разработчиков и IT-специалистов, которым нужны конкретные решения,
+        а не мотивационные доклады. Спикеры — инженеры, которые сейчас пишут код в проде,
+        а не рассказывают о нём по памяти пятилетней давности.
+      </p>
+
+      <div class="hero-cta reveal">
+        <a href="#cta" class="btn btn-primary">Забронировать место — от 12 900 ₽</a>
+        <a href="#solution" class="btn btn-ghost">Смотреть треки</a>
+      </div>
+
+      <div class="hero-stats reveal">
+        <div class="stat-pill"><span>5</span> треков</div>
+        <div class="stat-pill"><span>24</span> доклада</div>
+        <div class="stat-pill"><span>1</span> день без общих слов</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ БЛОК 2 — ПРОБЛЕМА ============ -->
+  <section class="section" id="problem">
+    <div class="container">
+      <p class="section-label reveal">Зачем ехать</p>
+      <h2 class="section-title reveal">Знакомая ситуация?</h2>
+
+      <div class="problem-grid">
+        <article class="problem-card reveal">
+          <div class="problem-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 3h.01M10.3 3.9 2.5 17a2 2 0 0 0 1.7 3h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Три вечера на YouTube — один применимый инсайт</h3>
+          <p>Учишься по обрывкам чужих докладов: таймкоды скачут, контекст теряется, а до практики так и не доходит.</p>
+        </article>
+
+        <article class="problem-card reveal">
+          <div class="problem-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 9h18M8 3v3M16 3v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Конференции на три дня, а отгул — один</h3>
+          <p>Крупные международные ивенты требуют недели, визы и бюджета, которых у вас просто нет.</p>
+        </article>
+
+        <article class="problem-card reveal">
+          <div class="problem-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M8 12h8M8 16h5M6 3h9l3 3v15H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>«Внедрили Kubernetes, и всё стало хорошо»</h3>
+          <p>Доклады без цифр, архитектуры и реальных граблей не переносятся в вашу работу уже на следующий день.</p>
+        </article>
+
+        <article class="problem-card reveal">
+          <div class="problem-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.6"/><circle cx="17" cy="8" r="2.4" stroke="currentColor" stroke-width="1.6"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15.5 14.3c2.4.4 4.5 2.6 4.5 5.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Нетворкинг = стоять с кофе в одиночестве</h3>
+          <p>Знакомства не случаются сами по себе — нужен формат, который даёт для них повод, а не просто зал и фуршет.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ БЛОК 3 — РЕШЕНИЕ ============ -->
+  <section class="section section--alt" id="solution">
+    <div class="container">
+      <p class="section-label reveal">Как устроен DEVDAY</p>
+      <h2 class="section-title reveal">Формат, который экономит месяц самостоятельного разбора</h2>
+      <p class="section-sub reveal">
+        Всё построено вокруг одного правила: если доклад нельзя применить в понедельник —
+        ему нет места в программе.
+      </p>
+
+      <div class="feature-grid">
+        <article class="feature-card reveal">
+          <span class="feature-num">01</span>
+          <h3>5 параллельных треков</h3>
+          <p>Backend, Frontend, ML/AI, DevOps &amp; Infra, Продукт и техлидерство. Выбираете доклады под свою роль вместо того, чтобы сидеть на всём подряд.</p>
+        </article>
+
+        <article class="feature-card reveal">
+          <span class="feature-num">02</span>
+          <h3>Только практика</h3>
+          <p>Спикеры показывают архитектуру, код и метрики «было / стало» — не абстрактные принципы без контекста.</p>
+        </article>
+
+        <article class="feature-card reveal">
+          <span class="feature-num">03</span>
+          <h3>Разбор в кулуарах</h3>
+          <p>После каждого доклада — 20 минут в зоне обсуждения с докладчиком. Задать вопрос можно без записи на приём.</p>
+        </article>
+
+        <article class="feature-card reveal">
+          <span class="feature-num">04</span>
+          <h3>Запись в подарок</h3>
+          <p>Не успели на нужный доклад — 30 дней доступа к видео всех пяти треков после конференции.</p>
+        </article>
+      </div>
+
+      <div class="timeline reveal">
+        <div class="timeline-item">
+          <span class="timeline-time">10:00</span>
+          <span class="timeline-text">Открытие и кофе</span>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-time">10:30–13:00</span>
+          <span class="timeline-text">Треки, блок 1</span>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-time">13:00–14:00</span>
+          <span class="timeline-text">Обед и нетворкинг-зона</span>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-time">14:00–18:00</span>
+          <span class="timeline-text">Треки, блок 2</span>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-time">18:00–19:30</span>
+          <span class="timeline-text">Afterparty со спикерами</span>
+        </div>
+      </div>
+
+      <div class="section-cta reveal">
+        <a href="#cta" class="btn btn-primary">Посмотреть треки и забронировать место</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ БЛОК 4 — ДОВЕРИЕ ============ -->
+  <section class="section" id="trust">
+    <div class="container">
+      <p class="section-label reveal">Прежде чем купить билет</p>
+      <h2 class="section-title reveal">Вопросы, которые обычно задают перед покупкой</h2>
+
+      <div class="guarantee-banner reveal">
+        <div class="guarantee-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 6v6c0 4.4 3.4 8.4 8 9 4.6-.6 8-4.6 8-9V6l-8-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <h3>Гарантия применимости</h3>
+          <p>Если после конференции ни один доклад не пригодился в работе — вернём деньги в течение 7 дней после мероприятия. Без анкет и объяснений.</p>
+        </div>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Доклады будут не слишком простыми — для джунов?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Каждый доклад в программе помечен уровнем — Intro или Advanced. Фильтруете по бейджу и собираете себе маршрут по треку заранее.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Что если конкретный доклад окажется бесполезным?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Залы всех пяти треков находятся рядом — переходите в соседний в любой момент, без штрафов и лишних вопросов на входе.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Не смогу приехать очно в этот день — билет сгорит?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Нет. В стоимость входит запись — 30 дней доступа ко всем докладам пяти треков, даже если вы не были на площадке.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Компания может оплатить билет счётом?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Да. После оформления заявки на юрлицо мы высылаем счёт с НДС и закрывающие документы на email из формы.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Сколько мест ещё осталось?
+            <span class="faq-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="faq-answer">
+            <p>Вместимость площадки ограничена физически. Актуальный остаток мест и текущая цена всегда видны на странице оплаты.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ БЛОК 5 — ФИНАЛЬНЫЙ CTA ============ -->
+  <section class="section section--cta" id="cta">
+    <div class="hero-glow hero-glow--orange" aria-hidden="true"></div>
+    <div class="container cta-inner">
+      <p class="eyebrow reveal">Ранняя цена — до 30 октября</p>
+      <h2 class="cta-title reveal">Забронируйте день, который заменит месяц самообучения</h2>
+      <p class="cta-sub reveal">
+        14 ноября, 5 треков, 24 доклада и запись в подарок на 30 дней.
+        После 30 октября цена вырастет до 16 900 ₽.
+      </p>
+
+      <div class="price-row reveal">
+        <div class="price-box">
+          <span class="price-old">16 900 ₽</span>
+          <span class="price-new">12 900 ₽</span>
+          <span class="price-caption">льготная цена, действует до 30.10</span>
+        </div>
+      </div>
+
+      <form class="cta-form" id="cta-form">
+        <input type="text" id="name" name="name" placeholder="Имя" required autocomplete="name">
+        <input type="email" id="email" name="email" placeholder="Рабочий email" required autocomplete="email">
+        <button type="submit" class="btn btn-primary">Купить билет — 12 900 ₽</button>
+      </form>
+
+      <p class="cta-note" id="cta-note">Оплата картой или по счёту для юрлиц. Не подошло — вернём деньги в течение 7 дней после конференции.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span class="logo">DEV<span class="accent">DAY</span></span>
+    <p>14 ноября 2026 · Москва · Однодневная конференция для разработчиков</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
