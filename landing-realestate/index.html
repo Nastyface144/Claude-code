@@ -12,6 +12,8 @@
 </head>
 <body>
 
+<div class="noise-overlay" aria-hidden="true"></div>
+
 <header class="site-header" id="up">
   <div class="container header-inner">
     <a href="#up" class="logo">ANTARES</a>
@@ -34,7 +36,8 @@
   <!-- ============ HERO ============ -->
   <section class="hero" id="hero">
     <div class="hero-bg" aria-hidden="true">
-      <div class="facade">
+      <div class="spotlight" id="spotlight"></div>
+      <div class="facade" id="facade">
         <div class="window w1"></div><div class="window w2"></div><div class="window w3"></div>
         <div class="window w4"></div><div class="window w5"></div><div class="window w6"></div>
         <div class="window w7"></div><div class="window w8"></div><div class="window w9"></div>
@@ -44,7 +47,7 @@
 
     <div class="container hero-inner">
       <p class="eyebrow">Клубная резиденция · 24 квартиры</p>
-      <h1>Дом на 24&nbsp;семьи —<br>и ни одной лишней</h1>
+      <h1>Дом на 24&nbsp;семьи —<br><em>и ни одной лишней</em></h1>
       <p class="hero-lead">
         Закрытая территория в сосновом парке, панорамные окна, потолки 3,2&nbsp;м
         и финишная отделка, включённая в стоимость. Посмотрите, как выглядит
@@ -57,13 +60,21 @@
       </div>
 
       <ul class="hero-stats">
-        <li><span>24</span>резиденции</li>
-        <li><span>6 га</span>соснового парка</li>
-        <li><span>3,2 м</span>потолки</li>
-        <li><span>78–210 м²</span>планировки</li>
+        <li><span class="stat-num" data-target="24">0</span>резиденции</li>
+        <li><span class="stat-num" data-target="6" data-suffix="&nbsp;га">0</span>соснового парка</li>
+        <li><span class="stat-num" data-target="3.2" data-decimals="1" data-suffix="&nbsp;м">0</span>потолки</li>
+        <li><span class="stat-value">78–210 м²</span>планировки</li>
       </ul>
     </div>
   </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Сосновый парк · Панорамные окна · Потолки 3,2 м · Паркинг 1:1 · Эскроу по 214-ФЗ · Всего 24 резиденции · </span>
+      <span>Сосновый парк · Панорамные окна · Потолки 3,2 м · Паркинг 1:1 · Эскроу по 214-ФЗ · Всего 24 резиденции · </span>
+    </div>
+  </div>
 
   <!-- ============ PROBLEM ============ -->
   <section class="problem" id="context">

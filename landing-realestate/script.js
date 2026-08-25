@@ -57,6 +57,61 @@ document.querySelectorAll('.faq-question').forEach((btn) => {
   });
 });
 
+// Hero cursor spotlight + parallax facade
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hero = document.querySelector('.hero');
+const spotlight = document.getElementById('spotlight');
+if (hero && spotlight && !prefersReducedMotion) {
+  hero.addEventListener('pointermove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    spotlight.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+    spotlight.style.setProperty('--my', `${e.clientY - rect.top}px`);
+    hero.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+    hero.style.setProperty('--my', `${e.clientY - rect.top}px`);
+  });
+}
+
+const facade = document.getElementById('facade');
+if (facade && !prefersReducedMotion) {
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (window.scrollY < window.innerHeight) {
+        facade.style.setProperty('--parallax', `${window.scrollY * -0.12}px`);
+      }
+    },
+    { passive: true }
+  );
+}
+
+// Count-up numbers in hero stats
+document.querySelectorAll('.stat-num').forEach((el) => {
+  const target = parseFloat(el.dataset.target);
+  const decimals = parseInt(el.dataset.decimals || '0', 10);
+  const suffix = el.dataset.suffix || '';
+
+  if (prefersReducedMotion) {
+    el.innerHTML = target.toFixed(decimals) + suffix;
+    return;
+  }
+
+  const duration = 1400;
+  const start = performance.now() + 300;
+
+  const tick = (now) => {
+    const elapsed = now - start;
+    if (elapsed < 0) {
+      requestAnimationFrame(tick);
+      return;
+    }
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.innerHTML = (target * eased).toFixed(decimals) + suffix;
+    if (progress < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+});
+
 // Contact form (client-side only — no backend wired up yet)
 const form = document.getElementById('contact-form');
 const fields = document.getElementById('form-fields');
