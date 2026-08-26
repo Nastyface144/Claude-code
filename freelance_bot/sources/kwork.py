@@ -10,6 +10,7 @@ import json
 import logging
 import re
 from typing import Any
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 import aiohttp
 
@@ -20,6 +21,14 @@ log = logging.getLogger(__name__)
 
 PROJECT_URL = "https://kwork.ru/projects/{id}"
 _VAR_RE = re.compile(r'(?:window\.stateData\s*=\s*|"wantsListData"\s*:\s*)')
+
+
+def _with_page(url: str, page: int) -> str:
+    """Добавить/заменить ?page=N — на первой странице этого параметра нет."""
+    parts = urlsplit(url)
+    params = dict(parse_qsl(parts.query))
+    params["page"] = str(page)
+    return urlunsplit(parts._replace(query=urlencode(params)))
 
 
 def _find_wants(node: Any, depth: int = 0) -> list[dict]:
@@ -109,10 +118,17 @@ def parse_wants(wants: list[dict], source_name: str) -> list[Order]:
 
 
 class KworkSource(Source):
-    """Заказы с биржи Kwork: страница проектов со встроенным JSON."""
+    """Заказы с биржи Kwork: страница проектов со встроенным JSON.
+
+    Первая страница категории отдаёт ~12 заказов — вторая почти столько же
+    новых (проверено живьём: id заказов не пересекаются), поэтому тянем
+    обе и объединяем. Если вторая страница не отдалась — не страшно,
+    работаем с тем, что есть с первой.
+    """
 
     attempts = 3
     retry_pause = 3.0
+    extra_pages = 1
 
     async def fetch(self, session: aiohttp.ClientSession) -> list[Order]:
         raw = await fetch_bytes(
@@ -122,5 +138,25 @@ class KworkSource(Source):
         wants = extract_wants(html)
         if not wants:
             raise RuntimeError("на странице Kwork не нашлось списка заказов (изменилась вёрстка?)")
+
+        seen_ids = {want.get("id") for want in wants}
+        for page in range(2, self.extra_pages + 2):
+            try:
+                raw_page = await fetch_bytes(
+                    session,
+                    _with_page(self.config.url, page),
+                    attempts=self.attempts,
+                    pause=self.retry_pause,
+                )
+            except Exception as exc:  # noqa: BLE001 - страница вторична, первая уже есть
+                log.debug("%s: страница %s недоступна (%s), обхожусь без неё", self.name, page, exc)
+                break
+            page_wants = extract_wants(raw_page.decode("utf-8", "replace"))
+            new_wants = [w for w in page_wants if w.get("id") not in seen_ids]
+            if not new_wants:
+                break
+            seen_ids.update(w.get("id") for w in new_wants)
+            wants.extend(new_wants)
+
         log.debug("%s: найдено %s заказов", self.name, len(wants))
         return parse_wants(wants, self.name)

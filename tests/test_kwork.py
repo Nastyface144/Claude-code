@@ -1,11 +1,14 @@
 """Разбор биржи заказов Kwork (данные лежат в JSON внутри страницы)."""
 
 import json
+from types import SimpleNamespace
 
+import aiohttp
 import pytest
 
 from freelance_bot.matcher import Matcher
-from freelance_bot.sources.kwork import extract_wants, parse_wants
+from freelance_bot.sources.base import SourceConfig
+from freelance_bot.sources.kwork import KworkSource, extract_wants, parse_wants
 
 WANT = {
     "id": 3241244,
@@ -70,3 +73,72 @@ def test_broken_entries_are_skipped():
 def test_kwork_order_passes_the_filter():
     order = parse_wants([WANT], "kwork")[0]
     assert Matcher().match(order).is_relevant(5)
+
+
+class FakeResponse:
+    def __init__(self, status: int, body: str, url: str = "https://kwork.ru/projects?c=41") -> None:
+        self.status = status
+        self.reason = "err"
+        self._body = body
+        self.request_info = SimpleNamespace(real_url=url)
+        self.history = ()
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, *exc):
+        return False
+
+    async def read(self) -> bytes:
+        return self._body.encode()
+
+    def raise_for_status(self) -> None:
+        if self.status >= 400:
+            raise aiohttp.ClientResponseError(
+                self.request_info, self.history, status=self.status, message=self.reason
+            )
+
+
+class FakeSession:
+    def __init__(self, by_url: dict[str, FakeResponse]) -> None:
+        self.by_url = by_url
+        self.urls: list[str] = []
+
+    def get(self, url: str, **kwargs) -> FakeResponse:
+        self.urls.append(url)
+        return self.by_url.get(url, FakeResponse(500, ""))
+
+
+WANT_2 = dict(WANT, id=9999999, name="Лендинг для запуска продукта")
+
+
+def make_source() -> KworkSource:
+    return KworkSource(SourceConfig(name="kwork", url="https://kwork.ru/projects?c=41", kind="kwork"))
+
+
+async def test_second_page_orders_are_merged_in():
+    session = FakeSession(
+        {
+            "https://kwork.ru/projects?c=41": FakeResponse(200, page([WANT])),
+            "https://kwork.ru/projects?c=41&page=2": FakeResponse(200, page([WANT_2])),
+        }
+    )
+    orders = await make_source().fetch(session)
+    assert {o.external_id for o in orders} == {"3241244", "9999999"}
+
+
+async def test_missing_second_page_does_not_break_the_first():
+    session = FakeSession({"https://kwork.ru/projects?c=41": FakeResponse(200, page([WANT]))})
+    orders = await make_source().fetch(session)
+    assert [o.external_id for o in orders] == ["3241244"]
+
+
+async def test_duplicate_ids_on_second_page_are_not_added_twice():
+    session = FakeSession(
+        {
+            "https://kwork.ru/projects?c=41": FakeResponse(200, page([WANT])),
+            "https://kwork.ru/projects?c=41&page=2": FakeResponse(200, page([WANT])),
+        }
+    )
+    orders = await make_source().fetch(session)
+    assert [o.external_id for o in orders] == ["3241244"]

@@ -14,7 +14,14 @@ from .telegram_channel import TelegramChannelSource
 #   Freelance.ru        — 404 по всем известным адресам
 #   Weblancer           — 403, режет запросы из дата-центров (с домашнего IP может работать)
 #   Kwork               — RSS отдаёт услуги продавцов, зато биржа заказов доступна
-#                         страницей: заказы лежат в JSON внутри HTML (kind="kwork")
+#                         страницей: заказы лежат в JSON внутри HTML (kind="kwork").
+#                         У каждой категории есть вторая страница с другими
+#                         заказами (id не пересекаются) — KworkSource тянет обе
+#                         сама, без отдельного источника в списке.
+#   Kwork · доп. категория — категория 37 «Создание сайта» (соседняя с уже
+#                         используемой 41 «Скрипты, боты и mini apps») —
+#                         именно там публикуют одностраничники/лендинги,
+#                         добавлена как источник kwork_web (26.08.2026).
 #   Freelancehunt       — 403, Upwork — 403, YouDo — пустая лента, Workspace — 404
 #   Upwork/Fiverr       — 403/410, закрыты для дата-центров или без открытой ленты заявок
 #   Jobbers.io          — 403 Cloudflare-челлендж, репутация не проверена
@@ -36,6 +43,12 @@ DEFAULT_SOURCES: tuple[SourceConfig, ...] = (
         url="https://kwork.ru/projects?c=41",
         kind="kwork",
         title="Kwork · Разработка и IT",
+    ),
+    SourceConfig(
+        name="kwork_web",
+        url="https://kwork.ru/projects?c=37",
+        kind="kwork",
+        title="Kwork · Создание сайта",
     ),
 )
 
