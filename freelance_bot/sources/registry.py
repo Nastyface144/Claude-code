@@ -8,8 +8,8 @@ from .rss import RssSource
 from .telegram_channel import TelegramChannelSource
 
 # Ленты бирж. Список проверен запуском `probe` 24.08.2026 из сети GitHub Actions:
-#   FL.ru               — работает технически (~60 заказов за запрос), но убран по
-#                         решению пользователя — платная биржа, не устраивает как площадка
+#   FL.ru               — работает, ~60 свежих заказов за запрос (по решению
+#                         пользователя оставлена, несмотря на то что биржа платная)
 #   Хабр Фриланс        — 410 Gone, лента закрыта (tasks.rss, tasks/rss, tasks.atom, freelansim)
 #   Freelance.ru        — 404 по всем известным адресам
 #   Weblancer           — 403, режет запросы из дата-центров (с домашнего IP может работать)
@@ -30,6 +30,7 @@ from .telegram_channel import TelegramChannelSource
 #                         канала с живой биржой за ним.
 # Список правится прямо из бота: /sources — статус, /addsource <имя> <url>, /delsource <имя>.
 DEFAULT_SOURCES: tuple[SourceConfig, ...] = (
+    SourceConfig(name="fl", url="https://www.fl.ru/rss/all.xml", title="FL.ru"),
     SourceConfig(
         name="kwork",
         url="https://kwork.ru/projects?c=41",
