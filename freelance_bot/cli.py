@@ -116,6 +116,36 @@ def _find_lists(node, path: str = "", depth: int = 0) -> list[tuple[str, list]]:
     return found
 
 
+def _visible_text(html: str, limit: int = 4000) -> str:
+    """Грубая читалка: вырезать script/style/теги, оставить видимый текст."""
+    import re
+
+    html = re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", html, flags=re.I | re.S)
+    text = re.sub(r"<[^>]+>", " ", html)
+    text = re.sub(r"&nbsp;", " ", text)
+    from html import unescape
+
+    text = unescape(text)
+    return " ".join(text.split())[:limit]
+
+
+def _telegram_messages(html: str, limit: int = 8) -> list[str]:
+    """Тексты постов из публичного превью канала (t.me/s/<channel>)."""
+    import re
+    from html import unescape
+
+    blocks = re.findall(
+        r'class="tgme_widget_message_text[^"]*"[^>]*>(.*?)</div>', html, re.S
+    )
+    messages = []
+    for block in blocks[-limit:]:
+        clean = unescape(re.sub(r"<[^>]+>", " ", block))
+        clean = " ".join(clean.split())
+        if clean:
+            messages.append(clean)
+    return messages
+
+
 def _inspect_html(raw: bytes) -> None:
     """Не лента, а страница: ищем встроенный JSON с данными (Vue/Nuxt/React)."""
     import json
@@ -123,11 +153,13 @@ def _inspect_html(raw: bytes) -> None:
     text = raw.decode("utf-8", "replace")
     print(f"HTML, {len(text)} символов. Ищу встроенные данные…")
 
+    found_json = False
     for name in ("window.stateData", "wantsListData", "window.__NUXT__", "window.__INITIAL_STATE__"):
         value = _extract_json_var(text, name)
         if value is None:
             print(f"  {name}: нет")
             continue
+        found_json = True
         print(f"  {name}: {type(value).__name__}")
         for path, items in _find_lists(value):
             print(f"    «{path}»: {len(items)} шт., поля: {list(items[0])[:25]}")
@@ -135,6 +167,16 @@ def _inspect_html(raw: bytes) -> None:
         if best:
             print(f"    пример из «{best[0]}»: "
                   + " ".join(json.dumps(best[1][0], ensure_ascii=False)[:1200].split()))
+
+    messages = _telegram_messages(text)
+    if messages:
+        print(f"  посты канала (последние {len(messages)}):")
+        for msg in messages:
+            print(f"    • {msg[:300]}")
+
+    if not found_json and not messages:
+        print("  видимый текст страницы (первые символы, для ручной проверки разметки):")
+        print("  " + _visible_text(text))
 
 
 async def dry_run(limit: int = 15) -> None:
