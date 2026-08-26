@@ -163,6 +163,9 @@ def _inspect_html(raw: bytes) -> None:
         print(f"  {name}: {type(value).__name__}")
         for path, items in _find_lists(value):
             print(f"    «{path}»: {len(items)} шт., поля: {list(items[0])[:25]}")
+            if "CATID" in items[0] and "name" in items[0]:
+                names = ", ".join(f"{it.get('CATID')}:{it.get('name')}" for it in items[:40])
+                print(f"      категории: {names}")
         best = max((pair for pair in _find_lists(value)), key=lambda pair: len(pair[1]), default=None)
         if best:
             print(f"    пример из «{best[0]}»: "
