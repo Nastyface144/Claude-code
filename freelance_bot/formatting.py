@@ -93,7 +93,7 @@ def row_message(row, index: int | None = None) -> str:
 
 HELP_TEXT = """<b>Радар фриланс-заказов</b>
 Слежу за биржами и присылаю только то, что подходит под твои темы:
-Telegram-боты, Telegram Mini Apps и лендинги.
+боты (Telegram, Discord, VK), Telegram Mini Apps и лендинги.
 
 <b>Основное</b>
 /start — включить рассылку

@@ -29,6 +29,10 @@ def test_normalize_collapses_punctuation_and_yo():
         ("Сделать лендинг для онлайн-курса", "Одностраничный сайт, адаптив"),
         ("Landing page + бот", "Нужен лендинг и чат-бот в тг"),
         ("Нужен тг-бот", "Простой бот-визитка"),
+        ("Бот для Discord", "Модерация сервера дискорд"),
+        ("Discord bot на discord.py", "Нужны роли и команды"),
+        ("Нужен бот для группы ВКонтакте", "Рассылка и ответы на сообщения"),
+        ("VK бот на vkbottle", "Обработка сообщений через longpoll"),
     ],
 )
 def test_relevant_orders(matcher, title, description):
@@ -39,11 +43,12 @@ def test_relevant_orders(matcher, title, description):
 @pytest.mark.parametrize(
     "title, description",
     [
-        ("Бот для Discord", "Модерация сервера дискорд"),
         ("Нужен сайт на WordPress", "Правки в теме"),
         ("Ищем менеджера по продажам", "Офис Москва, график 5/2"),
         ("Мобильное приложение на Flutter", "iOS и Android"),
         ("Написать статью про фриланс", "3000 знаков"),
+        ("Нужен бот для WhatsApp", "Рассылка клиентам"),
+        ("Ищем модератора Discord-сервера", "Без разработки, просто следить за чатом"),
     ],
 )
 def test_irrelevant_orders(matcher, title, description):

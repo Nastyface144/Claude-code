@@ -1,4 +1,4 @@
-"""Базовый профиль тем: Telegram-боты, мини-приложения (TWA) и лендинги.
+"""Базовый профиль тем: боты (Telegram/Discord/VK), мини-приложения (TWA) и лендинги.
 
 Правила описываются регулярками по НОРМАЛИЗОВАННОМУ тексту
 (нижний регистр, «ё» -> «е», любая пунктуация заменена на пробел),
@@ -9,15 +9,23 @@ from __future__ import annotations
 
 # Слова-«якоря», из которых собираются фразовые правила.
 TELEGRAM = r"(?:телеграм\w*|телеграмм\w*|телег[иеу]?|тг|telegram|telega|tg)"
+DISCORD = r"(?:discord|дискорд\w*)"
+VK = r"(?:вконтакте|vkontakte|вк|vk)"
 BOT = r"(?:бот\w*|bot\w*|chatbot)"
-GAP = r"(?:\s+\S+){0,3}\s+"  # до трёх слов между «телеграм» и «бот»
+GAP = r"(?:\s+\S+){0,3}\s+"  # до трёх слов между названием платформы и «бот»
 
 # (тег, вес, регулярка)
 INCLUDE_RULES: list[tuple[str, int, str]] = [
     # --- Telegram-боты -------------------------------------------------
     ("telegram-бот", 6, rf"\b{TELEGRAM}{GAP}{BOT}"),
     ("telegram-бот", 6, rf"\b{BOT}{GAP}{TELEGRAM}"),
-    ("стек ботов", 5, r"\b(?:aiogram|pyrogram|telethon|telebot|pytelegrambotapi|telegraf|grammy|botfather|tgbot|bot\s?api)\b"),
+    # --- Discord-боты ----------------------------------------------------
+    ("discord-бот", 6, rf"\b{DISCORD}{GAP}{BOT}"),
+    ("discord-бот", 6, rf"\b{BOT}{GAP}{DISCORD}"),
+    # --- VK-боты ---------------------------------------------------------
+    ("vk-бот", 6, rf"\b{VK}{GAP}{BOT}"),
+    ("vk-бот", 6, rf"\b{BOT}{GAP}{VK}"),
+    ("стек ботов", 5, r"\b(?:aiogram|pyrogram|telethon|telebot|pytelegrambotapi|telegraf|grammy|botfather|tgbot|bot\s?api|discord\.(?:py|js)|disnake|nextcord|pycord|hikari|vk[-_]?io|vkbottle|vk_api|longpoll)\b"),
     # --- Мини-приложения / TWA ----------------------------------------
     ("mini app", 6, r"\b(?:mini\s?app\w*|мини\s?апп\w*|мини\s?приложени\w*|telegram\s+web\s+app|tg\s+web\s+app|tma|twa)\b"),
     ("telegram stars / оплата в боте", 3, r"\b(?:telegram\s+stars|тг\s?старс|оплат\w*\s+в\s+бот\w*|подписк\w*\s+в\s+бот\w*)\b"),
@@ -27,6 +35,7 @@ INCLUDE_RULES: list[tuple[str, int, str]] = [
     # --- Общие сигналы (слабые, сами по себе порог не пробивают) --------
     ("бот", 2, rf"\b{BOT}\b"),
     ("telegram", 2, rf"\b{TELEGRAM}\b"),
+    ("discord", 2, rf"\b{DISCORD}\b"),
     ("сайт", 1, r"\b(?:сайт\w*|website|веб\s?сайт\w*)\b"),
     ("автоматизация/интеграции", 1, r"\b(?:интеграц\w*|webhook\w*|вебхук\w*|api|crm|amocrm|битрикс24|google\s+sheets|парсер\w*|рассылк\w*|автоматизац\w*)\b"),
     ("стек", 1, r"\b(?:python|питон|fastapi|aiohttp|django|flask|node\s?js|next\s?js|react|vue|sqlite|postgres\w*)\b"),
@@ -35,8 +44,11 @@ INCLUDE_RULES: list[tuple[str, int, str]] = [
 
 # Штрафы: тема похожа, но платформа/задача не наша.
 PENALTY_RULES: list[tuple[str, int, str]] = [
-    ("другой мессенджер", -5, r"\b(?:discord|дискорд\w*|whatsapp|вотсап\w*|ватсап\w*|viber|вайбер\w*|slack|макс\s+мессенджер)\b"),
-    ("чужая мини-платформа", -6, r"\b(?:вконтакте|vk\s?mini\s?app\w*|вк\s?мини|внутри\s+вк\b|мини\s?приложени\w*\s+(?:вк|вконтакте)|одноклассник\w*|wechat)\b"),
+    ("другой мессенджер", -5, r"\b(?:whatsapp|вотсап\w*|ватсап\w*|viber|вайбер\w*|slack|макс\s+мессенджер)\b"),
+    ("чужая мини-платформа", -6, r"\b(?:vk\s?mini\s?app\w*|вк\s?мини|внутри\s+вк\b|мини\s?приложени\w*\s+(?:вк|вконтакте)|одноклассник\w*|wechat)\b"),
+    # Отдельно от бота: «мини-приложение» + упоминание ВКонтакте где угодно в тексте
+    # (не обязательно рядом) — это тоже чужая мини-платформа, а не VK-бот.
+    ("чужая мини-платформа", -6, r"(?=.*\bмини\w*)(?=.*\bвконтакте\b)"),
     ("не наш стек", -4, r"\b(?:1с|1c\s?битрикс|bitrix\s?24\s+разработ\w*|wordpress|вордпресс|opencart|joomla|magento|drupal)\b"),
     ("мобильная разработка", -3, r"\b(?:android\s+приложени\w*|ios\s+приложени\w*|swift|kotlin|flutter|react\s+native)\b"),
     ("трафик/сео", -3, r"\b(?:сео\b|seo\b|посещаемост\w*|поисков\w+\s+продвижен\w*|трафик\w*\s+на\s+сайт|позици\w+\s+в\s+(?:яндекс|google))\b"),
