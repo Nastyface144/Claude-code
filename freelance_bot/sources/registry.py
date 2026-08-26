@@ -5,6 +5,7 @@ from __future__ import annotations
 from .base import Source, SourceConfig
 from .kwork import KworkSource
 from .rss import RssSource
+from .telegram_channel import TelegramChannelSource
 
 # Ленты бирж. Список проверен запуском `probe` 24.08.2026 из сети GitHub Actions:
 #   FL.ru               — работает технически (~60 заказов за запрос), но убран по
@@ -15,6 +16,18 @@ from .rss import RssSource
 #   Kwork               — RSS отдаёт услуги продавцов, зато биржа заказов доступна
 #                         страницей: заказы лежат в JSON внутри HTML (kind="kwork")
 #   Freelancehunt       — 403, Upwork — 403, YouDo — пустая лента, Workspace — 404
+#   Upwork/Fiverr       — 403/410, закрыты для дата-центров или без открытой ленты заявок
+#   Jobbers.io          — 403 Cloudflare-челлендж, репутация не проверена
+#   napodrabotku.ru     — похож на SEO-каталог бытовых услуг (репетиторы, ремонт),
+#                         не биржа IT-заказов — не используется
+#   Хабр Фриланс (Telegram) — канал t.me/s/freelansim_ru жив и постит подборки
+#                         заказов с ценами, но все ссылки на заказы (u.habr.com/...)
+#                         отдают 410 с текстом «Сервис Хабр Фриланс закрылся
+#                         навсегда» — сама биржа закрыта, откликаться некуда.
+#                         Парсер оставлен (kind="telegram_channel", см. ниже),
+#                         но НЕ включён по умолчанию: карточки были бы с мёртвыми
+#                         ссылками. Пригодится через /addsource для другого
+#                         канала с живой биржой за ним.
 # Список правится прямо из бота: /sources — статус, /addsource <имя> <url>, /delsource <имя>.
 DEFAULT_SOURCES: tuple[SourceConfig, ...] = (
     SourceConfig(
@@ -25,7 +38,11 @@ DEFAULT_SOURCES: tuple[SourceConfig, ...] = (
     ),
 )
 
-KINDS: dict[str, type[Source]] = {"rss": RssSource, "kwork": KworkSource}
+KINDS: dict[str, type[Source]] = {
+    "rss": RssSource,
+    "kwork": KworkSource,
+    "telegram_channel": TelegramChannelSource,
+}
 
 
 def build_source(config: SourceConfig) -> Source:

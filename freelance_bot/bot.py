@@ -212,7 +212,12 @@ async def cmd_addsource(message: Message, command: CommandObject, radar: Radar) 
         )
         return
     name, url = parts[0], parts[1]
-    kind = "kwork" if "kwork.ru" in url else "rss"
+    if "kwork.ru" in url:
+        kind = "kwork"
+    elif "t.me/s/" in url:
+        kind = "telegram_channel"
+    else:
+        kind = "rss"
     title = " ".join(parts[2:])
     await radar.storage.add_source(name, url, kind, title)
     await message.answer(f"✅ Источник «{escape(name)}» добавлен. Проверить: /check")

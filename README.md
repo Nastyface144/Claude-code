@@ -266,6 +266,10 @@ python -m freelance_bot -v run               # подробные логи
 | Kwork RSS | `/rss` | ⚠️ отдаёт услуги продавцов, поэтому используется страница заказов |
 | Freelancehunt / Upwork | `/projects/rss*`, `/ab/feed/jobs/rss` | ❌ 403 |
 | YouDo / Workspace | `/rss`, `/rss/tenders/` | ❌ пусто / 404 |
+| Fiverr | категории, `/rss/gigs` | ❌ 403 — открытой ленты заявок у Fiverr нет |
+| Jobbers.io | главная, `/rss`, `/projects` | ❌ 403 Cloudflare-челлендж, репутация не проверена |
+| napodrabotku.ru | `/jobs-freelancers/...` | ⚠️ похож на SEO-каталог бытовых услуг, не IT-биржа |
+| Хабр Фриланс (Telegram) | `t.me/s/freelansim_ru` | ⚠️ канал жив и постит заказы, но ссылки на них (`u.habr.com/...`) отдают 410 «Сервис закрылся навсегда» |
 
 Поэтому по умолчанию включена одна биржа — Kwork. У неё нет RSS для заказов, но
 страница отдаёт готовый JSON (`wantsListData`) — его и разбирает отдельный источник
@@ -283,7 +287,9 @@ python -m freelance_bot probe https://site.ru/rss https://other.ru/feed
 ```
 
 или через **Actions → Радар заказов → Run workflow → mode: probe** и список адресов
-в поле `urls`.
+в поле `urls`. Если адрес отдаёт HTML, а не RSS, — `python -m freelance_bot sample <url>`
+покажет встроенный JSON (если есть), посты Telegram-канала или видимый текст страницы,
+чтобы понять, можно ли это разобрать.
 
 С домашнего IP часть закрытых лент (Weblancer, поисковые ленты бирж) может работать —
 тогда добавь их командой `/addsource`.
@@ -304,7 +310,11 @@ python -m freelance_bot probe https://site.ru/rss https://other.ru/feed
 
 Если у биржи нет RSS, добавь класс-наследник `Source`:
 
-Так же устроен и Kwork — см. `freelance_bot/sources/kwork.py`.
+Так же устроены Kwork (`freelance_bot/sources/kwork.py`, разбор JSON внутри HTML)
+и публичные Telegram-каналы (`freelance_bot/sources/telegram_channel.py`, разбор
+постов вида «Подборка заказов ...: 1. Заголовок (цена) ссылка 2. ...» — так шлёт
+заказы канал Хабр Фриланса; подходит для любого канала с похожим форматом, если
+найдётся такой с живыми ссылками на заказы).
 
 ```python
 # freelance_bot/sources/my_board.py
@@ -364,7 +374,7 @@ KINDS = {"rss": RssSource, "kwork": KworkSource, "myboard": MyBoardSource}
 
 ```bash
 pip install -r requirements-dev.txt
-python -m pytest -q          # 92 теста: фильтр, парсер RSS, база, сервис, команды бота
+python -m pytest -q          # 100 тестов: фильтр, парсер RSS, база, сервис, команды бота
 ```
 
 Структура:
