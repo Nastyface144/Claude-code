@@ -178,6 +178,12 @@ def _inspect_html(raw: bytes) -> None:
         print("  видимый текст страницы (первые символы, для ручной проверки разметки):")
         print("  " + _visible_text(text))
 
+    if "tgme_widget_message_date" in text:
+        idx = text.find("tgme_widget_message_date")
+        start = text.rfind("<div", 0, idx)
+        print("  сырой HTML вокруг первой даты сообщения (для парсера):")
+        print("  " + " ".join(text[start:start + 900].split()))
+
 
 async def dry_run(limit: int = 15) -> None:
     """Опросить биржи и напечатать находки в консоль (Telegram не нужен)."""
