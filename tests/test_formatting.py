@@ -2,7 +2,7 @@
 
 from datetime import datetime, timedelta, timezone
 
-from freelance_bot.formatting import order_message
+from freelance_bot.formatting import _when, order_message
 from freelance_bot.matcher import Matcher
 from freelance_bot.models import Order
 
@@ -51,6 +51,11 @@ def test_long_description_is_cut_on_word_boundary():
     text = render(make_order(description="телеграм бот " + "слово " * 400))
     assert "…" in text
     assert len(text) < 1200
+
+
+def test_when_reports_weeks_for_ten_days_ago():
+    moment = datetime.now(timezone.utc) - timedelta(days=10)
+    assert _when(moment) == "1 нед назад"
 
 
 def test_html_in_source_is_escaped_and_stripped():
