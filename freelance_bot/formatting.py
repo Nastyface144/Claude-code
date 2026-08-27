@@ -34,7 +34,10 @@ def _when(moment: datetime | None) -> str:
     hours = minutes // 60
     if hours < 24:
         return f"{hours} ч назад"
-    return f"{hours // 24} дн назад"
+    days = hours // 24
+    if days < 7:
+        return f"{days} дн назад"
+    return f"{days // 7} нед назад"
 
 
 def order_message(order: Order, match: MatchResult, source_title: str = "") -> str:
