@@ -408,3 +408,15 @@ tests/              — pytest
 ```cron
 */10 * * * * cd /opt/freelance-bot && .venv/bin/python -m freelance_bot once >> radar.log 2>&1
 ```
+
+## Telegram MCP
+
+Отдельно от бота-радара: MCP-сервер, который даёт Claude доступ к личному
+аккаунту Telegram (чтение чатов, поиск, отправка сообщений и файлов).
+
+```bash
+./scripts/setup-telegram-mcp.sh
+```
+
+Установка, session string, подключение к Claude Code/Desktop и режим
+«только чтение» — в [docs/telegram-mcp.md](docs/telegram-mcp.md).
