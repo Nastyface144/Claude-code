@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLOSS — бьюти-студия полного цикла</title>
+<meta name="description" content="GLOSS — волосы, ногти, косметология, брови и уход за телом под одной крышей. На каждое направление — отдельный специалист, а не мастер на все руки. Онлайн-запись.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site-header" id="top">
+  <div class="container header-inner">
+    <a href="#top" class="logo">GLOSS<span class="logo-dot">.</span></a>
+
+    <nav class="main-nav" id="main-nav">
+      <a href="#services">Услуги</a>
+      <a href="#team">Мастера</a>
+      <a href="#price">Прайс</a>
+      <a href="#reviews">Отзывы</a>
+      <span class="nav-phone">+7 (___) ___-__-__</span>
+      <a href="#cta" class="nav-cta">Записаться</a>
+    </nav>
+
+    <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <p class="hero-watermark" aria-hidden="true">GLOSS</p>
+    <div class="hero-dots" aria-hidden="true"></div>
+
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <p class="kicker">Бьюти-студия полного цикла · ваш город</p>
+        <h1>
+          Не мастер на все руки —
+          <span class="text-outline">пять экспертов</span>
+          под одной крышей
+        </h1>
+        <p class="hero-sub">
+          Волосы, ногти, косметология, брови и уход за телом — в GLOSS
+          каждое направление ведёт отдельный специалист. Одна бронь вместо
+          пяти звонков по разным салонам.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#cta" class="btn btn-primary">Собрать запись онлайн</a>
+          <a href="#price" class="btn btn-line">Смотреть прайс</a>
+        </div>
+
+        <ul class="hero-trust">
+          <li>Цены фиксированы в прайсе заранее</li>
+          <li>Перенос записи бесплатно за 24 часа</li>
+          <li>Мастер и время — на выбор при записи</li>
+        </ul>
+      </div>
+
+      <div class="hero-visual">
+        <div class="tag-card tag-card--1">
+          <span class="tag-card__label">Волосы</span>
+          <span class="tag-card__name">Стрижка и укладка</span>
+          <span class="tag-card__price">от 2 500 ₽</span>
+        </div>
+        <div class="tag-card tag-card--2">
+          <span class="tag-card__label">Брови</span>
+          <span class="tag-card__name">Оформление и окрашивание</span>
+          <span class="tag-card__price">от 1 200 ₽</span>
+        </div>
+        <div class="tag-card tag-card--3">
+          <span class="tag-card__label">Ногти</span>
+          <span class="tag-card__name">Маникюр с покрытием</span>
+          <span class="tag-card__price">2 200 ₽</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-head">
+        <p class="kicker">01 · Направления</p>
+        <h2>Пять специализаций.<br>Ни одного «мастера на всё».</h2>
+      </div>
+
+      <div class="services-grid">
+        <article class="service-row">
+          <span class="service-num">01</span>
+          <div class="service-body">
+            <h3>Волосы</h3>
+            <p>Стрижка, окрашивание, укладка — у мастера, который занимается только волосами, а не всем сразу.</p>
+          </div>
+          <svg class="service-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 4c3 0 4 3 4 6s1 8-2 10c-1-2 0-4 0-6M12 4c3.5 0 5 4 5 8s-1 7-4 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </article>
+
+        <article class="service-row">
+          <span class="service-num">02</span>
+          <div class="service-body">
+            <h3>Ногти</h3>
+            <p>Маникюр и педикюр с покрытием, которое держится, а не сколется через три дня после визита.</p>
+          </div>
+          <svg class="service-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 10h6l1 2v8a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-8l1-2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 10V5.5A1.5 1.5 0 0 1 11.5 4h1A1.5 1.5 0 0 1 14 5.5V10" stroke="currentColor" stroke-width="1.4"/><path d="M9 15h6" stroke="currentColor" stroke-width="1.4"/></svg>
+        </article>
+
+        <article class="service-row">
+          <span class="service-num">03</span>
+          <div class="service-body">
+            <h3>Косметология</h3>
+            <p>Чистка, уход, аппаратные методики — программа подбирается под тип кожи, а не по общему шаблону.</p>
+          </div>
+          <svg class="service-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.4"/><path d="M12 7.5v9M7.5 12h9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </article>
+
+        <article class="service-row">
+          <span class="service-num">04</span>
+          <div class="service-body">
+            <h3>Брови и ресницы</h3>
+            <p>Оформление, окрашивание, ламинирование — форма под черты лица, без «конвейера» и шаблонной дуги.</p>
+          </div>
+          <svg class="service-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 15c2.5-6.5 5.5-10 8-10s5.5 3.5 8 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </article>
+
+        <article class="service-row">
+          <span class="service-num">05</span>
+          <div class="service-body">
+            <h3>Тело</h3>
+            <p>Массаж, обёртывания, коррекция фигуры — полноценный сеанс, а не двадцать минут для галочки.</p>
+          </div>
+          <svg class="service-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4a2.4 2.4 0 1 1 0 4.8A2.4 2.4 0 0 1 12 4zM9 20l1-7-3-2 1.5-4.5L12 8l3.5-1.5L17 11l-3 2 1 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TEAM ============ -->
+  <section class="team" id="team">
+    <div class="container">
+      <div class="section-head section-head--dark">
+        <p class="kicker">02 · Команда</p>
+        <h2>У каждого направления — свой человек</h2>
+        <p class="section-sub">Мы не просим один мастер уметь всё. Это медленнее в найме, зато честнее в результате.</p>
+      </div>
+
+      <div class="team-grid">
+        <article class="master-card">
+          <div class="master-avatar" style="--tone: var(--lacquer)">АЛ</div>
+          <h3>Алина</h3>
+          <p class="master-role">Мастер по волосам</p>
+          <p class="master-meta">Стрижка · окрашивание · укладка</p>
+        </article>
+
+        <article class="master-card">
+          <div class="master-avatar" style="--tone: #2f6b5e">ДР</div>
+          <h3>Дарья</h3>
+          <p class="master-role">Мастер маникюра и педикюра</p>
+          <p class="master-meta">Аппаратный маникюр · покрытие</p>
+        </article>
+
+        <article class="master-card">
+          <div class="master-avatar" style="--tone: #5a4fc4">МР</div>
+          <h3>Марина</h3>
+          <p class="master-role">Косметолог</p>
+          <p class="master-meta">Чистка лица · аппаратный уход</p>
+        </article>
+
+        <article class="master-card">
+          <div class="master-avatar" style="--tone: #b8863a">ОЛ</div>
+          <h3>Ольга</h3>
+          <p class="master-role">Бровист-лашмейкер</p>
+          <p class="master-meta">Брови · ламинирование ресниц</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRICE ============ -->
+  <section class="price" id="price">
+    <div class="container">
+      <div class="section-head">
+        <p class="kicker">03 · Прайс</p>
+        <h2>Цена известна до визита —<br>не на кассе</h2>
+      </div>
+
+      <div class="price-tabs" role="tablist">
+        <button class="price-tab is-active" data-target="hair" role="tab" aria-selected="true">Волосы</button>
+        <button class="price-tab" data-target="nails" role="tab" aria-selected="false">Ногти</button>
+        <button class="price-tab" data-target="skin" role="tab" aria-selected="false">Косметология</button>
+        <button class="price-tab" data-target="brows" role="tab" aria-selected="false">Брови и ресницы</button>
+        <button class="price-tab" data-target="body" role="tab" aria-selected="false">Тело</button>
+      </div>
+
+      <div class="price-panels">
+        <ul class="price-list is-active" id="price-hair">
+          <li><span>Женская стрижка</span><i></i><b>от 2 500 ₽</b></li>
+          <li><span>Окрашивание в один тон</span><i></i><b>от 5 000 ₽</b></li>
+          <li><span>Сложное окрашивание</span><i></i><b>от 6 500 ₽</b></li>
+          <li><span>Укладка</span><i></i><b>от 1 800 ₽</b></li>
+        </ul>
+        <ul class="price-list" id="price-nails">
+          <li><span>Маникюр с покрытием</span><i></i><b>2 200 ₽</b></li>
+          <li><span>Педикюр с покрытием</span><i></i><b>2 800 ₽</b></li>
+          <li><span>Снятие покрытия</span><i></i><b>500 ₽</b></li>
+        </ul>
+        <ul class="price-list" id="price-skin">
+          <li><span>Чистка лица</span><i></i><b>от 3 500 ₽</b></li>
+          <li><span>Уходовая процедура</span><i></i><b>от 2 900 ₽</b></li>
+          <li><span>Аппаратная методика</span><i></i><b>от 4 200 ₽</b></li>
+        </ul>
+        <ul class="price-list" id="price-brows">
+          <li><span>Оформление и окрашивание бровей</span><i></i><b>от 1 200 ₽</b></li>
+          <li><span>Ламинирование бровей</span><i></i><b>от 2 300 ₽</b></li>
+          <li><span>Ламинирование ресниц</span><i></i><b>от 2 800 ₽</b></li>
+        </ul>
+        <ul class="price-list" id="price-body">
+          <li><span>Массаж спины</span><i></i><b>2 900 ₽</b></li>
+          <li><span>Общий массаж</span><i></i><b>от 4 500 ₽</b></li>
+          <li><span>Обёртывание</span><i></i><b>от 3 200 ₽</b></li>
+        </ul>
+      </div>
+
+      <p class="price-note">Полный прайс со всеми позициями — на диагностике или по запросу у администратора.</p>
+    </div>
+  </section>
+
+  <!-- ============ WHY ============ -->
+  <section class="why">
+    <div class="container">
+      <div class="section-head section-head--dark">
+        <p class="kicker">04 · Почему GLOSS</p>
+        <h2>Не громкие слова —<br>конкретный порядок работы</h2>
+      </div>
+
+      <div class="why-grid">
+        <article class="why-card">
+          <span class="why-num">01</span>
+          <h3>Специалист на направление</h3>
+          <p>Не мастер-универсал: волосами занимается тот, кто занимается только волосами.</p>
+        </article>
+        <article class="why-card">
+          <span class="why-num">02</span>
+          <h3>Цена — заранее</h3>
+          <p>Стоимость услуги известна из прайса до визита и не меняется на кассе.</p>
+        </article>
+        <article class="why-card">
+          <span class="why-num">03</span>
+          <h3>Запись за минуту</h3>
+          <p>Выбор направления, мастера и времени — в одном окне онлайн-записи.</p>
+        </article>
+        <article class="why-card">
+          <span class="why-num">04</span>
+          <h3>Перенос без вопросов</h3>
+          <p>Предупредили за 24 часа — перенесём запись бесплатно, без объяснений.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REVIEWS ============ -->
+  <section class="reviews" id="reviews">
+    <div class="container">
+      <p class="kicker">05 · Отзывы</p>
+
+      <div class="review-quote">
+        <span class="review-mark" aria-hidden="true">”</span>
+        <p class="review-text">[Место для отзыва клиента — добавьте текст после первых записей через сайт]</p>
+        <p class="review-author">— Имя, услуга</p>
+      </div>
+
+      <div class="review-quote review-quote--alt">
+        <span class="review-mark" aria-hidden="true">”</span>
+        <p class="review-text">[Ещё один отзыв появится здесь — соберите их через форму после визита]</p>
+        <p class="review-author">— Имя, услуга</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="final-cta" id="cta">
+    <div class="container final-cta__inner">
+      <h2>Выберите специалиста и время —<br>это займёт минуту</h2>
+      <p>Все пять направлений в одном окне записи. Цена — из прайса, без сюрпризов на кассе.</p>
+      <a href="#top" class="btn btn-primary btn-lg">Записаться онлайн</a>
+      <p class="final-cta__note">Перенос или отмена записи — бесплатно за 24 часа</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a href="#top" class="logo logo--small">GLOSS<span class="logo-dot">.</span></a>
+      <p>Бьюти-студия полного цикла: волосы, ногти, косметология, брови и тело — под одной крышей.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Навигация</h4>
+      <a href="#services">Услуги</a>
+      <a href="#team">Мастера</a>
+      <a href="#price">Прайс</a>
+      <a href="#reviews">Отзывы</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Контакты</h4>
+      <span>Ваш город, улица, дом</span>
+      <span>+7 (___) ___-__-__</span>
+      <span>hello@ваш-домен.ru</span>
+    </div>
+
+    <div class="footer-col">
+      <h4>Часы работы</h4>
+      <span>Ежедневно 10:00–21:00</span>
+      <a href="#cta" class="footer-cta">Записаться онлайн →</a>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <span>© 2026 GLOSS. Все права защищены.</span>
+    <div class="footer-social">
+      <a href="#" aria-label="Instagram">IG</a>
+      <a href="#" aria-label="Telegram">TG</a>
+      <a href="#" aria-label="WhatsApp">WA</a>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
