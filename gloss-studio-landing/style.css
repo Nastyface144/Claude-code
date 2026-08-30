@@ -290,6 +290,26 @@ p { margin: 0; }
 
 .hero-copy h1 { color: var(--bone); }
 
+/* pure-CSS entrance sequence — never gated behind JS, hero must always render */
+.hero-copy > * {
+  animation: hero-fade-up 0.7s var(--ease) both;
+}
+
+.hero-copy .kicker { animation-delay: 0.05s; }
+.hero-copy h1 { animation-delay: 0.15s; }
+.hero-copy .hero-sub { animation-delay: 0.28s; }
+.hero-copy .hero-actions { animation-delay: 0.4s; }
+.hero-copy .hero-trust { animation-delay: 0.5s; }
+
+@keyframes hero-fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy > * { animation: none; }
+}
+
 .hero-sub {
   margin: 26px 0 34px;
   font-size: 1.12rem;
@@ -388,6 +408,7 @@ p { margin: 0; }
   left: 10%;
   transform: rotate(-6deg);
   z-index: 3;
+  animation: tag-float-1 6s ease-in-out infinite 1s;
 }
 
 .tag-card--2 {
@@ -395,6 +416,7 @@ p { margin: 0; }
   left: 42%;
   transform: rotate(4deg);
   z-index: 2;
+  animation: tag-float-2 6.5s ease-in-out infinite 1.4s;
 }
 
 .tag-card--3 {
@@ -402,6 +424,26 @@ p { margin: 0; }
   left: 4%;
   transform: rotate(-3deg);
   z-index: 1;
+  animation: tag-float-3 5.5s ease-in-out infinite 1.8s;
+}
+
+@keyframes tag-float-1 {
+  0%, 100% { transform: rotate(-6deg) translateY(0); }
+  50% { transform: rotate(-6deg) translateY(-10px); }
+}
+
+@keyframes tag-float-2 {
+  0%, 100% { transform: rotate(4deg) translateY(0); }
+  50% { transform: rotate(4deg) translateY(-8px); }
+}
+
+@keyframes tag-float-3 {
+  0%, 100% { transform: rotate(-3deg) translateY(0); }
+  50% { transform: rotate(-3deg) translateY(-9px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tag-card--1, .tag-card--2, .tag-card--3 { animation: none; }
 }
 
 /* ---------- services ---------- */
@@ -425,7 +467,7 @@ p { margin: 0; }
 
 .services-grid .service-row:last-child { border-bottom: 1px solid var(--bone-line); }
 
-.service-row:hover { background: rgba(232, 64, 42, 0.04); }
+.service-row:hover { background: rgba(226, 62, 119, 0.05); }
 
 .service-num {
   font-family: var(--font-display);
@@ -477,7 +519,10 @@ p { margin: 0; }
   font-weight: 600;
   font-size: 1.1rem;
   margin-bottom: 22px;
+  transition: transform 0.25s var(--ease);
 }
+
+.master-card:hover .master-avatar { transform: rotate(-4deg) scale(1.06); }
 
 .master-card h3 { color: var(--bone); margin-bottom: 6px; }
 .master-role { color: var(--lacquer); font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; }
@@ -554,6 +599,114 @@ p { margin: 0; }
   color: #8a6870;
 }
 
+.price-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 64px;
+  align-items: start;
+}
+
+/* ---------- receipt (decorative visual next to the price list) ---------- */
+
+.receipt {
+  position: relative;
+  background: var(--ink);
+  color: var(--bone);
+  padding: 28px 24px 34px;
+  border-radius: 3px;
+  transform: rotate(2.5deg);
+  box-shadow: 0 30px 60px -24px rgba(31, 15, 22, 0.45);
+  transition: transform 0.3s var(--ease);
+}
+
+.receipt:hover { transform: rotate(0deg) translateY(-4px); }
+
+.receipt::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -9px;
+  height: 18px;
+  background:
+    linear-gradient(135deg, var(--ink) 50%, transparent 50%),
+    linear-gradient(45deg, var(--ink) 50%, transparent 50%);
+  background-size: 16px 18px;
+  background-position: 0 0, 0 0;
+  background-repeat: repeat-x;
+}
+
+.receipt__head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px dashed var(--ink-line);
+}
+
+.receipt__logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.receipt__date {
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+
+.receipt__list {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.receipt__list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+
+.receipt__list li span { color: var(--bone-dim); }
+.receipt__list li b { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.receipt__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--ink-line);
+  margin-bottom: 20px;
+}
+
+.receipt__total span { font-size: 0.84rem; color: var(--bone-dim); }
+.receipt__total b {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--lacquer);
+  font-variant-numeric: tabular-nums;
+}
+
+.receipt__stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--lacquer-soft);
+  color: var(--lacquer);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 /* ---------- why ---------- */
 
 .why { padding: 120px 0; background: var(--ink); color: var(--bone); }
@@ -571,8 +724,12 @@ p { margin: 0; }
   font-weight: 600;
   color: var(--lacquer);
   margin-bottom: 18px;
+  transition: color 0.25s var(--ease);
 }
 
+.why-card { transition: transform 0.25s var(--ease); }
+.why-card:hover { transform: translateY(-4px); }
+.why-card:hover .why-num { color: var(--bone); }
 .why-card h3 { color: var(--bone); font-size: 1.15rem; margin-bottom: 10px; }
 .why-card p { color: var(--bone-dim); font-size: 0.94rem; }
 
@@ -619,32 +776,67 @@ p { margin: 0; }
 /* ---------- final cta ---------- */
 
 .final-cta {
-  background: var(--lacquer);
+  position: relative;
+  background: var(--ink);
   color: var(--bone);
-  padding: 120px 0;
+  padding: 130px 0;
   text-align: center;
+  overflow: hidden;
 }
 
-.final-cta__inner { max-width: 640px; margin: 0 auto; }
+.final-cta__watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 16vw;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(245, 236, 231, 0.05);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+  margin: 0;
+}
+
+.final-cta__dots {
+  position: absolute;
+  left: -6%;
+  bottom: -12%;
+  width: 420px;
+  height: 420px;
+  background-image: radial-gradient(var(--lacquer) 1.4px, transparent 1.6px);
+  background-size: 16px 16px;
+  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 72%);
+  mask-image: radial-gradient(circle, #000 0%, transparent 72%);
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.final-cta__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.final-cta .kicker { justify-content: center; }
 
 .final-cta h2 { color: var(--bone); margin-bottom: 20px; }
 
-.final-cta p {
+.final-cta__sub {
   font-size: 1.08rem;
-  color: rgba(245,236,231,0.85);
+  color: var(--bone-dim);
   margin-bottom: 36px;
 }
-
-.final-cta .btn-primary {
-  background: var(--ink);
-}
-
-.final-cta .btn-primary:hover { background: #000; }
 
 .final-cta__note {
   margin-top: 20px;
   font-size: 0.86rem;
-  color: rgba(245,236,231,0.7);
+  color: var(--bone-dim);
 }
 
 /* ---------- footer ---------- */
@@ -706,6 +898,8 @@ p { margin: 0; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .service-row { grid-template-columns: 48px 1fr; }
   .service-icon { display: none; }
+  .price-layout { grid-template-columns: 1fr; }
+  .receipt { max-width: 360px; margin-top: 40px; }
 }
 
 @media (max-width: 720px) {
@@ -751,4 +945,27 @@ p { margin: 0; }
     padding-left: 0; padding-right: 0; text-align: left; margin-left: 0;
   }
   .review-mark { position: static; display: block; margin-bottom: -14px; }
+}
+
+/* ---------- scroll reveal ---------- */
+
+.reveal {
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+  transition-delay: var(--delay, 0ms);
+}
+
+/* Hidden only once JS confirms it can reveal it again — without this guard,
+   a JS-less viewer would leave every .reveal element invisible forever. */
+.has-js .reveal {
+  opacity: 0;
+  transform: translateY(22px);
+}
+
+.has-js .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .has-js .reveal { opacity: 1; transform: none; }
 }
