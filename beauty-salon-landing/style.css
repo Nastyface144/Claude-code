@@ -1145,13 +1145,19 @@ p { margin: 0; }
 /* ---------- reveal animation ---------- */
 
 .reveal {
-  opacity: 0;
-  transform: translateY(24px);
   transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
   transition-delay: var(--delay, 0ms);
 }
 
-.reveal.is-visible {
+/* Hidden-until-scrolled-into-view only once JS confirms it can reveal it again.
+   Without this guard, a JS-less viewer (e.g. iOS Quick Look) leaves every
+   .reveal element permanently invisible. */
+.has-js .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.has-js .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
 }

@@ -1,6 +1,8 @@
 (() => {
   'use strict';
 
+  document.documentElement.classList.add('has-js');
+
   // ---- header: solid background after scroll ----
   const header = document.querySelector('.site-header');
 
