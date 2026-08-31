@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tonify — AI-копирайтер для соцсетей и рекламы</title>
-<meta name="description" content="Tonify генерирует тексты для постов, рекламы и сторис в тоне вашего бренда за 30 секунд. Первые 5 генераций бесплатно.">
+<title>NexoVPS — быстрые VPS-серверы в аренду на NVMe</title>
+<meta name="description" content="Виртуальные серверы на NVMe с мгновенным развёртыванием, root-доступом и защитой от DDoS. Тарифы от 199 ₽/мес, 5 локаций, оплата почасово или помесячно.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,13 +16,14 @@
 
 <header class="site-header" id="top">
   <div class="container header-inner">
-    <a href="#top" class="logo">Ton<span class="accent-dot">i</span>fy</a>
+    <a href="#top" class="logo">Nexo<span class="accent-dot">VPS</span></a>
 
     <nav class="main-nav" id="main-nav">
-      <a href="#problem">Задачи</a>
-      <a href="#solution">Как это работает</a>
-      <a href="#trust">Вопросы</a>
-      <a href="#cta" class="nav-cta">Попробовать бесплатно</a>
+      <a href="#features">Возможности</a>
+      <a href="#pricing">Тарифы</a>
+      <a href="#locations">Локации</a>
+      <a href="#faq">Вопросы</a>
+      <a href="#cta" class="nav-cta">Развернуть сервер</a>
     </nav>
 
     <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
@@ -35,263 +36,330 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero">
-    <div class="hero-glow hero-glow--violet" aria-hidden="true"></div>
-    <div class="hero-glow hero-glow--cyan" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow--green" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow--blue" aria-hidden="true"></div>
 
     <div class="container hero-inner">
       <div class="hero-copy reveal">
-        <p class="kicker">AI-копирайтинг для соцсетей и рекламы</p>
+        <p class="kicker">VPS на NVMe · запуск за 55 секунд</p>
         <h1>
-          Тексты, которые звучат<br>
-          как ваш бренд — <span class="text-gradient">а не как нейросеть</span>
+          Виртуальный сервер,<br>
+          который поднимается <span class="text-gradient">быстрее, чем вы допьёте кофе</span>
         </h1>
         <p class="hero-sub">
-          Опишите продукт в двух предложениях — через 30 секунд получите
-          десяток постов, объявлений и подписей к сторис, готовых к публикации.
+          Root-доступ, чистый IP и NVMe-диски с первой секунды. Оплата по часам
+          или помесячно, без привязки карты и скрытых платежей.
         </p>
 
         <div class="hero-actions">
-          <a href="#cta" class="btn btn-primary">
-            Сгенерировать первый текст
+          <a href="#pricing" class="btn btn-primary">
+            Выбрать тариф
           </a>
-          <a href="#solution" class="btn btn-ghost">
-            Как это работает
+          <a href="#features" class="btn btn-ghost">
+            Что внутри
           </a>
         </div>
 
-        <p class="hero-micro">5 генераций бесплатно · без банковской карты</p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-num">99.98%</span>
+            <span class="hero-stat-label">аптайм за 12 мес.</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">55 сек</span>
+            <span class="hero-stat-label">до готового сервера</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">5</span>
+            <span class="hero-stat-label">локаций дата-центров</span>
+          </div>
+        </div>
       </div>
 
-      <div class="hero-visual reveal" style="--delay:120ms">
-        <div class="mock-card">
-          <div class="mock-card__head">
-            <div class="mock-dots"><span></span><span></span><span></span></div>
-            <span class="mock-card__title">Новая генерация</span>
+      <div class="hero-visual reveal">
+        <div class="terminal-card">
+          <div class="terminal-head">
+            <span class="dot dot--red"></span>
+            <span class="dot dot--yellow"></span>
+            <span class="dot dot--green"></span>
+            <span class="terminal-title">root@nexovps: ~</span>
           </div>
-
-          <div class="mock-field">
-            <span class="mock-field__label">Продукт</span>
-            <span class="mock-field__value">Онлайн-курс по йоге для начинающих</span>
-          </div>
-
-          <div class="mock-tags">
-            <span class="mock-tag mock-tag--active">Instagram</span>
-            <span class="mock-tag">Telegram Ads</span>
-            <span class="mock-tag">VK</span>
-          </div>
-
-          <div class="mock-result">
-            <div class="mock-result__badge">Вариант 1 / 8</div>
-            <p class="mock-result__text">
-              «Тело помнит, что такое лёгкость — вопрос в том, когда вы дадите
-              ему шанс вспомнить.» Первое занятие — бесплатно, без коврика
-              и опыта.
-            </p>
-            <span class="mock-caret" aria-hidden="true"></span>
-          </div>
-
-          <div class="mock-footer">
-            <span>Тон: дружелюбный, вдохновляющий</span>
-            <span class="mock-footer__ok">✓ готово к публикации</span>
+          <div class="terminal-body">
+            <p><span class="prompt">$</span> nexo deploy --plan start --os ubuntu-24.04</p>
+            <p class="out">Выделяем ресурсы… <span class="ok">готово</span></p>
+            <p class="out">Настраиваем сеть… <span class="ok">готово</span></p>
+            <p class="out">Генерируем SSH-ключ… <span class="ok">готово</span></p>
+            <p class="out">IP: <span class="hl">185.42.11.87</span> · root-доступ активен</p>
+            <p><span class="prompt">$</span> ssh root@185.42.11.87</p>
+            <p class="out blink">_</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ PROBLEM ============ -->
-  <section class="problem" id="problem">
-    <div class="container">
-      <p class="kicker kicker--center reveal">Узнаёте себя?</p>
-      <h2 class="section-title reveal">Контент-план не пишет себя сам</h2>
-
-      <div class="problem-grid">
-        <article class="problem-card reveal">
-          <span class="problem-num">01</span>
-          <h3>Дедлайн сегодня, текст — нет</h3>
-          <p>Пост должен выйти в 18:00, а курсор мигает на пустой странице третий час подряд.</p>
-        </article>
-
-        <article class="problem-card reveal" style="--delay:80ms">
-          <span class="problem-num">02</span>
-          <h3>Бриф поняли по-своему</h3>
-          <p>Отдали текст на аутсорс — получили обратно совсем не тот тон. Ещё два круга правок, ещё два дня ожидания.</p>
-        </article>
-
-        <article class="problem-card reveal" style="--delay:160ms">
-          <span class="problem-num">03</span>
-          <h3>Одно объявление на всю кампанию</h3>
-          <p>Реклама крутится без изменений неделями: переписать десять вариантов для A/B-теста — это целый рабочий день.</p>
-        </article>
-
-        <article class="problem-card reveal" style="--delay:240ms">
-          <span class="problem-num">04</span>
-          <h3>Тексты «под копирку»</h3>
-          <p>Взяли шаблон из подборки в интернете — а через день видите точно такой же у конкурента в ленте.</p>
-        </article>
-      </div>
+  <!-- ============ TRUST BAR ============ -->
+  <section class="trust-bar reveal">
+    <div class="container trust-inner">
+      <span>NVMe SSD в каждом тарифе</span>
+      <span>Защита от DDoS включена</span>
+      <span>Почасовая оплата</span>
+      <span>Снапшоты в 1 клик</span>
+      <span>Поддержка 24/7</span>
     </div>
   </section>
 
-  <!-- ============ SOLUTION ============ -->
-  <section class="solution" id="solution">
+  <!-- ============ FEATURES ============ -->
+  <section class="features" id="features">
     <div class="container">
-      <p class="kicker kicker--center reveal">Как это работает</p>
-      <h2 class="section-title reveal">Второй копирайтер, который уже знает голос вашего бренда</h2>
-      <p class="section-sub reveal">
-        Не абстрактный генератор «текста вообще» — сервис настраивается один раз
-        под вашу лексику и дальше выдаёт черновики, которые не стыдно публиковать.
-      </p>
+      <p class="section-kicker reveal">Возможности</p>
+      <h2 class="section-title reveal">Всё, что нужно продакшену — без переплаты за лишнее</h2>
 
-      <div class="steps reveal">
-        <div class="step">
-          <div class="step-num">1</div>
-          <h3>Опишите задачу</h3>
-          <p>Продукт, площадка — Instagram, VK, Telegram Ads, email-рассылка — и цель: продать, прогреть, анонсировать.</p>
-        </div>
-        <div class="step-line" aria-hidden="true"></div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <h3>Настройте Brand Voice</h3>
-          <p>Один раз загрузите 3–5 своих текстов — сервис запомнит тон и лексику бренда: дерзкий, экспертный, дружелюбный.</p>
-        </div>
-        <div class="step-line" aria-hidden="true"></div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <h3>Получите 8–10 вариантов</h3>
-          <p>Разные структуры, заголовки и хуки — есть из чего выбрать и что сравнить в A/B-тесте.</p>
-        </div>
-        <div class="step-line" aria-hidden="true"></div>
-        <div class="step">
-          <div class="step-num">4</div>
-          <h3>Донастройте в редакторе</h3>
-          <p>Одной кнопкой: короче, эмоциональнее, добавить призыв к действию, сменить тон на более деловой.</p>
-        </div>
-      </div>
-
-      <div class="features">
+      <div class="features-grid">
         <article class="feature-card reveal">
-          <div class="feature-icon feature-icon--violet" aria-hidden="true">◈</div>
-          <h3>Brand Voice</h3>
-          <p>Тексты в тоне вашего бренда, а не в усреднённом стиле нейросети «как у всех».</p>
+          <div class="feature-icon" aria-hidden="true">⚡</div>
+          <h3>Мгновенный запуск</h3>
+          <p>Сервер разворачивается за 55 секунд: выбрали образ, нажали «Создать» — получили IP и root-пароль.</p>
         </article>
-        <article class="feature-card reveal" style="--delay:80ms">
-          <div class="feature-icon feature-icon--cyan" aria-hidden="true">▣</div>
-          <h3>Мультиформатность</h3>
-          <p>Посты, рекламные объявления, подписи к сторис и email — в одном интерфейсе.</p>
-        </article>
-        <article class="feature-card reveal" style="--delay:160ms">
-          <div class="feature-icon feature-icon--violet" aria-hidden="true">⌘</div>
-          <h3>Пакетная генерация</h3>
-          <p>До 10 вариантов за один запрос — удобно сравнивать и запускать A/B-тесты в рекламе.</p>
-        </article>
-        <article class="feature-card reveal" style="--delay:240ms">
-          <div class="feature-icon feature-icon--cyan" aria-hidden="true">☰</div>
-          <h3>Библиотека текстов</h3>
-          <p>Сохраняйте удачные формулировки и переиспользуйте их в новых кампаниях.</p>
-        </article>
-      </div>
 
-      <div class="section-cta reveal">
-        <a href="#cta" class="btn btn-primary">Попробовать на своём продукте</a>
+        <article class="feature-card reveal">
+          <div class="feature-icon" aria-hidden="true">🛡️</div>
+          <h3>Защита от DDoS</h3>
+          <p>Фильтрация L3/L4-атак включена в каждый тариф бесплатно, без дополнительных настроек.</p>
+        </article>
+
+        <article class="feature-card reveal">
+          <div class="feature-icon" aria-hidden="true">💾</div>
+          <h3>Только NVMe-диски</h3>
+          <p>Никаких HDD и «облачных» SATA-SSD — на всех серверах локальные NVMe со скоростью от 2500 МБ/с.</p>
+        </article>
+
+        <article class="feature-card reveal">
+          <div class="feature-icon" aria-hidden="true">📸</div>
+          <h3>Снапшоты и бэкапы</h3>
+          <p>Ручные снапшоты в один клик и автоматические ежедневные бэкапы с хранением до 7 копий.</p>
+        </article>
+
+        <article class="feature-card reveal">
+          <div class="feature-icon" aria-hidden="true">🔧</div>
+          <h3>Полный root-доступ</h3>
+          <p>Свой сервер — свои правила: любой дистрибутив, панель управления или чистый Docker.</p>
+        </article>
+
+        <article class="feature-card reveal">
+          <div class="feature-icon" aria-hidden="true">📈</div>
+          <h3>Апгрейд без простоя</h3>
+          <p>Меняйте CPU, RAM и диск в панели управления — перезагрузка занимает секунды, данные не теряются.</p>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- ============ TRUST ============ -->
-  <section class="trust" id="trust">
+  <!-- ============ PRICING ============ -->
+  <section class="pricing" id="pricing">
     <div class="container">
-      <p class="kicker kicker--center reveal">Кому подходит</p>
-      <h2 class="section-title reveal">Для тех, кто пишет тексты каждую неделю, а не раз в квартал</h2>
+      <p class="section-kicker reveal">Тарифы</p>
+      <h2 class="section-title reveal">Прозрачные цены — платите только за то, что используете</h2>
 
-      <div class="personas">
-        <article class="persona-card reveal">
-          <h3>SMM-специалист</h3>
-          <p>Ведёте несколько аккаунтов сразу? Держите единый тон для каждого бренда и закрываете контент-план за час, а не за день.</p>
+      <div class="billing-toggle reveal" role="group" aria-label="Период оплаты">
+        <button type="button" class="toggle-btn is-active" data-period="monthly">Помесячно</button>
+        <button type="button" class="toggle-btn" data-period="yearly">Ежегодно <span class="save-badge">−20%</span></button>
+      </div>
+
+      <div class="pricing-grid">
+        <article class="price-card reveal">
+          <h3>Start</h3>
+          <p class="price-desc">Для тестов, ботов и небольших сайтов</p>
+          <p class="price">
+            <span class="price-monthly">199 ₽<span class="price-period">/мес</span></span>
+            <span class="price-yearly">159 ₽<span class="price-period">/мес</span></span>
+          </p>
+          <ul class="price-specs">
+            <li>1 vCPU</li>
+            <li>1 ГБ RAM</li>
+            <li>20 ГБ NVMe</li>
+            <li>1 ТБ трафика</li>
+          </ul>
+          <a href="#cta" class="btn btn-outline">Выбрать Start</a>
         </article>
-        <article class="persona-card reveal" style="--delay:80ms">
-          <h3>Маркетолог</h3>
-          <p>Нужно быстро тестировать гипотезы в рекламе? Получайте по 10 вариантов объявления и оставляйте только те, что конвертят.</p>
+
+        <article class="price-card price-card--featured reveal">
+          <p class="price-flag">Популярный</p>
+          <h3>Basic</h3>
+          <p class="price-desc">Интернет-магазин, API, CI/CD-раннер</p>
+          <p class="price">
+            <span class="price-monthly">449 ₽<span class="price-period">/мес</span></span>
+            <span class="price-yearly">359 ₽<span class="price-period">/мес</span></span>
+          </p>
+          <ul class="price-specs">
+            <li>2 vCPU</li>
+            <li>4 ГБ RAM</li>
+            <li>60 ГБ NVMe</li>
+            <li>4 ТБ трафика</li>
+          </ul>
+          <a href="#cta" class="btn btn-primary">Выбрать Basic</a>
         </article>
-        <article class="persona-card reveal" style="--delay:160ms">
-          <h3>Владелец малого бизнеса</h3>
-          <p>Нет бюджета на штатного копирайтера? Пишите тексты для соцсетей сами — быстро и без ощущения «это не мой стиль».</p>
+
+        <article class="price-card reveal">
+          <h3>Pro</h3>
+          <p class="price-desc">Высоконагруженные проекты и базы данных</p>
+          <p class="price">
+            <span class="price-monthly">899 ₽<span class="price-period">/мес</span></span>
+            <span class="price-yearly">719 ₽<span class="price-period">/мес</span></span>
+          </p>
+          <ul class="price-specs">
+            <li>4 vCPU</li>
+            <li>8 ГБ RAM</li>
+            <li>120 ГБ NVMe</li>
+            <li>8 ТБ трафика</li>
+          </ul>
+          <a href="#cta" class="btn btn-outline">Выбрать Pro</a>
+        </article>
+
+        <article class="price-card reveal">
+          <h3>Business</h3>
+          <p class="price-desc">Кластеры, игровые серверы, ML-инференс</p>
+          <p class="price">
+            <span class="price-monthly">1 990 ₽<span class="price-period">/мес</span></span>
+            <span class="price-yearly">1 592 ₽<span class="price-period">/мес</span></span>
+          </p>
+          <ul class="price-specs">
+            <li>8 vCPU</li>
+            <li>16 ГБ RAM</li>
+            <li>240 ГБ NVMe</li>
+            <li>Безлимитный трафик</li>
+          </ul>
+          <a href="#cta" class="btn btn-outline">Выбрать Business</a>
         </article>
       </div>
 
-      <div class="faq reveal">
-        <h3 class="faq-title">Частые вопросы</h3>
-
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            Тексты не будут звучать как нейросеть?
-            <span class="faq-toggle" aria-hidden="true"></span>
-          </button>
-          <div class="faq-answer">
-            <p>Сервис обучается на ваших собственных примерах текстов — чем больше вы загрузите, тем точнее совпадает тон и лексика бренда.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            Это заменит копирайтера в команде?
-            <span class="faq-toggle" aria-hidden="true"></span>
-          </button>
-          <div class="faq-answer">
-            <p>Нет. Сервис берёт на себя первые черновики и рутинные форматы, а копирайтер фокусируется на стратегии и финальной редактуре.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            Нужно разбираться в промптах или в AI?
-            <span class="faq-toggle" aria-hidden="true"></span>
-          </button>
-          <div class="faq-answer">
-            <p>Нет. Интерфейс — обычная форма: продукт, площадка, цель. Все настройки тона скрыты за понятными переключателями.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            Что если результат не подойдёт?
-            <span class="faq-toggle" aria-hidden="true"></span>
-          </button>
-          <div class="faq-answer">
-            <p>Меняйте тон, длину и структуру в один клик или сгенерируйте новую партию вариантов — без ограничения по числу попыток.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            Куда сохраняются мои тексты о бренде?
-            <span class="faq-toggle" aria-hidden="true"></span>
-          </button>
-          <div class="faq-answer">
-            <p>Примеры голоса бренда хранятся в вашем личном кабинете и используются только для генерации ваших собственных текстов.</p>
-          </div>
-        </div>
-      </div>
-
-      <p class="guarantee reveal">
-        7 дней полного доступа бесплатно. Отмена в один клик — без звонков в поддержку и объяснений.
-      </p>
+      <p class="pricing-note reveal">Нужна конфигурация под себя? Соберите свой тариф вручную — CPU, RAM и диск отдельно, в панели управления.</p>
     </div>
   </section>
 
-  <!-- ============ FINAL CTA ============ -->
-  <section class="final-cta" id="cta">
-    <div class="hero-glow hero-glow--violet" aria-hidden="true"></div>
-    <div class="container final-cta__inner reveal">
-      <h2>Следующий пост можно закрыть за 30 секунд</h2>
-      <p>Пока конкуренты открывают чистый лист в Google Docs, вы уже выбираете из десяти готовых вариантов.</p>
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="how" id="how">
+    <div class="container">
+      <p class="section-kicker reveal">Как это работает</p>
+      <h2 class="section-title reveal">От регистрации до готового сервера — три шага</h2>
 
-      <form class="cta-form" id="cta-form">
-        <label for="email" class="visually-hidden">Email</label>
-        <input type="email" id="email" name="email" placeholder="you@company.com" required autocomplete="email">
-        <button type="submit" class="btn btn-primary">Получить 5 текстов бесплатно</button>
-      </form>
-      <p class="cta-note" id="cta-note">Без банковской карты. Отписаться можно в любой момент.</p>
+      <div class="how-grid">
+        <div class="how-step reveal">
+          <span class="how-num">01</span>
+          <h3>Выберите тариф и локацию</h3>
+          <p>Подберите конфигурацию под задачу и дата-центр ближе к вашим пользователям.</p>
+        </div>
+        <div class="how-step reveal">
+          <span class="how-num">02</span>
+          <h3>Оплатите картой или криптой</h3>
+          <p>Спишем оплату за выбранный период — с картой, СБП или в криптовалюте.</p>
+        </div>
+        <div class="how-step reveal">
+          <span class="how-num">03</span>
+          <h3>Получите root-доступ</h3>
+          <p>IP-адрес, логин и пароль (или SSH-ключ) приходят в панель и на почту за минуту.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOCATIONS ============ -->
+  <section class="locations" id="locations">
+    <div class="container">
+      <p class="section-kicker reveal">Локации</p>
+      <h2 class="section-title reveal">5 дата-центров — выбирайте, где ниже пинг до пользователей</h2>
+
+      <div class="locations-grid">
+        <div class="location-card reveal">
+          <h3>Москва</h3>
+          <p>Tier III, стык с крупнейшими операторами РФ</p>
+        </div>
+        <div class="location-card reveal">
+          <h3>Амстердам</h3>
+          <p>Магистральные каналы для всей Европы</p>
+        </div>
+        <div class="location-card reveal">
+          <h3>Франкфурт</h3>
+          <p>Низкая задержка до DE-CIX</p>
+        </div>
+        <div class="location-card reveal">
+          <h3>Стамбул</h3>
+          <p>Узел для Ближнего Востока и Закавказья</p>
+        </div>
+        <div class="location-card reveal">
+          <h3>Алматы</h3>
+          <p>Покрытие Центральной Азии</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <p class="section-kicker reveal">Вопросы</p>
+      <h2 class="section-title reveal">Частые вопросы</h2>
+
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Как быстро сервер будет готов после оплаты?
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>В среднем 55 секунд. Панель управления показывает статус развёртывания в реальном времени, данные для входа приходят сразу после готовности.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Можно ли сменить тариф после покупки?
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Да, апгрейд и даунгрейд доступны в любой момент в панели управления. Диск и оперативная память меняются без потери данных.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Какие способы оплаты поддерживаются?
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Банковские карты, СБП и криптовалюта (USDT, BTC, ETH). Для юрлиц доступен безналичный расчёт по счёту.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Есть ли пробный период или возврат средств?
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Действует гарантия возврата в течение 3 дней с момента первой оплаты, если сервер не подошёл по любой причине.</p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <button class="faq-question" aria-expanded="false">
+            Какие операционные системы доступны?
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Ubuntu, Debian, CentOS, AlmaLinux, Windows Server, а также готовые образы с Docker, 1С и панелями управления сайтами.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="cta-section" id="cta">
+    <div class="container cta-inner reveal">
+      <h2>Готовы развернуть свой сервер?</h2>
+      <p>Первые 3 дня — с гарантией возврата денег. Без привязки карты для регистрации.</p>
+      <a href="#pricing" class="btn btn-primary btn-lg">Выбрать тариф и развернуть сервер</a>
     </div>
   </section>
 
@@ -299,9 +367,34 @@
 
 <footer class="site-footer">
   <div class="container footer-inner">
-    <a href="#top" class="logo logo--small">Ton<span class="accent-dot">i</span>fy</a>
-    <p class="footer-tagline">AI-ассистент для копирайтинга в соцсетях и рекламе.</p>
-    <p class="footer-copy">© 2026 Tonify. Все права защищены.</p>
+    <div class="footer-brand">
+      <a href="#top" class="logo">Nexo<span class="accent-dot">VPS</span></a>
+      <p>Аренда виртуальных серверов на NVMe с 2021 года.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Продукт</h4>
+      <a href="#features">Возможности</a>
+      <a href="#pricing">Тарифы</a>
+      <a href="#locations">Локации</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Компания</h4>
+      <a href="#faq">Вопросы</a>
+      <a href="mailto:support@nexovps.example">Поддержка</a>
+      <a href="#top">Партнёрам</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Правовое</h4>
+      <a href="#top">Публичная оферта</a>
+      <a href="#top">Политика конфиденциальности</a>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <p>© 2026 NexoVPS. Все права защищены.</p>
   </div>
 </footer>
 

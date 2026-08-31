@@ -56,33 +56,24 @@
 
       if (!isOpen) {
         btn.setAttribute('aria-expanded', 'true');
-        answer.style.maxHeight = answer.scrollHeight + 'px';
+        answer.style.maxHeight = `${answer.scrollHeight}px`;
       }
     });
   });
 
-  // ---- final CTA form (front-end only demo) ----
-  const form = document.getElementById('cta-form');
-  const note = document.getElementById('cta-note');
+  // ---- pricing period toggle ----
+  const toggleBtns = document.querySelectorAll('.toggle-btn');
+  const priceCards = document.querySelectorAll('.price-card');
 
-  if (form && note) {
-    const defaultNote = note.textContent;
+  toggleBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      toggleBtns.forEach((b) => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const email = form.querySelector('#email').value.trim();
-      if (!email) return;
-
-      note.textContent = `Готово — доступ и 5 бесплатных генераций придут на ${email}.`;
-      note.style.color = 'var(--cyan)';
-      form.querySelector('input').value = '';
-      form.querySelector('button').textContent = 'Отправлено ✓';
-
-      setTimeout(() => {
-        note.textContent = defaultNote;
-        note.style.color = '';
-        form.querySelector('button').textContent = 'Получить 5 текстов бесплатно';
-      }, 4000);
+      const isYearly = btn.dataset.period === 'yearly';
+      priceCards.forEach((card) => {
+        card.classList.toggle('show-yearly', isYearly);
+      });
     });
-  }
+  });
 })();
