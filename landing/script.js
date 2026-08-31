@@ -3,77 +3,85 @@
 
   // ---- mobile nav ----
   const burger = document.getElementById('burger');
-  const nav = document.getElementById('main-nav');
+  const header = document.querySelector('.site-header');
 
-  if (burger && nav) {
+  if (burger && header) {
     burger.addEventListener('click', () => {
-      const isOpen = nav.classList.toggle('is-open');
+      const isOpen = header.classList.toggle('is-open');
       burger.classList.toggle('is-open', isOpen);
       burger.setAttribute('aria-expanded', String(isOpen));
     });
 
-    nav.querySelectorAll('a').forEach((link) => {
+    header.querySelectorAll('.main-nav a').forEach((link) => {
       link.addEventListener('click', () => {
-        nav.classList.remove('is-open');
+        header.classList.remove('is-open');
         burger.classList.remove('is-open');
         burger.setAttribute('aria-expanded', 'false');
       });
     });
   }
 
-  // ---- scroll reveal ----
-  const revealEls = document.querySelectorAll('.reveal');
+  // ---- scroll progress bar ----
+  const progress = document.getElementById('scroll-progress');
 
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
-    );
+  if (progress) {
+    const updateProgress = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
+      progress.style.width = `${Math.min(1, Math.max(0, ratio)) * 100}%`;
+    };
 
-    revealEls.forEach((el) => observer.observe(el));
-  } else {
-    revealEls.forEach((el) => el.classList.add('is-visible'));
+    updateProgress();
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
   }
 
-  // ---- FAQ accordion ----
-  document.querySelectorAll('.faq-question').forEach((btn) => {
-    const answer = btn.nextElementSibling;
+  // ---- live UTC clock ----
+  const clock = document.getElementById('clock');
 
-    btn.addEventListener('click', () => {
-      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+  if (clock) {
+    const tick = () => {
+      const now = new Date();
+      const hh = String(now.getUTCHours()).padStart(2, '0');
+      const mm = String(now.getUTCMinutes()).padStart(2, '0');
+      const ss = String(now.getUTCSeconds()).padStart(2, '0');
+      clock.textContent = `UTC ${hh}:${mm}:${ss}`;
+    };
 
-      document.querySelectorAll('.faq-question').forEach((other) => {
-        other.setAttribute('aria-expanded', 'false');
-        other.nextElementSibling.style.maxHeight = null;
-      });
+    tick();
+    setInterval(tick, 1000);
+  }
 
-      if (!isOpen) {
-        btn.setAttribute('aria-expanded', 'true');
-        answer.style.maxHeight = `${answer.scrollHeight}px`;
-      }
-    });
-  });
+  // ---- pricing period switch ----
+  const periodCheckbox = document.getElementById('period-checkbox');
+  const tagCards = document.querySelectorAll('.tag-card');
 
-  // ---- pricing period toggle ----
-  const toggleBtns = document.querySelectorAll('.toggle-btn');
-  const priceCards = document.querySelectorAll('.price-card');
-
-  toggleBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      toggleBtns.forEach((b) => b.classList.remove('is-active'));
-      btn.classList.add('is-active');
-
-      const isYearly = btn.dataset.period === 'yearly';
-      priceCards.forEach((card) => {
-        card.classList.toggle('show-yearly', isYearly);
+  if (periodCheckbox) {
+    periodCheckbox.addEventListener('change', () => {
+      tagCards.forEach((card) => {
+        card.classList.toggle('show-yearly', periodCheckbox.checked);
       });
     });
-  });
+  }
+
+  // ---- FAQ grep filter ----
+  const faqInput = document.getElementById('faq-input');
+  const faqPairs = document.querySelectorAll('.faq-pair');
+  const faqEmpty = document.getElementById('faq-empty');
+
+  if (faqInput) {
+    faqInput.addEventListener('input', () => {
+      const query = faqInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      faqPairs.forEach((pair) => {
+        const haystack = pair.dataset.text || '';
+        const matches = query === '' || haystack.includes(query);
+        pair.hidden = !matches;
+        if (matches) visibleCount += 1;
+      });
+
+      if (faqEmpty) faqEmpty.hidden = visibleCount !== 0;
+    });
+  }
 })();

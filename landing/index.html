@@ -3,28 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NexoVPS — быстрые VPS-серверы в аренду на NVMe</title>
-<meta name="description" content="Виртуальные серверы на NVMe с мгновенным развёртыванием, root-доступом и защитой от DDoS. Тарифы от 199 ₽/мес, 5 локаций, оплата почасово или помесячно.">
+<title>boxes.sh — аренда VPS без облачных метафор</title>
+<meta name="description" content="boxes.sh сдаёт в аренду конкретные виртуальные машины с серийным номером: NVMe, честный root, поднимаются за 55 секунд. Без 'облака', без переплаты за маркетинг.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="noise-overlay" aria-hidden="true"></div>
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
 <header class="site-header" id="top">
-  <div class="container header-inner">
-    <a href="#top" class="logo">Nexo<span class="accent-dot">VPS</span></a>
+  <div class="wrap header-inner">
+    <a href="#top" class="logo">boxes<span class="logo-ext">.sh</span></a>
 
-    <nav class="main-nav" id="main-nav">
-      <a href="#features">Возможности</a>
-      <a href="#pricing">Тарифы</a>
-      <a href="#locations">Локации</a>
-      <a href="#faq">Вопросы</a>
-      <a href="#cta" class="nav-cta">Развернуть сервер</a>
-    </nav>
+    <div class="nav-drawer" id="nav-drawer">
+      <nav class="main-nav" id="main-nav">
+        <a href="#log">лог</a>
+        <a href="#spec">тарифы</a>
+        <a href="#coverage">точки</a>
+        <a href="#faq">вопросы</a>
+      </nav>
+
+      <div class="header-right">
+        <span class="clock" id="clock" aria-label="Текущее время UTC">UTC --:--:--</span>
+        <a href="#spec" class="btn btn-solid">заказать бокс</a>
+      </div>
+    </div>
 
     <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -36,365 +42,285 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero">
-    <div class="hero-glow hero-glow--green" aria-hidden="true"></div>
-    <div class="hero-glow hero-glow--blue" aria-hidden="true"></div>
-
-    <div class="container hero-inner">
-      <div class="hero-copy reveal">
-        <p class="kicker">VPS на NVMe · запуск за 55 секунд</p>
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <p class="kicker">инвентарная карточка · выдача оборудования</p>
         <h1>
-          Виртуальный сервер,<br>
-          который поднимается <span class="text-gradient">быстрее, чем вы допьёте кофе</span>
+          Вы арендуете не «облако».<br>
+          Вы арендуете <span class="mark">конкретную железку</span><br>
+          под серийным номером.
         </h1>
         <p class="hero-sub">
-          Root-доступ, чистый IP и NVMe-диски с первой секунды. Оплата по часам
-          или помесячно, без привязки карты и скрытых платежей.
+          NVMe, честный root-доступ и IP без истории спама. Выключили —
+          и через минуту стойка забыла, что вы там вообще стояли.
         </p>
 
         <div class="hero-actions">
-          <a href="#pricing" class="btn btn-primary">
-            Выбрать тариф
-          </a>
-          <a href="#features" class="btn btn-ghost">
-            Что внутри
-          </a>
-        </div>
-
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <span class="hero-stat-num">99.98%</span>
-            <span class="hero-stat-label">аптайм за 12 мес.</span>
-          </div>
-          <div class="hero-stat">
-            <span class="hero-stat-num">55 сек</span>
-            <span class="hero-stat-label">до готового сервера</span>
-          </div>
-          <div class="hero-stat">
-            <span class="hero-stat-num">5</span>
-            <span class="hero-stat-label">локаций дата-центров</span>
-          </div>
+          <a href="#spec" class="btn btn-solid btn-lg">Выбрать бокс</a>
+          <a href="#log" class="btn btn-line btn-lg">Что внутри</a>
         </div>
       </div>
 
-      <div class="hero-visual reveal">
-        <div class="terminal-card">
-          <div class="terminal-head">
-            <span class="dot dot--red"></span>
-            <span class="dot dot--yellow"></span>
-            <span class="dot dot--green"></span>
-            <span class="terminal-title">root@nexovps: ~</span>
-          </div>
-          <div class="terminal-body">
-            <p><span class="prompt">$</span> nexo deploy --plan start --os ubuntu-24.04</p>
-            <p class="out">Выделяем ресурсы… <span class="ok">готово</span></p>
-            <p class="out">Настраиваем сеть… <span class="ok">готово</span></p>
-            <p class="out">Генерируем SSH-ключ… <span class="ok">готово</span></p>
-            <p class="out">IP: <span class="hl">185.42.11.87</span> · root-доступ активен</p>
-            <p><span class="prompt">$</span> ssh root@185.42.11.87</p>
-            <p class="out blink">_</p>
-          </div>
-        </div>
+      <aside class="nameplate" aria-label="Пример карточки сервера">
+        <p class="nameplate-title">карточка выдачи</p>
+        <dl class="nameplate-rows">
+          <div><dt>модель</dt><dd>VPS-B2</dd></div>
+          <div><dt>серийный №</dt><dd>7F-2C19-AK</dd></div>
+          <div><dt>точка</dt><dd>FRANKFURT-2</dd></div>
+          <div><dt>диск</dt><dd>60 GB NVMe</dd></div>
+          <div><dt>сеть</dt><dd>4 TB / мес</dd></div>
+          <div><dt>статус</dt><dd class="status-armed">[ АКТИВЕН ]</dd></div>
+        </dl>
+      </aside>
+    </div>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>10.44.2.19 → Франкфурт → Ubuntu 24.04 → готов за 41с</span>
+        <span>10.12.6.203 → Москва → Debian 12 → готов за 38с</span>
+        <span>10.77.1.44 → Амстердам → AlmaLinux 9 → готов за 52с</span>
+        <span>10.9.14.71 → Стамбул → Docker CE → готов за 49с</span>
+        <span>10.31.0.156 → Алматы → Windows Server → готов за 61с</span>
+        <span>10.44.2.19 → Франкфурт → Ubuntu 24.04 → готов за 41с</span>
+        <span>10.12.6.203 → Москва → Debian 12 → готов за 38с</span>
+        <span>10.77.1.44 → Амстердам → AlmaLinux 9 → готов за 52с</span>
+        <span>10.9.14.71 → Стамбул → Docker CE → готов за 49с</span>
+        <span>10.31.0.156 → Алматы → Windows Server → готов за 61с</span>
       </div>
     </div>
   </section>
 
-  <!-- ============ TRUST BAR ============ -->
-  <section class="trust-bar reveal">
-    <div class="container trust-inner">
-      <span>NVMe SSD в каждом тарифе</span>
-      <span>Защита от DDoS включена</span>
-      <span>Почасовая оплата</span>
-      <span>Снапшоты в 1 клик</span>
-      <span>Поддержка 24/7</span>
+  <!-- ============ LOG (features) ============ -->
+  <section class="log-section" id="log">
+    <div class="wrap">
+      <p class="section-eyebrow">// журнал наблюдений</p>
+      <h2 class="section-title">Что мы на самом деле про вас знаем — за полгода эксплуатации</h2>
+
+      <ol class="log-list">
+        <li>
+          <span class="log-id">LOG&#8209;01</span>
+          <div class="log-body">
+            <h3>Провижининг</h3>
+            <p>Бокс поднимается за 55 секунд — засекали секундомером, а не отделом маркетинга.</p>
+          </div>
+        </li>
+        <li>
+          <span class="log-id">LOG&#8209;02</span>
+          <div class="log-body">
+            <h3>Диски</h3>
+            <p>Только NVMe. Последний HDD выкатили из парка ещё в 2023-м, менять не планируем.</p>
+          </div>
+        </li>
+        <li>
+          <span class="log-id">LOG&#8209;03</span>
+          <div class="log-body">
+            <h3>Сеть</h3>
+            <p>Фильтр L3/L4 стоит перед каждым портом по умолчанию. Отключить нельзя, доплачивать не нужно.</p>
+          </div>
+        </li>
+        <li>
+          <span class="log-id">LOG&#8209;04</span>
+          <div class="log-body">
+            <h3>Бэкапы</h3>
+            <p>Снапшот руками — один клик. Автобэкап — раз в сутки, 7 копий, без квоты сверху тарифа.</p>
+          </div>
+        </li>
+        <li>
+          <span class="log-id">LOG&#8209;05</span>
+          <div class="log-body">
+            <h3>Доступ</h3>
+            <p>Чистый root, голый iptables. Никакой предустановленной телеметрии от нас на борту.</p>
+          </div>
+        </li>
+        <li>
+          <span class="log-id">LOG&#8209;06</span>
+          <div class="log-body">
+            <h3>Апгрейд</h3>
+            <p>CPU, RAM и диск меняются без переустановки. Простой — секунд 20, не часы ожидания.</p>
+          </div>
+        </li>
+      </ol>
     </div>
   </section>
 
-  <!-- ============ FEATURES ============ -->
-  <section class="features" id="features">
-    <div class="container">
-      <p class="section-kicker reveal">Возможности</p>
-      <h2 class="section-title reveal">Всё, что нужно продакшену — без переплаты за лишнее</h2>
+  <!-- ============ SPEC SHEET (pricing) ============ -->
+  <section class="spec-section" id="spec">
+    <div class="wrap">
+      <p class="section-eyebrow">// спецификация выдачи</p>
+      <h2 class="section-title">Четыре бокса. Цена без сносок мелким шрифтом</h2>
 
-      <div class="features-grid">
-        <article class="feature-card reveal">
-          <div class="feature-icon" aria-hidden="true">⚡</div>
-          <h3>Мгновенный запуск</h3>
-          <p>Сервер разворачивается за 55 секунд: выбрали образ, нажали «Создать» — получили IP и root-пароль.</p>
-        </article>
-
-        <article class="feature-card reveal">
-          <div class="feature-icon" aria-hidden="true">🛡️</div>
-          <h3>Защита от DDoS</h3>
-          <p>Фильтрация L3/L4-атак включена в каждый тариф бесплатно, без дополнительных настроек.</p>
-        </article>
-
-        <article class="feature-card reveal">
-          <div class="feature-icon" aria-hidden="true">💾</div>
-          <h3>Только NVMe-диски</h3>
-          <p>Никаких HDD и «облачных» SATA-SSD — на всех серверах локальные NVMe со скоростью от 2500 МБ/с.</p>
-        </article>
-
-        <article class="feature-card reveal">
-          <div class="feature-icon" aria-hidden="true">📸</div>
-          <h3>Снапшоты и бэкапы</h3>
-          <p>Ручные снапшоты в один клик и автоматические ежедневные бэкапы с хранением до 7 копий.</p>
-        </article>
-
-        <article class="feature-card reveal">
-          <div class="feature-icon" aria-hidden="true">🔧</div>
-          <h3>Полный root-доступ</h3>
-          <p>Свой сервер — свои правила: любой дистрибутив, панель управления или чистый Docker.</p>
-        </article>
-
-        <article class="feature-card reveal">
-          <div class="feature-icon" aria-hidden="true">📈</div>
-          <h3>Апгрейд без простоя</h3>
-          <p>Меняйте CPU, RAM и диск в панели управления — перезагрузка занимает секунды, данные не теряются.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ PRICING ============ -->
-  <section class="pricing" id="pricing">
-    <div class="container">
-      <p class="section-kicker reveal">Тарифы</p>
-      <h2 class="section-title reveal">Прозрачные цены — платите только за то, что используете</h2>
-
-      <div class="billing-toggle reveal" role="group" aria-label="Период оплаты">
-        <button type="button" class="toggle-btn is-active" data-period="monthly">Помесячно</button>
-        <button type="button" class="toggle-btn" data-period="yearly">Ежегодно <span class="save-badge">−20%</span></button>
+      <div class="period-switch">
+        <span class="period-label">помесячно</span>
+        <label class="switch">
+          <input type="checkbox" id="period-checkbox">
+          <span class="switch-track" aria-hidden="true"></span>
+        </label>
+        <span class="period-label">ежегодно <b>−20%</b></span>
       </div>
 
-      <div class="pricing-grid">
-        <article class="price-card reveal">
-          <h3>Start</h3>
-          <p class="price-desc">Для тестов, ботов и небольших сайтов</p>
-          <p class="price">
-            <span class="price-monthly">199 ₽<span class="price-period">/мес</span></span>
-            <span class="price-yearly">159 ₽<span class="price-period">/мес</span></span>
+      <div class="tags-grid">
+        <article class="tag-card">
+          <p class="tag-model">VPS&#8209;S1 · Стартовый бокс</p>
+          <p class="tag-price">
+            <span class="p-monthly">199 ₽</span><span class="p-yearly">159 ₽</span><span class="p-per">/мес</span>
           </p>
-          <ul class="price-specs">
-            <li>1 vCPU</li>
-            <li>1 ГБ RAM</li>
-            <li>20 ГБ NVMe</li>
-            <li>1 ТБ трафика</li>
-          </ul>
-          <a href="#cta" class="btn btn-outline">Выбрать Start</a>
+          <dl class="tag-specs">
+            <div><dt>CPU</dt><dd>1 vCPU</dd></div>
+            <div><dt>RAM</dt><dd>1 ГБ</dd></div>
+            <div><dt>Диск</dt><dd>20 ГБ NVMe</dd></div>
+            <div><dt>Трафик</dt><dd>1 ТБ</dd></div>
+          </dl>
+          <a href="#top" class="btn btn-line btn-block">оформить S1</a>
         </article>
 
-        <article class="price-card price-card--featured reveal">
-          <p class="price-flag">Популярный</p>
-          <h3>Basic</h3>
-          <p class="price-desc">Интернет-магазин, API, CI/CD-раннер</p>
-          <p class="price">
-            <span class="price-monthly">449 ₽<span class="price-period">/мес</span></span>
-            <span class="price-yearly">359 ₽<span class="price-period">/мес</span></span>
+        <article class="tag-card tag-card--stamped">
+          <p class="stamp">чаще берут</p>
+          <p class="tag-model">VPS&#8209;B2 · Рабочий бокс</p>
+          <p class="tag-price">
+            <span class="p-monthly">449 ₽</span><span class="p-yearly">359 ₽</span><span class="p-per">/мес</span>
           </p>
-          <ul class="price-specs">
-            <li>2 vCPU</li>
-            <li>4 ГБ RAM</li>
-            <li>60 ГБ NVMe</li>
-            <li>4 ТБ трафика</li>
-          </ul>
-          <a href="#cta" class="btn btn-primary">Выбрать Basic</a>
+          <dl class="tag-specs">
+            <div><dt>CPU</dt><dd>2 vCPU</dd></div>
+            <div><dt>RAM</dt><dd>4 ГБ</dd></div>
+            <div><dt>Диск</dt><dd>60 ГБ NVMe</dd></div>
+            <div><dt>Трафик</dt><dd>4 ТБ</dd></div>
+          </dl>
+          <a href="#top" class="btn btn-solid btn-block">оформить B2</a>
         </article>
 
-        <article class="price-card reveal">
-          <h3>Pro</h3>
-          <p class="price-desc">Высоконагруженные проекты и базы данных</p>
-          <p class="price">
-            <span class="price-monthly">899 ₽<span class="price-period">/мес</span></span>
-            <span class="price-yearly">719 ₽<span class="price-period">/мес</span></span>
+        <article class="tag-card">
+          <p class="tag-model">VPS&#8209;P4 · Прод бокс</p>
+          <p class="tag-price">
+            <span class="p-monthly">899 ₽</span><span class="p-yearly">719 ₽</span><span class="p-per">/мес</span>
           </p>
-          <ul class="price-specs">
-            <li>4 vCPU</li>
-            <li>8 ГБ RAM</li>
-            <li>120 ГБ NVMe</li>
-            <li>8 ТБ трафика</li>
-          </ul>
-          <a href="#cta" class="btn btn-outline">Выбрать Pro</a>
+          <dl class="tag-specs">
+            <div><dt>CPU</dt><dd>4 vCPU</dd></div>
+            <div><dt>RAM</dt><dd>8 ГБ</dd></div>
+            <div><dt>Диск</dt><dd>120 ГБ NVMe</dd></div>
+            <div><dt>Трафик</dt><dd>8 ТБ</dd></div>
+          </dl>
+          <a href="#top" class="btn btn-line btn-block">оформить P4</a>
         </article>
 
-        <article class="price-card reveal">
-          <h3>Business</h3>
-          <p class="price-desc">Кластеры, игровые серверы, ML-инференс</p>
-          <p class="price">
-            <span class="price-monthly">1 990 ₽<span class="price-period">/мес</span></span>
-            <span class="price-yearly">1 592 ₽<span class="price-period">/мес</span></span>
+        <article class="tag-card">
+          <p class="tag-model">VPS&#8209;X8 · Тяжёлый бокс</p>
+          <p class="tag-price">
+            <span class="p-monthly">1990 ₽</span><span class="p-yearly">1592 ₽</span><span class="p-per">/мес</span>
           </p>
-          <ul class="price-specs">
-            <li>8 vCPU</li>
-            <li>16 ГБ RAM</li>
-            <li>240 ГБ NVMe</li>
-            <li>Безлимитный трафик</li>
-          </ul>
-          <a href="#cta" class="btn btn-outline">Выбрать Business</a>
+          <dl class="tag-specs">
+            <div><dt>CPU</dt><dd>8 vCPU</dd></div>
+            <div><dt>RAM</dt><dd>16 ГБ</dd></div>
+            <div><dt>Диск</dt><dd>240 ГБ NVMe</dd></div>
+            <div><dt>Трафик</dt><dd>без лимита</dd></div>
+          </dl>
+          <a href="#top" class="btn btn-line btn-block">оформить X8</a>
         </article>
       </div>
 
-      <p class="pricing-note reveal">Нужна конфигурация под себя? Соберите свой тариф вручную — CPU, RAM и диск отдельно, в панели управления.</p>
+      <p class="spec-note">Нужна своя конфигурация? Собирается вручную в панели — CPU, RAM и диск отдельными ползунками.</p>
     </div>
   </section>
 
-  <!-- ============ HOW IT WORKS ============ -->
-  <section class="how" id="how">
-    <div class="container">
-      <p class="section-kicker reveal">Как это работает</p>
-      <h2 class="section-title reveal">От регистрации до готового сервера — три шага</h2>
+  <!-- ============ PROTOCOL (how it works) ============ -->
+  <section class="protocol-section">
+    <div class="wrap">
+      <p class="section-eyebrow">// протокол выдачи</p>
+      <h2 class="section-title">Три команды между оплатой и root@</h2>
 
-      <div class="how-grid">
-        <div class="how-step reveal">
-          <span class="how-num">01</span>
-          <h3>Выберите тариф и локацию</h3>
-          <p>Подберите конфигурацию под задачу и дата-центр ближе к вашим пользователям.</p>
-        </div>
-        <div class="how-step reveal">
-          <span class="how-num">02</span>
-          <h3>Оплатите картой или криптой</h3>
-          <p>Спишем оплату за выбранный период — с картой, СБП или в криптовалюте.</p>
-        </div>
-        <div class="how-step reveal">
-          <span class="how-num">03</span>
-          <h3>Получите root-доступ</h3>
-          <p>IP-адрес, логин и пароль (или SSH-ключ) приходят в панель и на почту за минуту.</p>
-        </div>
+      <div class="protocol-shell">
+        <p><span class="ps-num">01</span><span class="ps-prompt">$</span> boxes choose --plan=B2 --location=fra</p>
+        <p class="ps-out">→ бокс зарезервирован, ждёт оплаты</p>
+        <p><span class="ps-num">02</span><span class="ps-prompt">$</span> boxes pay --method=card|sbp|crypto</p>
+        <p class="ps-out">→ платёж принят, старт провижининга</p>
+        <p><span class="ps-num">03</span><span class="ps-prompt">$</span> boxes receive --to=panel,email</p>
+        <p class="ps-out">→ IP, root-пароль и SSH-ключ — за ~60 секунд</p>
       </div>
     </div>
   </section>
 
-  <!-- ============ LOCATIONS ============ -->
-  <section class="locations" id="locations">
-    <div class="container">
-      <p class="section-kicker reveal">Локации</p>
-      <h2 class="section-title reveal">5 дата-центров — выбирайте, где ниже пинг до пользователей</h2>
+  <!-- ============ COVERAGE (locations) ============ -->
+  <section class="coverage-section" id="coverage">
+    <div class="wrap">
+      <p class="section-eyebrow">// покрытие</p>
+      <h2 class="section-title">Пять точек. Пинг считали из РФ, не из рекламного буклета</h2>
 
-      <div class="locations-grid">
-        <div class="location-card reveal">
-          <h3>Москва</h3>
-          <p>Tier III, стык с крупнейшими операторами РФ</p>
-        </div>
-        <div class="location-card reveal">
-          <h3>Амстердам</h3>
-          <p>Магистральные каналы для всей Европы</p>
-        </div>
-        <div class="location-card reveal">
-          <h3>Франкфурт</h3>
-          <p>Низкая задержка до DE-CIX</p>
-        </div>
-        <div class="location-card reveal">
-          <h3>Стамбул</h3>
-          <p>Узел для Ближнего Востока и Закавказья</p>
-        </div>
-        <div class="location-card reveal">
-          <h3>Алматы</h3>
-          <p>Покрытие Центральной Азии</p>
-        </div>
-      </div>
+      <table class="coverage-table">
+        <thead>
+          <tr><th>код</th><th>дата-центр</th><th>пинг из РФ</th><th>класс</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>MSK</td><td>Москва</td><td>~8 мс</td><td>Tier III</td></tr>
+          <tr><td>AMS</td><td>Амстердам</td><td>~35 мс</td><td>Tier III</td></tr>
+          <tr><td>FRA</td><td>Франкфурт</td><td>~38 мс</td><td>Tier IV</td></tr>
+          <tr><td>IST</td><td>Стамбул</td><td>~55 мс</td><td>Tier III</td></tr>
+          <tr><td>ALA</td><td>Алматы</td><td>~70 мс</td><td>Tier III</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
   <!-- ============ FAQ ============ -->
-  <section class="faq" id="faq">
-    <div class="container">
-      <p class="section-kicker reveal">Вопросы</p>
-      <h2 class="section-title reveal">Частые вопросы</h2>
+  <section class="faq-section" id="faq">
+    <div class="wrap">
+      <p class="section-eyebrow">// man boxes</p>
+      <h2 class="section-title">Вопросы, которые задают до, а не после оплаты</h2>
 
-      <div class="faq-list">
-        <div class="faq-item reveal">
-          <button class="faq-question" aria-expanded="false">
-            Как быстро сервер будет готов после оплаты?
-            <span class="faq-icon" aria-hidden="true">+</span>
-          </button>
-          <div class="faq-answer">
-            <p>В среднем 55 секунд. Панель управления показывает статус развёртывания в реальном времени, данные для входа приходят сразу после готовности.</p>
-          </div>
-        </div>
-
-        <div class="faq-item reveal">
-          <button class="faq-question" aria-expanded="false">
-            Можно ли сменить тариф после покупки?
-            <span class="faq-icon" aria-hidden="true">+</span>
-          </button>
-          <div class="faq-answer">
-            <p>Да, апгрейд и даунгрейд доступны в любой момент в панели управления. Диск и оперативная память меняются без потери данных.</p>
-          </div>
-        </div>
-
-        <div class="faq-item reveal">
-          <button class="faq-question" aria-expanded="false">
-            Какие способы оплаты поддерживаются?
-            <span class="faq-icon" aria-hidden="true">+</span>
-          </button>
-          <div class="faq-answer">
-            <p>Банковские карты, СБП и криптовалюта (USDT, BTC, ETH). Для юрлиц доступен безналичный расчёт по счёту.</p>
-          </div>
-        </div>
-
-        <div class="faq-item reveal">
-          <button class="faq-question" aria-expanded="false">
-            Есть ли пробный период или возврат средств?
-            <span class="faq-icon" aria-hidden="true">+</span>
-          </button>
-          <div class="faq-answer">
-            <p>Действует гарантия возврата в течение 3 дней с момента первой оплаты, если сервер не подошёл по любой причине.</p>
-          </div>
-        </div>
-
-        <div class="faq-item reveal">
-          <button class="faq-question" aria-expanded="false">
-            Какие операционные системы доступны?
-            <span class="faq-icon" aria-hidden="true">+</span>
-          </button>
-          <div class="faq-answer">
-            <p>Ubuntu, Debian, CentOS, AlmaLinux, Windows Server, а также готовые образы с Docker, 1С и панелями управления сайтами.</p>
-          </div>
-        </div>
+      <div class="faq-search">
+        <span class="faq-search-prompt">$ grep -i</span>
+        <input type="text" id="faq-input" placeholder="например: возврат, ос, оплата…" autocomplete="off">
       </div>
+
+      <dl class="faq-list" id="faq-list">
+        <div class="faq-pair" data-text="как быстро бокс будет готов после оплаты обычно 55 секунд иногда 40 иногда 70 зависит от очереди на ноде а не от того пятница ли сегодня">
+          <dt><span class="qa-tag">Q&gt;</span> Как быстро бокс будет готов после оплаты?</dt>
+          <dd><span class="qa-tag">A&gt;</span> Обычно 55 секунд. Иногда 40, иногда 70 — зависит от очереди на ноде, а не от того, пятница сегодня или нет.</dd>
+        </div>
+        <div class="faq-pair" data-text="можно сменить тариф после покупки да апгрейд даунгрейд cpu ram диска в панели простой около 20 секунд диск не переразмечивается заново">
+          <dt><span class="qa-tag">Q&gt;</span> Можно сменить тариф после покупки?</dt>
+          <dd><span class="qa-tag">A&gt;</span> Да. Апгрейд и даунгрейд CPU, RAM и диска — прямо в панели, простой около 20 секунд, диск не переразмечивается заново.</dd>
+        </div>
+        <div class="faq-pair" data-text="какие способы оплаты карта сбп крипта usdt btc eth юрлицам счёт по безналу">
+          <dt><span class="qa-tag">Q&gt;</span> Какие способы оплаты поддерживаются?</dt>
+          <dd><span class="qa-tag">A&gt;</span> Карта, СБП, крипта (USDT, BTC, ETH). Юрлицам — счёт по безналичному расчёту.</dd>
+        </div>
+        <div class="faq-pair" data-text="есть возврат если не подошло 3 дня с первой оплаты возвращаем без вопросов а что не так">
+          <dt><span class="qa-tag">Q&gt;</span> Есть возврат, если бокс не подошёл?</dt>
+          <dd><span class="qa-tag">A&gt;</span> 3 дня с момента первой оплаты — возвращаем без выяснений «а что конкретно не так».</dd>
+        </div>
+        <div class="faq-pair" data-text="какие операционные системы доступны ubuntu debian centos almalinux windows server docker панели управления">
+          <dt><span class="qa-tag">Q&gt;</span> Какие операционные системы доступны?</dt>
+          <dd><span class="qa-tag">A&gt;</span> Ubuntu, Debian, CentOS, AlmaLinux, Windows Server — плюс образы с Docker и панелями, для тех, кто панели любит.</dd>
+        </div>
+      </dl>
+
+      <p class="faq-empty" id="faq-empty" hidden>ничего не найдено — попробуйте другое слово</p>
     </div>
   </section>
 
   <!-- ============ CTA ============ -->
-  <section class="cta-section" id="cta">
-    <div class="container cta-inner reveal">
-      <h2>Готовы развернуть свой сервер?</h2>
-      <p>Первые 3 дня — с гарантией возврата денег. Без привязки карты для регистрации.</p>
-      <a href="#pricing" class="btn btn-primary btn-lg">Выбрать тариф и развернуть сервер</a>
+  <section class="cta-section">
+    <div class="wrap cta-inner">
+      <h2>Хватит читать про сервера.<br>Пора один арендовать.</h2>
+      <p>Бокс поднимется быстрее, чем вы дочитаете эту страницу заново.</p>
+      <a href="#spec" class="btn btn-invert btn-lg">Забрать бокс →</a>
     </div>
   </section>
 
 </main>
 
 <footer class="site-footer">
-  <div class="container footer-inner">
-    <div class="footer-brand">
-      <a href="#top" class="logo">Nexo<span class="accent-dot">VPS</span></a>
-      <p>Аренда виртуальных серверов на NVMe с 2021 года.</p>
-    </div>
-
-    <div class="footer-col">
-      <h4>Продукт</h4>
-      <a href="#features">Возможности</a>
-      <a href="#pricing">Тарифы</a>
-      <a href="#locations">Локации</a>
-    </div>
-
-    <div class="footer-col">
-      <h4>Компания</h4>
-      <a href="#faq">Вопросы</a>
-      <a href="mailto:support@nexovps.example">Поддержка</a>
-      <a href="#top">Партнёрам</a>
-    </div>
-
-    <div class="footer-col">
-      <h4>Правовое</h4>
-      <a href="#top">Публичная оферта</a>
-      <a href="#top">Политика конфиденциальности</a>
-    </div>
+  <div class="wrap footer-inner">
+    <a href="#top" class="logo">boxes<span class="logo-ext">.sh</span></a>
+    <nav class="footer-nav">
+      <a href="#log">лог</a>
+      <a href="#spec">тарифы</a>
+      <a href="#coverage">точки</a>
+      <a href="#faq">вопросы</a>
+      <a href="mailto:support@boxes.sh">support@boxes.sh</a>
+    </nav>
   </div>
-
-  <div class="container footer-bottom">
-    <p>© 2026 NexoVPS. Все права защищены.</p>
+  <div class="wrap footer-bottom">
+    <p>boxes.sh · build 4f9a21c · deployed 2026-08-31 · железо без метафор</p>
   </div>
 </footer>
 
